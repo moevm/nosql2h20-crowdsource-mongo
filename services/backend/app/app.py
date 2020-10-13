@@ -1,27 +1,41 @@
-#from flask_mongoengine import MongoEngine
-#import mongoengine
+from flask_mongoengine import MongoEngine
+import mongoengine
 import os
 
 from flask import Flask, request, Response
 
-#from pymongo import MongoClient
-from .db.db import initialize_db
-from .db.models import Movie
+from pymongo import MongoClient
 
 app = Flask (__name__)
 app.config.from_object(__name__)
 app.config['MONGODB_SETTINGS'] = {
-    'host': 'mongodb://localhost/flaskdb'
-    #'host':'mongodb://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
-
+    'name' : 'name',
+    'host' : 'mongodb',
+    'port' : 27017
 }
-initialize_db(app)
+app.config["SECRET_KEY"] = "SECRET_KEY"
+
+def initialize_db(app):
+    db = MongoEngine(app)
+    return db
+
+db = initialize_db(app)
+
+class Movie(db.Document):
+    name = db.StringField(required=True, unique=True)
+    casts = db.ListField(db.StringField(), required=True)
+    genres = db.ListField(db.StringField(), required=True)
+
+@app.route('/')
+def check_flask():
+    return "Flask is ok"
 
 
 @app.route('/movies')
 def get_movies():
     movies = Movie.objects().to_json()
     return Response(movies, mimetype="application/json", status=200)
+
 
 @app.route('/movies', methods=['POST'])
 def add_movie():
