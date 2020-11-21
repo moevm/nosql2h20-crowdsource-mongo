@@ -23,6 +23,11 @@
         ></b-form-checkbox-group>
       </div>
     </div>
+    <div class="addOrderClass">
+      <b-button class="mr-1" @click="addOrderClick()" variant="info">
+        Добавить заказ
+      </b-button>
+    </div>
     <div class="mt-4 catalogList">
       <div v-for="(product, index) of productList"
             :key="index">
@@ -30,6 +35,7 @@
       </div>
     </div>
     <br />
+    <AddOrderModal/>
   </div>
 </template>
 
@@ -41,6 +47,7 @@ import {FormOptions, FormSchema} from 'vue-form-generator'
 import MultiSelect from 'vue-multiselect'
 import { clientMapper } from '@/store/modules/client'
 import ruMultiselect from '@/i18n/ru_multiselect'
+import AddOrderModal from "@/components/Modal/Customer/AddOrderModal.vue";
 
 const Mappers = Vue.extend({
   computed: {
@@ -55,7 +62,8 @@ const Mappers = Vue.extend({
 @Component({
   components: {
     MultiSelect,
-    OrderCard
+    OrderCard,
+    AddOrderModal
   }
 })
 export default class CatalogProduct extends Mappers {
@@ -97,22 +105,17 @@ export default class CatalogProduct extends Mappers {
     this.productList = this.allProduct
   }
 
-  private addCategotyClick() {
-    this.$bvModal.show('addCategoryModal')
-    console.log('addCategotyClick')
-  }
-
-  private addProductOrderClick() {
-    this.$bvModal.show('addProductsModal')
-    console.log('addProductOrderClick')
-  }
-
   private customLabelProdiucts({ name }: any) {
     if (name) {
       return name
     } else {
       return `Выберите значение`
     }
+  }
+
+  private addOrderClick() {
+    this.$bvModal.show('addOrderModal')
+    console.log('addOrderClick')
   }
 
   async created() {
@@ -140,8 +143,10 @@ export default class CatalogProduct extends Mappers {
 }
 .catalogList{
   height: 60vh;
-  width: 85%;
   overflow: scroll;
   overflow-x:hidden;
+}
+.addOrderClass{
+  text-align: right;
 }
 </style>

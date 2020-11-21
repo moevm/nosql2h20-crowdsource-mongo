@@ -26,8 +26,7 @@
       </b-button>
       </div>
     </b-navbar>
-    <BasketUser/>
-  </div>
+   </div>
 </template>
 
 <script lang="ts">

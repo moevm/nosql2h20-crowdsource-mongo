@@ -16,16 +16,29 @@
         />
       </div>
       <div class="mr-2">
-        <h3 class="mt-1 text-o-ellipsis news-title"><b>{{ product.title }}</b></h3>
-        <h4 class="mt-1 text-o-ellipsis news-title">Описание</h4>
+        <h3 class="mt-1 text-o-ellipsis"><b>{{ product.title }}</b></h3>
+        <h4 class="mt-1 text-o-ellipsis">Описание</h4>
         <div>
           {{ product.description }}
         </div>
-        <h4 class="mt-1 text-o-ellipsis news-title  ">Заказчик</h4>
-        <div class="mt-1 text-o-ellipsis news-title">{{ product.customer }}</div>
-        <div class="mt-2">
-          <b-button @click="addProductClick()" variant="info">
+        <h4 class="mt-1 text-o-ellipsis">Заказчик</h4>
+        <div class="mt-1 text-o-ellipsis">{{ product.customer }}</div>
+        <div class="d-flex">
+          <h4 class="mt-1 text-o-ellipsis">Дата добавления</h4>
+          <div class="mt-2 text-o-ellipsis"> <!--{{ product.customer }}-->14.11.2020</div>
+        </div>
+        <div class="mt-2 d-flex">
+          <b-button class="mr-1" @click="onProceedClick()" variant="info">
             Приступить
+          </b-button>
+          <b-button class="mr-1" @click="onEditClick()" variant="info">
+            Редактировать
+          </b-button>
+          <b-button class="mr-1" @click="onExportDataClick()" variant="info">
+            Выгрузить данные
+          </b-button>
+          <b-button class="mr-1" @click="onStatisticClick()" variant="info">
+            Статистика
           </b-button>
         </div>
       </div>
@@ -64,15 +77,26 @@ export default class NewsPreview extends Vue {
     console.log('onChangeField')
   }
 
-  private addProductClick() {
-    console.log('addProductClick')
+  private onProceedClick() {
+    console.log('onProceedClick')
+  }
+
+  private onEditClick() {
+    console.log('onEditClick')
+  }
+
+  private onExportDataClick() {
+    console.log('onExportDataClick')
+  }
+
+  private onStatisticClick() {
+    console.log('onStatisticClick')
   }
 }
 </script>
 
 <style scoped lang="scss">
 @import '@/scss/_colors.scss';
-
 .text-o-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;

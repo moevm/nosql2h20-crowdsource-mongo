@@ -9,6 +9,9 @@ export default {
     'Свободные авторы',
     'Все заказчики'
   ],
+  manualInput: [
+    'Ввести вручную'
+  ],
   imageGalery: [
     {
       image: 'dog.jpeg',
