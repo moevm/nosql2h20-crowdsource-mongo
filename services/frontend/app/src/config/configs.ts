@@ -15,6 +15,16 @@ export default {
       name: 'Новости партнеров'
     }
   },
+  customerInput: [
+    {
+      value: 'photo',
+      title: 'Фотоданные'
+    },
+    {
+      value: 'text',
+      title: 'Текстовые данные'
+    }
+  ],
   mobileWidth: 768,
   defaultWidth: 1000,
   listDistricts: ['Мурино', 'Новое Девяткино', 'Лаврики']

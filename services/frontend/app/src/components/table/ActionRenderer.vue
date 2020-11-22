@@ -1,35 +1,47 @@
 <template>
   <div v-if="!noActions" class="ActionRenderer__Buttons">
     <b-button-group>
-      <b-button @click="onConfirm" v-if="!noConfirm && this.params.onConfirm">
+      <b-button
+        @click="onPrint"
+        v-if="this.params.onPrint && checkType('onPrint')"
+      >
+        <font-awesome-icon :icon="['fas', 'print']" />
+      </b-button>
+      <b-button
+        @click="onConfirm"
+        v-if="this.params.onConfirm && checkType('onConfirm')"
+      >
         <font-awesome-icon :icon="['fas', 'check']" />
       </b-button>
-      <b-button @click="onEdit" v-if="this.params.onEdit">
+      <b-button
+        @click="onLoad"
+        v-if="this.params.onLoad && checkType('onLoad')"
+      >
+        <font-awesome-icon :icon="['fas', 'file']" />
+      </b-button>
+      <b-button
+        @click="onEdit"
+        v-if="this.params.onEdit && checkType('onEdit')"
+      >
         <font-awesome-icon :icon="['fas', 'edit']" />
       </b-button>
-      <b-button @click="onDelete" v-if="this.params.onDelete">
+      <b-button
+        @click="onDelete"
+        v-if="this.params.onDelete && checkType('onDelete')"
+      >
         <font-awesome-icon :icon="['fas', 'times']" />
       </b-button>
-      <b-button @click="onClone" v-if="this.params.onClone">
-        <font-awesome-icon :icon="['fas', 'copy']" />
-      </b-button>
-      <b-button @click="onInfo" v-if="this.params.onInfo">
+      <b-button
+        @click="onInfo"
+        v-if="this.params.onInfo && checkType('onInfo')"
+      >
         <font-awesome-icon :icon="['fas', 'info']" />
       </b-button>
-      <b-button @click="onChat" v-if="this.params.onChat">
-        <font-awesome-icon :icon="['fa', 'comments']" />
-      </b-button>
-      <b-button @click="onBan" v-if="this.params.onBan">
-        <font-awesome-icon :icon="['fa', 'ban']" />
-      </b-button>
-      <b-button @click="onBlock" v-if="this.params.onBlock">
-        <font-awesome-icon
-          :icon="
-            this.params.data && this.params.data.isActive
-              ? ['fas', 'user-lock']
-              : ['fas', 'lock-open']
-          "
-        />
+      <b-button
+        @click="onLink"
+        v-if="this.params.onLink && checkType('onLink')"
+      >
+        <font-awesome-icon :icon="['fas', 'external-link-alt']" />
       </b-button>
     </b-button-group>
   </div>
@@ -60,14 +72,11 @@ export default class AgGridField extends Vue {
     }
   }
 
-  onBlock() {
-    this.params.onBlock(this.params)
+  checkType(type: string) {
+    return this.params.getActionByType
+      ? this.params.getActionByType(this.params).includes(type)
+      : true
   }
-
-  onClone() {
-    this.params.onClone(this.params)
-  }
-
   onDelete() {
     this.params.onDelete(this.params)
   }
@@ -80,16 +89,20 @@ export default class AgGridField extends Vue {
     this.params.onInfo(this.params)
   }
 
+  onLink() {
+    this.params.onLink(this.params)
+  }
+
+  onLoad() {
+    this.params.onLoad(this.params)
+  }
+
+  onPrint() {
+    this.params.onPrint(this.params)
+  }
+
   onConfirm() {
     this.params.onConfirm(this.params)
-  }
-
-  onChat() {
-    this.params.onChat(this.params)
-  }
-
-  onBan() {
-    this.params.onBan(this.params)
   }
 }
 </script>
@@ -99,6 +112,6 @@ export default class AgGridField extends Vue {
   display: flex;
   height: 40px;
   vertical-align: top;
-  padding: 3px 0px;
+  padding: 3px 0;
 }
 </style>

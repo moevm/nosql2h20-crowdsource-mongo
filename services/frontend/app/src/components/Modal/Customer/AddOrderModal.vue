@@ -28,9 +28,9 @@
       <div class="mt-1 text-o-ellipsis">Данные для заказа</div>
       <div class="d-flex">
         <div>
-          <b-form-radio-group id="radio-group-2" v-model="selected " name="radio-sub-component">
-            <b-form-radio value="work">Исполнитель</b-form-radio>
-            <b-form-radio value="customer">Заказчик</b-form-radio>
+          <b-form-radio-group id="radio-group-2" v-model="selectedChangeData" @change="changeSelectedData" name="radio-sub-component">
+            <b-form-radio v-for="(obj, index) of ConfinDataValues"
+              :key="index" :value="`${obj.value}`">{{obj.title}}</b-form-radio>
           </b-form-radio-group>
         </div>
         <div class="ml-1 w-15">
@@ -42,36 +42,30 @@
           ></b-form-checkbox-group>
         </div>
       </div>
-      <div v-if="checkManualInput">
-        не пусто
+      <div v-if="!isText">
+        Фото
+        <b-button @click="checkTest" variant="info">
+          Проверить
+        </b-button>
+        <PhotoInput/>
+      </div>
+      <div v-else >
+        Текст
       </div>
       <template v-slot:modal-footer="{ ok, cancel }">
         <b-button @click="ok()" :disabled="allFill" variant="info">
-          Изменить
+          Создать
         </b-button>
         <b-button @click="cancel()">
           Закрыть
         </b-button>
       </template>
     </b-modal>
-    <b-modal
-      id="dropPasswordModal"
-      title="Сброс пароля"
-      size="lg"
-      @ok="dropPasswordClick"
-    >
-      <div>
-        На вашу почту будет отправлен сгенерированный пароль!
-      </div>
-      <template v-slot:modal-footer="{ ok, cancel }">
-        <b-button @click="ok()" variant="primary">
-          Сбросить пароль
-        </b-button>
-        <b-button @click="cancel()">
-          Отмена
-        </b-button>
-      </template>
-    </b-modal>
+    <b-form-file
+      v-model="fileInput"
+      id="fileUpload"
+      hidden
+    />
   </div>
 </template>
 
@@ -79,21 +73,31 @@
 import { Component, Vue } from 'vue-property-decorator'
 import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
-import Config from '@/config/config'
+import StaticData from '@/config/config'
+import Confin from '@/config/configs'
+import PhotoInput from "@/components/help/PhotoInput.vue";
+import Auth from "@/views/Auth.vue";
 
 const Mappers = Vue.extend({})
 
 @Component({
   directives: {
     mask: AwesomeMask
+  },
+  components: {
+    PhotoInput
   }
 })
 export default class AddSpecialtiesModal extends Mappers {
   private allFill = false
   private isActive = false
   private isEdit = false
+  private fileInput = null
   private checkManualInput = []
-  private arrayManualCheckbox = Config.manualInput
+  private isText = false
+  private ConfinDataValues = Confin.customerInput
+  private selectedChangeData = Confin.customerInput[0].value
+  private arrayManualCheckbox = StaticData.manualInput
   private orderInfo = {
     nameOrder: '',
     description: ''
@@ -101,6 +105,14 @@ export default class AddSpecialtiesModal extends Mappers {
 
   private async addOrderClick() {
     console.log('addOrderClick')
+  }
+
+  private checkTest() {
+    console.log('___ checkTest ', this.fileInput)
+  }
+
+  private changeSelectedData(){
+    this.isText = this.selectedChangeData === 'photo'
   }
 
   private dropPasswordClick() {
