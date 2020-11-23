@@ -1,16 +1,9 @@
 from flask import Flask, request, Response, Blueprint
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import datetime
 from app.db.models import User
 
 users = Blueprint('users', __name__)
-
-'''
-@users.route('/users', methods=['GET'])
-def get_users():
-    users = User.objects().to_json()
-    return Response(users, mimetype="application/json", status=200)
-'''
 
 @users.route('/signup', methods=['POST'])
 def registration():
@@ -23,20 +16,20 @@ def registration():
 
 @users.route('/login',methods=['POST'])
 def login():
-	body = request.get_json()
-	user = User.objects.get(email=body.get('email'))
-	authorized = user.check_password(body.get('password'))
-	if not authorized:
-		return {'error': 'Email or password invalid'}, 401
+    body = request.get_json()
+    user = User.objects.get(email=body.get('email'))
+    authorized = user.check_password(body.get('password'))
+    if not authorized:
+        return {'error': 'Email or password invalid'}, 401
 
-	expires = datetime.timedelta(days=1)
-	access_token = create_access_token(identity=str(user.id), expires_delta=expires)
-	return {'token': access_token}, 200
+    expires = datetime.timedelta(days=1)
+    access_token = create_access_token(identity=str(user.id), expires_delta=expires)
+    return {'token': access_token}, 200
 
-
-'''
-@users.route('/users/<id>',methods=['GET'])
+@users.route('/<id>',methods=['GET'])
+@jwt_required
 def get_user(id):
-    user = User.objects.get(id=id).to_json()
-    return Response(user, mimetype="application/json", status=200)
-'''
+    user_id = get_jwt_identity()
+    if user_id == id:
+        user = User.objects.get(id=id).to_json()
+        return Response(user, mimetype="application/json", status=200)
