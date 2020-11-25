@@ -33,3 +33,4 @@ def get_user(id):
     if user_id == id:
         user = User.objects.get(id=id).to_json()
         return Response(user, mimetype="application/json", status=200)
+    return {"msg":"it isnt your acc"},401

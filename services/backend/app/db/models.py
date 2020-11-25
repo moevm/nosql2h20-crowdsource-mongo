@@ -4,11 +4,11 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 class User(db.Document):
     email = db.StringField(required = True, max_length=255,unique=True)
     name = db.StringField(required = True, max_length=255)
-    surname = db.StringField(required = True, max_length=255)
+    surname = db.StringField(max_length=255)
     password = db.StringField(required = True, max_length=255)
     type = db.StringField(required = True, max_length=255)
     orders_status = db.ListField(db.DictField(), default=[])
-    customer = db.StringField(required = True, max_length=255)
+    customer = db.StringField( max_length=255)
 
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode('utf8')

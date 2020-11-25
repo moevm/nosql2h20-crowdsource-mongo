@@ -9,37 +9,42 @@ admin = Blueprint('admin', __name__)
 @jwt_required
 def get_users():
 	user_id = get_jwt_identity()
-	if str(user_id) == str(User.objects().get(email="admin").id):
+	user = User.objects().get(id=user_id)
+	if user.email == "admin":
 		us = User.objects().to_json()
 		return Response(us, mimetype="application/json", status=200)
-	return "",401
+	return {"msg":"log in as admin"},401
 
 @admin.route('/admin/users',methods=['POST'])
 @jwt_required
 def post_users():
 	user_id = get_jwt_identity()
-	if str(user_id) == str(User.objects().get(email="admin").id):
+	user = User.objects().get(id=user_id)
+	if user.email == "admin":
 		body = request.get_json()
 		users = User(**body)
 		users.save()
 		return '', 200
+	return {"msg":"log in as admin"},401
 
 @admin.route('/admin/orders',methods=['GET'])
 @jwt_required
 def get_orders():
 	user_id = get_jwt_identity()
-	adid = User.objects().get(email="admin").id
-	if str(user_id) == str(adid):
+	user = User.objects().get(id=user_id)
+	if user.email == "admin":
 		orders = Order.objects().to_json()
 		return Response(orders, mimetype="application/json", status=200)
-	return "",401
+	return {"msg":"log in as admin"},401
 
 @admin.route('/admin/orders',methods=['POST'])
 @jwt_required
 def post_orders():
 	user_id = get_jwt_identity()
-	if user_id == User.objects().get(email="admin").id:
+	user = User.objects().get(id=user_id)
+	if user.email == "admin":
 		body = request.get_json()
 		orders = Order(**body)
 		orders.save()
 		return '', 200
+	return {"msg":"log in as admin"},401
