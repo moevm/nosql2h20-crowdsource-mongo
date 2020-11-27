@@ -51,12 +51,9 @@ import AddOrderModal from '@/components/Modal/Customer/AddOrderModal.vue'
 
 const Mappers = Vue.extend({
   computed: {
-    ...clientMapper.mapState(['clientCatalog', 'allProduct', 'filterCatalog'])
+    ...clientMapper.mapState([])
   },
-  methods: {
-    ...clientMapper.mapActions(['fetchCatalogClient', 'fetchProductClient']),
-    ...clientMapper.mapMutations(['setFilterCatalog'])
-  }
+  methods: {}
 })
 
 @Component({
@@ -80,29 +77,11 @@ export default class CatalogProduct extends Mappers {
   }
   private ruMultiselect = ruMultiselect
 
-  @Watch('clientCatalog')
-  onClientCatalog() {
-    console.log('onClientCatalog', this.clientCatalog)
-    this.filterProduct = this.clientCatalog
-  }
-
-  @Watch('allProduct')
-  onAllProduct() {
-    console.log('allProduct', this.allProduct)
-    this.productList = this.allProduct
-  }
-
-  @Watch('filterCatalog')
-  onFilterCatalog() {
-    console.log('onFilterCatalog', this.filterCatalog)
-    this.changeCatalog()
-  }
-
   private async changeCatalog() {
-    console.log('changeCatalog  ', this.selectFilterCatalog, this.filterCatalog)
-    this.setFilterCatalog(this.selectFilterCatalog)
+    //console.log('changeCatalog  ', this.selectFilterCatalog,)
+    /*this.setFilterCatalog(this.selectFilterCatalog)
     await this.fetchProductClient(this.filterCatalog.id)
-    this.productList = this.allProduct
+    this.productList = this.allProduct*/
   }
 
   private customLabelProdiucts({ name }: any) {

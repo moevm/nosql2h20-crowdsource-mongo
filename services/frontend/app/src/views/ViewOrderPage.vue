@@ -5,8 +5,8 @@
         Добавить заказ
       </b-button>
     </div>-->
-    <div v-for="(pair, index) of pairsArray" :key="index">
-      <ViewOrderCard :pair="pair" />
+    <div v-for="(pair, index) of viewOrderPage.pairs" :key="index">
+      <ViewOrderCard :pair="pair" :index="index" />
     </div>
   </div>
 </template>
@@ -22,12 +22,9 @@ import _ from 'lodash'
 
 const Mappers = Vue.extend({
   computed: {
-    ...clientMapper.mapState(['clientCatalog', 'allProduct', 'filterCatalog'])
+    ...clientMapper.mapState(['viewOrderPage'])
   },
-  methods: {
-    ...clientMapper.mapActions(['fetchCatalogClient', 'fetchProductClient']),
-    ...clientMapper.mapMutations(['setFilterCatalog'])
-  }
+  methods: {}
 })
 
 @Component({
@@ -37,17 +34,7 @@ const Mappers = Vue.extend({
   }
 })
 export default class CatalogProduct extends Mappers {
-  private filtersTypeTask = Config.typeTask
-  private filtersCustomer = Config.customers
-  private checkFiltersTypeTask = []
-  private checkFiltersCustomer = []
   private pairsArray: any[] = []
-  private filterProduct = []
-  private selectFilterCatalog: any = 'Выберете значение'
-  private filterPrice = 0
-  private filtersObj = {
-    filterPrice: 0
-  }
   private ruMultiselect = ruMultiselect
 
   private customLabelProdiucts({ name }: any) {
@@ -77,11 +64,11 @@ export default class CatalogProduct extends Mappers {
         second = inputArr[i+1]
       }
       pairsArray.push({
-        first: first,
-        second: second
+        first: {...first,answer: ''},
+        second: {...second,answer: ''}
       })
     }
-    this.pairsArray = pairsArray
+    this.viewOrderPage.pairs = pairsArray
     /*console.log('Create catalog', this.productList)
     //await this.fetchCatalogClient()
     console.log('created after', this.clientCatalog)

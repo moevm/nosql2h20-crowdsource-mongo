@@ -8,12 +8,9 @@ import {
 import ClientAPI from '@/api/client'
 
 class ClientState {
-  /*title = {
-    a: 1
-  }*/
-  clientCatalog: any = {}
-  allProduct: any = {}
-  filterCatalog: any = 'Выберете значение'
+  viewOrderPage: any = {
+    pairs: []
+  }
 }
 
 class ClientGetters extends Getters<ClientState> {
@@ -22,18 +19,6 @@ class ClientGetters extends Getters<ClientState> {
 
 class ClientMutations extends Mutations<ClientState> {
   // TODO
-  setFilterCatalog(newFilter: any) {
-    console.log('ClientMutations setFilterCatalog', newFilter)
-    this.state.filterCatalog = newFilter
-  }
-  setCatalogClient(catalog: any[]) {
-    this.state.clientCatalog = catalog
-    console.log('setCatalogClient', this.state.clientCatalog)
-  }
-  setAllProduct(product: any[]) {
-    this.state.allProduct = product
-    console.log('setCatalogClient', this.state.allProduct)
-  }
 }
 
 class ClientActions extends Actions<
@@ -42,7 +27,7 @@ class ClientActions extends Actions<
   ClientMutations,
   ClientActions
 > {
-  async fetchCatalogClient() {
+  /*async fetchCatalogClient() {
     try {
       console.log('fetchCatalogClient start')
       const response = await ClientAPI.getAllCatalog()
@@ -61,7 +46,7 @@ class ClientActions extends Actions<
     } catch (err) {
       console.error(err)
     }
-  }
+  }*/
 }
 
 export const client = new Module({

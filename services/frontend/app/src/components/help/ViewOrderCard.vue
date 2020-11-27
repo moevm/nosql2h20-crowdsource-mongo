@@ -19,8 +19,9 @@
               class="mr-3"
               v-for="(obj, index) of ConfinDataValues"
               :key="index"
-              v-model="selectedDataFirst"
+              v-model="pair.first.answer"
               :value="`${obj.value}`"
+              @change="changeVal"
             >{{ obj.title }}</b-form-radio
             >
           </div>
@@ -44,8 +45,9 @@
               class="mr-3"
               v-for="(obj, index) of ConfinDataValues"
               :key="index"
-              v-model="selectedDataSecond"
+              v-model="pair.second.answer"
               :value="`${obj.value}`"
+              @change="changeVal"
             >{{ obj.title }}</b-form-radio
             >
           </div>
@@ -59,13 +61,22 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import _ from 'lodash'
-import Confin from "@/config/configs";
+import Confin from "@/config/configs"
+import {clientMapper} from "@/store/modules/client";
+
+const Mappers = Vue.extend({
+  computed: {
+    ...clientMapper.mapState(['viewOrderPage'])
+  },
+  methods: {}
+})
 
 @Component({
   components: {}
 })
-export default class NewsPreview extends Vue {
+export default class ViewOrderCard extends Mappers {
   @Prop(Object) pair: any
+  @Prop(Number) index: any
   private selectedDataFirst = ''
   private selectedDataSecond = ''
   private ConfinDataValues = [{
@@ -80,6 +91,9 @@ export default class NewsPreview extends Vue {
     console.log('pair mounted', this.pair)
   }
 
+  private changeVal() {
+    console.log('changeVal',this.viewOrderPage, this.viewOrderPage.pairs)
+  }
   $refs!: {
     previewImage: HTMLImageElement
   }
