@@ -31,7 +31,12 @@
         placeholder="Фамилия"
         trim
       />
-      <b-form-radio-group id="radio-group-2" v-model="selectedType" @change="changeType" name="radio-sub-component">
+      <b-form-radio-group
+        id="radio-group-2"
+        v-model="selectedType"
+        @change="changeType"
+        name="radio-sub-component"
+      >
         <b-form-radio value="work">Исполнитель</b-form-radio>
         <b-form-radio value="customer">Заказчик</b-form-radio>
       </b-form-radio-group>

@@ -39,9 +39,15 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: '/userlk',
-        name: 'ListOrder',
+        name: 'LkInfo',
         component: () =>
-            import(/* webpackChunkName: "lorem" */ '@/views/PersonalAccount.vue')
+          import(/* webpackChunkName: "lorem" */ '@/views/PersonalAccount.vue')
+      },
+      {
+        path: '/main/work/task',
+        name: 'ViewOrderPage',
+        component: () =>
+            import(/* webpackChunkName: "lorem" */ '@/views/ViewOrderPage.vue')
       }
     ]
   }

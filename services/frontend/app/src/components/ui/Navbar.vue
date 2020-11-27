@@ -20,13 +20,16 @@
         Рабочая страница
       </b-button>
       <div class="registrationButton">
-      <b-button @click="$router.push('/userlk')" class="mr-2 btn-primary-outline">
-        Иван
-        <font-awesome-icon :icon="['fa', 'user-circle']" />
-      </b-button>
+        <b-button
+          @click="$router.push('/userlk')"
+          class="mr-2 btn-primary-outline"
+        >
+          Иван
+          <font-awesome-icon :icon="['fa', 'user-circle']" />
+        </b-button>
       </div>
     </b-navbar>
-   </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,7 +55,7 @@ export default class Navbar extends Mapper {
   width: 100%;
   z-index: 1000;
 }
-.navbarClass{
+.navbarClass {
   cursor: pointer;
 }
 </style>

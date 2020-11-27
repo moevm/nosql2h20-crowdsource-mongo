@@ -17,21 +17,29 @@
         type="password"
         @input="onChangeField"
         v-model="authData.password"
-        placeholder=Пароль
+        placeholder="Пароль"
         trim
       />
     </div>
     <div class="d-flex authButton mt-2">
-      <b-button @click="loginClick()" class="mr-2 btn-primary-outline" variant="secondary">
+      <b-button
+        @click="loginClick()"
+        class="mr-2 btn-primary-outline"
+        variant="secondary"
+      >
         Вход
       </b-button>
-      <b-button @click="registrationClick()" class="mr-2 btn-primary-outline" variant="secondary">
+      <b-button
+        @click="registrationClick()"
+        class="mr-2 btn-primary-outline"
+        variant="secondary"
+      >
         Регистрация
       </b-button>
     </div>
     <b-link class="authLink" href="/main">Забыли пароль?</b-link>
     <Registration />
-    <br/>
+    <br />
   </div>
 </template>
 
@@ -80,18 +88,18 @@ export default class Auth extends Mapper {
 </script>
 
 <style lang="scss" scoped>
-.authCard{
+.authCard {
   border: solid black 1px;
   width: 40%;
   margin-left: 30%;
   margin-right: 30%;
 }
-.authButton{
+.authButton {
   width: 20%;
   margin-left: 40%;
   margin-right: 40%;
 }
-.authLink{
+.authLink {
   width: 15%;
   margin-left: 45%;
 }

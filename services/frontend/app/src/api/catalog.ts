@@ -8,9 +8,9 @@ import createURLParams from '@/api/datasource/createURLParams.ts'
 } from '@/store/modules/client'*/
 import _ from 'lodash'
 export interface Products {
-  name: string,
-  price: number,
-  description: string,
+  name: string
+  price: number
+  description: string
   categoryId: number
 }
 /*async function formatNewsData(news: any, avatarChanged?: boolean) {
@@ -53,7 +53,7 @@ export interface Products {
 }*/
 
 export default class CatalogAPI {
-/*  public static getAllCatalog() {
+  /*  public static getAllCatalog() {
     return http.get(`/categories`)
   }
   public static getAllProduct(categoryID: number) {
@@ -87,7 +87,6 @@ export default class CatalogAPI {
   /*public static getPartnersWithDeps(): AxiosPromise {
     return http.get('/companies?scopes=withDepartments')
   }*/
-
 
   /*public static getOnePartner(partnerId: number) {
     const params = new URLSearchParams()
@@ -143,5 +142,4 @@ export default class CatalogAPI {
       }
     })
   }*/
-
 }

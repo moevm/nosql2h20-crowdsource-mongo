@@ -14,6 +14,12 @@
         <font-awesome-icon :icon="['fas', 'check']" />
       </b-button>
       <b-button
+        @click="onClone"
+        v-if="this.params.onClone && checkType('onClone')"
+      >
+        <font-awesome-icon :icon="['fas', 'copy']" />
+      </b-button>
+      <b-button
         @click="onLoad"
         v-if="this.params.onLoad && checkType('onLoad')"
       >
@@ -84,7 +90,9 @@ export default class AgGridField extends Vue {
   onEdit() {
     this.params.onEdit(this.params)
   }
-
+  onClone() {
+    this.params.onClone(this.params)
+  }
   onInfo() {
     this.params.onInfo(this.params)
   }

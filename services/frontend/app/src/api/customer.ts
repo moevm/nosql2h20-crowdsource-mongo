@@ -57,7 +57,7 @@ export default class CourierAPI {
     params.append('categoryId', categoryID.toString())
     return http.get(`/products`, { params })
   }*/
-/*  public static addPartner(name: string): AxiosPromise {
+  /*  public static addPartner(name: string): AxiosPromise {
     return http.post('/companies', { title: name })
   }
   public static deletePartner(partnerId: number): AxiosPromise {
@@ -78,7 +78,6 @@ export default class CourierAPI {
   /*public static getPartnersWithDeps(): AxiosPromise {
     return http.get('/companies?scopes=withDepartments')
   }*/
-
 
   /*public static getOnePartner(partnerId: number) {
     const params = new URLSearchParams()
@@ -134,5 +133,4 @@ export default class CourierAPI {
       }
     })
   }*/
-
 }

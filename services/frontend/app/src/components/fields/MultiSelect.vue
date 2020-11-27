@@ -43,8 +43,8 @@ export default class MultiselectField extends Mixins(abstractField) {
   get options() {
     return {
       ...(this?.width ?? Config.defaultWidth < Config.mobileWidth
-          ? ruMultiselectSimple
-          : ruMultiselect),
+        ? ruMultiselectSimple
+        : ruMultiselect),
       ..._.omit(this.schema, [...schemaAttributes, 'methods'])
     }
   }

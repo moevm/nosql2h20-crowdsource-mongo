@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Auth/>
+    <Auth />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import Config from '@/config/config'
 
-import Auth from "@/views/Auth.vue";
+import Auth from '@/views/Auth.vue'
 
 const Mapper = Vue.extend({
   computed: {}
@@ -30,5 +30,4 @@ export default class MainPage extends Mapper {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

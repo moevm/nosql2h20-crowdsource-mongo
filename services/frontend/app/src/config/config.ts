@@ -1,17 +1,7 @@
 export default {
-  typeTask: [
-    'Сравнение картинок',
-    'Сравнение тектов',
-    'Все категории'
-  ],
-  customers: [
-    'Коты&Собаки',
-    'Свободные авторы',
-    'Все заказчики'
-  ],
-  manualInput: [
-    'Ввести вручную'
-  ],
+  typeTask: ['Сравнение картинок', 'Сравнение тектов', 'Все категории'],
+  customers: ['Коты&Собаки', 'Свободные авторы', 'Все заказчики'],
+  manualInput: ['Ввести вручную'],
   imageGalery: [
     {
       image: 'dog.jpeg',
@@ -39,6 +29,18 @@ export default {
     }
   ],
   orderList: [
+    {
+      image: 'dog.jpeg',
+      title: 'Сравненение картинок ',
+      description: `Определение по фотографии кота или собаки.`,
+      customer: 'Коты&Собаки'
+    },
+    {
+      image: 'dog.jpeg',
+      title: 'Сравненение текстов',
+      description: `Оценить насколько похожи тексты.`,
+      customer: 'Свободные авторы'
+    },
     {
       image: 'dog.jpeg',
       title: 'Сравненение картинок ',
@@ -189,7 +191,8 @@ export default {
       street: '',
       house: '',
       flat: ''
-    },{
+    },
+    {
       idOrder: 1,
       nameUser: 'Иван',
       phone: '89999999999',

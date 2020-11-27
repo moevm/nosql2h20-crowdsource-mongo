@@ -5,7 +5,8 @@ import {
   Module,
   createMapper
 } from 'vuex-smart-module'
-import CustomerAPI from "@/api/customer";
+import CustomerAPI from '@/api/customer'
+import _ from 'lodash'
 
 export interface FileManual {
   valueAnswer: string
@@ -13,8 +14,14 @@ export interface FileManual {
 }
 
 class CustomerState {
-  dataManualFile: FileManual[] = []
-  fileValue: any = null
+  addOrder: any = {
+    title: '',
+    description: '',
+    dataManualFile: [],
+    dataManualText: [],
+    dataFile: {},
+    indexManual : -1
+  }
 }
 
 class CustomerGetters extends Getters<CustomerState> {
@@ -26,12 +33,11 @@ class CustomerMutations extends Mutations<CustomerState> {
 }
 
 class CustomerActions extends Actions<
-    CustomerState,
-    CustomerGetters,
-    CustomerMutations,
-    CustomerActions
-> {
-}
+  CustomerState,
+  CustomerGetters,
+  CustomerMutations,
+  CustomerActions
+> {}
 
 export const customer = new Module({
   state: CustomerState,

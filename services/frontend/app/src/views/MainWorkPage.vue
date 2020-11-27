@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="ml-5">
     <h5>Фильтры</h5>
     <div class="d-flex mb-4 filterDivCatalog">
@@ -29,13 +29,12 @@
       </b-button>
     </div>
     <div class="mt-4 catalogList">
-      <div v-for="(product, index) of productList"
-            :key="index">
+      <div v-for="(product, index) of productList" :key="index">
         <OrderCard class="mt-1" :product="product" />
       </div>
     </div>
     <br />
-    <AddOrderModal/>
+    <AddOrderModal />
   </div>
 </template>
 
@@ -43,11 +42,12 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import Config from '@/config/config'
 import OrderCard from '@/components/help/OrderCard.vue'
-import {FormOptions, FormSchema} from 'vue-form-generator'
+import { FormOptions, FormSchema } from 'vue-form-generator'
 import MultiSelect from 'vue-multiselect'
 import { clientMapper } from '@/store/modules/client'
 import ruMultiselect from '@/i18n/ru_multiselect'
-import AddOrderModal from "@/components/Modal/Customer/AddOrderModal.vue";
+import AddOrderModal from '@/components/Modal/Customer/AddOrderModal.vue'
+
 
 const Mappers = Vue.extend({
   computed: {
@@ -141,12 +141,12 @@ export default class CatalogProduct extends Mappers {
 .textMainView {
   font-size: 18px;
 }
-.catalogList{
+.catalogList {
   height: 60vh;
   overflow: scroll;
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
-.addOrderClass{
+.addOrderClass {
   text-align: right;
 }
 </style>

@@ -14,7 +14,7 @@
       <ag-grid-vue
         :columnDefs="columnDefsFiles"
         :gridOptions="gridOptions"
-        v-model="addOrder.dataManualFile"
+        v-model="addOrder.dataManualText"
         class="ag-theme-alpine h-100"
       />
     </div>
@@ -70,17 +70,20 @@ export default class PhotoInput extends Mapper {
   private columnDefsFiles = [
     {
       headerName: 'Варианты ответов',
-      placeholder: 'Названия через запятую',
       field: 'valueAnswer',
       colId: 'valueManualTitle'
+    },
+    {
+      headerName: 'Описание',
+      field: 'description',
+      colId: 'valueManualDescription'
     },
     {
       ...AgGridFactory.getActionColumn({
         cellRendererParams: {
           getActionByType: () => {
-            return ['onLoad', 'onDelete', 'onClone'] //this.editable ? ['onDownload', 'onDelete'] : ['onDownload']
+            return ['onDelete', 'onClone'] //this.editable ? ['onDownload', 'onDelete'] : ['onDownload']
           },
-          onLoad: this.onLoad,
           onDelete: this.onDelete,
           onClone: this.onClone
         },
@@ -104,35 +107,34 @@ export default class PhotoInput extends Mapper {
     this.gridApi = api
   }
 
-  private onLoad(params: any) {
-    this.addOrder.indexManual = params.rowIndex
-    document.getElementById('fileUpload')!.click()
-  }
   private addClick() {
-    this.addOrder.dataManualFile = this.addOrder.dataManualFile.concat({
+    console.log('addClick', this.addOrder.dataManualText)
+    this.addOrder.dataManualText = this.addOrder.dataManualText.concat({
       valueAnswer: '',
-      fileValue: null
+      description: ''
     })
-    this.gridApi?.setRowData(this.addOrder.dataManualFile)
+    console.log('this.gridApi', this.gridApi)
+    this.gridApi?.setRowData(this.addOrder.dataManualText)
   }
   private onDelete(params: any) {
     this.deleteParams = params
     this.$bvModal.show('deletePhotoModal')
+    console.log('onDelete')
   }
   private deleteClick() {
-    this.addOrder.dataManualFile = this.addOrder.dataManualFile.filter(
+    this.addOrder.dataManualText = this.addOrder.dataManualText.filter(
       (i: any, index: any) => index !== this.deleteParams.rowIndex
     )
   }
   onClone(params: any) {
-    this.addOrder.dataManualFile = [
-      ...this.addOrder.dataManualFile.filter(
+    this.addOrder.dataManualText = [
+      ...this.addOrder.dataManualText.filter(
         (i: any, index: any) => index <= params.rowIndex
       ),
       _.cloneDeep(
-        this.addOrder.dataManualFile.find((i: any, index: any) => index === params.rowIndex)
+        this.addOrder.dataManualText.find((i: any, index: any) => index === params.rowIndex)
       ),
-      ...this.addOrder.dataManualFile.filter((i: any, index: any) => index > params.rowIndex)
+      ...this.addOrder.dataManualText.filter((i: any, index: any) => index > params.rowIndex)
     ]
   }
 }

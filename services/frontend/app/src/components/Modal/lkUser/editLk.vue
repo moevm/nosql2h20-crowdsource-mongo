@@ -34,11 +34,11 @@
         </b-tab>
         <b-tab title="Смена пароля">
           <label for="passwordOldUserLk">Старый пароль</label>
-          <b-form-input id="passwordOldUserLk" type="password" trim/>
+          <b-form-input id="passwordOldUserLk" type="password" trim />
           <label for="passwordUserLk">Пароль</label>
-          <b-form-input id="passwordUserLk" type="password" trim/>
+          <b-form-input id="passwordUserLk" type="password" trim />
           <label for="passwordUserLk">Подтверждение пароля</label>
-          <b-form-input id="passwordUserLk" type="password" trim/>
+          <b-form-input id="passwordUserLk" type="password" trim />
         </b-tab>
       </b-tabs>
       <template v-slot:modal-footer="{ ok, cancel }">

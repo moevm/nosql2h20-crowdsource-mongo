@@ -7,9 +7,7 @@ export const baseURL =
     : 'http://localhost:3000/api'
 
 export const clientBase =
-  process.env.NODE_ENV === 'production'
-    ? '/'
-    : 'http://localhost:3000'
+  process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3000'
 
 export const socketPath = '/api/socket.io'
 

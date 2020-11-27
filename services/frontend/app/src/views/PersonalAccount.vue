@@ -1,7 +1,11 @@
 <template>
   <div class="mt-2">
     <div class="registrationButton">
-      <b-button @click="editProfileClick()" class="mr-2 btn-primary-outline" variant="info">
+      <b-button
+        @click="editProfileClick()"
+        class="mr-2 btn-primary-outline"
+        variant="info"
+      >
         Редактировать профиль
       </b-button>
     </div>
@@ -40,7 +44,7 @@
         />
       </div>
     </div>
-    <editLk/>
+    <editLk />
   </div>
 </template>
 
@@ -48,14 +52,14 @@
 import { Vue, Component } from 'vue-property-decorator'
 import Config from '@/config/config'
 import Translation from '@/config/translateTable.ts'
-import editLk from "@/components/Modal/lkUser/editLk.vue";
+import editLk from '@/components/Modal/lkUser/editLk.vue'
 
 const Mapper = Vue.extend({
   computed: {}
 })
 
 @Component({
-  components: {editLk}
+  components: { editLk }
 })
 export default class ListOrders extends Mapper {
   private modelGrid: any = Config.ListOrders
@@ -111,7 +115,7 @@ export default class ListOrders extends Mapper {
 .textMainView {
   font-size: 18px;
 }
-.agGridDisClass{
+.agGridDisClass {
   height: 500px;
   overflow: scroll;
 }

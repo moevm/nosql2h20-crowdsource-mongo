@@ -16,7 +16,9 @@
         />
       </div>
       <div class="mr-2">
-        <h3 class="mt-1 text-o-ellipsis"><b>{{ product.title }}</b></h3>
+        <h3 class="mt-1 text-o-ellipsis">
+          <b>{{ product.title }}</b>
+        </h3>
         <h4 class="mt-1 text-o-ellipsis">Описание</h4>
         <div>
           {{ product.description }}
@@ -25,7 +27,9 @@
         <div class="mt-1 text-o-ellipsis">{{ product.customer }}</div>
         <div class="d-flex">
           <h4 class="mt-1 text-o-ellipsis">Дата добавления</h4>
-          <div class="mt-2 text-o-ellipsis"> <!--{{ product.customer }}-->14.11.2020</div>
+          <div class="mt-2 text-o-ellipsis">
+            <!--{{ product.customer }}-->14.11.2020
+          </div>
         </div>
         <div class="mt-2 d-flex">
           <b-button class="mr-1" @click="onProceedClick()" variant="info">
@@ -43,13 +47,20 @@
         </div>
       </div>
     </div>
+    <EditOrderModal />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import _ from 'lodash'
-@Component
+import EditOrderModal from "@/components/Modal/Customer/EditOrderModal.vue";
+
+@Component({
+  components: {
+    EditOrderModal
+  }
+})
 export default class NewsPreview extends Vue {
   @Prop(Object) product: any
 
@@ -64,9 +75,14 @@ export default class NewsPreview extends Vue {
   private previewHeight = 0
 
   onPreviewLoad(event: any) {
-    console.log('onPreviewLoad',_.cloneDeep(event), event.target.clientWidth, this.previewHeight)
+    console.log(
+      'onPreviewLoad',
+      _.cloneDeep(event),
+      event.target.clientWidth,
+      this.previewHeight
+    )
     this.previewHeight = event.target.clientWidth * 0.5625 // 0.5625 = 9/16 => Соотношение сторон: 16:9
-    console.log('onPreviewLoad',event.target.clientWidth, this.previewHeight)
+    console.log('onPreviewLoad', event.target.clientWidth, this.previewHeight)
   }
 
   onPreviewClick() {
@@ -78,14 +94,17 @@ export default class NewsPreview extends Vue {
   }
 
   private onProceedClick() {
+    this.$router.push('/main/work/task')
     console.log('onProceedClick')
   }
 
   private onEditClick() {
+    this.$bvModal.show('editOrderModal')
     console.log('onEditClick')
   }
 
   private onExportDataClick() {
+    //TODO Отправка запроса на получение данных
     console.log('onExportDataClick')
   }
 
@@ -101,7 +120,7 @@ export default class NewsPreview extends Vue {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.fieldSizeInput{
+.fieldSizeInput {
   margin-right: 2px;
 }
 </style>

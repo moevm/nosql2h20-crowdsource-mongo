@@ -5,7 +5,7 @@ import {
   Module,
   createMapper
 } from 'vuex-smart-module'
-import ClientAPI from "@/api/client";
+import ClientAPI from '@/api/client'
 
 class ClientState {
   /*title = {
@@ -22,13 +22,13 @@ class ClientGetters extends Getters<ClientState> {
 
 class ClientMutations extends Mutations<ClientState> {
   // TODO
-  setFilterCatalog(newFilter: any){
+  setFilterCatalog(newFilter: any) {
     console.log('ClientMutations setFilterCatalog', newFilter)
     this.state.filterCatalog = newFilter
   }
   setCatalogClient(catalog: any[]) {
     this.state.clientCatalog = catalog
-      console.log('setCatalogClient', this.state.clientCatalog)
+    console.log('setCatalogClient', this.state.clientCatalog)
   }
   setAllProduct(product: any[]) {
     this.state.allProduct = product
@@ -37,10 +37,10 @@ class ClientMutations extends Mutations<ClientState> {
 }
 
 class ClientActions extends Actions<
-    ClientState,
-    ClientGetters,
-    ClientMutations,
-    ClientActions
+  ClientState,
+  ClientGetters,
+  ClientMutations,
+  ClientActions
 > {
   async fetchCatalogClient() {
     try {
