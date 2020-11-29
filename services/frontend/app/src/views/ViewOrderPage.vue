@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import MultiSelect from 'vue-multiselect'
 import { clientMapper } from '@/store/modules/client'
 import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
 import _ from 'lodash'
@@ -35,7 +34,6 @@ const Mappers = Vue.extend({
 
 @Component({
   components: {
-    MultiSelect,
     ViewOrderCard
   }
 })

@@ -45,7 +45,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 import Config from '@/config/config'
 import OrderCard from '@/components/help/OrderCard.vue'
-import MultiSelect from 'vue-multiselect'
 import { clientMapper } from '@/store/modules/client'
 import AddOrderModal from '@/components/Modal/Customer/AddOrderModal.vue'
 import { userMapper } from '@/store/modules/user'
@@ -65,7 +64,6 @@ const Mappers = Vue.extend({
 
 @Component({
   components: {
-    MultiSelect,
     OrderCard,
     AddOrderModal,
     EditOrderModal

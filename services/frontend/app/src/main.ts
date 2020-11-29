@@ -23,17 +23,9 @@ Vue.use(VueFormGenerator)
 
 /* Custom Field */
 import BootstrapField from '@/components/fields/Bootstrap.vue'
-import CKEditor5Field from '@/components/fields/CKEditor.vue'
 import AgGridField from '@/components/fields/AgGrid.vue'
-import MultiselectField from '@/components/fields/MultiSelect.vue'
 Vue.component('fieldBootstrap', BootstrapField)
-Vue.component('fieldCKEditor', CKEditor5Field)
 Vue.component('fieldAgGrid', AgGridField)
-Vue.component('fieldMultiselect', MultiselectField)
-
-/* CKEditor5 */
-import CKEditor5 from '@ckeditor/ckeditor5-vue'
-Vue.use(CKEditor5)
 
 /* Draggable */
 //import draggable from 'vuedraggable'
