@@ -6,7 +6,8 @@
         id="nameUserAuth"
         @input="onChangeField"
         v-model="authData.login"
-        placeholder="Имя"
+        :state="checkEmail()"
+        placeholder="Почта"
         trim
       />
     </div>
@@ -17,12 +18,14 @@
         type="password"
         @input="onChangeField"
         v-model="authData.password"
+        :state="!!authData.password.length"
         placeholder="Пароль"
         trim
       />
     </div>
     <div class="d-flex authButton mt-2">
       <b-button
+        :disabled="!allFill"
         @click="loginClick()"
         class="mr-2 btn-primary-outline"
         variant="secondary"
@@ -46,9 +49,17 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import Registration from '@/components/Modal/Auth/Registration.vue'
+import _ from "lodash";
+import { checkEmail } from '@/utils/fieldValidation'
+import {userMapper} from "@/store/modules/user";
 
 const Mapper = Vue.extend({
-  computed: {}
+  computed: {
+    ...userMapper.mapState(['userInfo'])
+  },
+  methods: {
+    ...userMapper.mapActions(['fetchLoginUser'])
+  }
 })
 
 @Component({
@@ -57,9 +68,14 @@ const Mapper = Vue.extend({
   }
 })
 export default class Auth extends Mapper {
+  private allFill = false
   private authData = {
     login: '',
     password: ''
+  }
+
+  private checkEmail() {
+    return checkEmail(this.authData.login)
   }
 
   async created() {
@@ -70,18 +86,21 @@ export default class Auth extends Mapper {
         this.width < this.mobileWidth ? 1 : 3*/
   }
   private onChangeField() {
-    /*this.allFill =
-        this.infoObj.surname !== '' &&
-        this.infoObj.name !== '' &&
-        this.organization !== '' &&
-        this.infoObj.email !== '' &&
-        this.checkEmail()*/
+    this.allFill =
+      this.checkEmail() &&
+      this.authData.password !== ''
   }
   private registrationClick() {
     console.log('registrationClick')
     this.$bvModal.show('registrationModal')
   }
   private loginClick() {
+    const objReq: any = {
+      email: this.authData.login,
+      password: this.authData.password
+    }
+    this.userInfo.email = this.authData.login
+    this.fetchLoginUser(objReq)
     console.log('loginClick')
   }
 }

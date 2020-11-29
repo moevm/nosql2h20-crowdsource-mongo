@@ -2,6 +2,20 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import Axios from 'axios'
+import { clientBase } from '@/api/httpAxios'
+
+Vue.prototype.$http = Axios;
+const token = localStorage.getItem('token')
+if (token) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
+
+/*Vue.prototype.$http.defaults.headers.common['Access-Control-Allow-Origin'] = clientBase
+Vue.prototype.$http.defaults.headers.common['Access-Control-Allow-Methods'] = 'POST'
+Vue.prototype.$http.defaults.headers.common['Access-Control-Allow-Headers'] = 'Context-Type' + ', Authorization'*/
+Vue.prototype.$http.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080'
+Vue.prototype.$http.defaults.headers.common['Access-Control-Allow-Credentials'] = 'true'
 
 /* Bootstrap */
 import { BootstrapVue } from 'bootstrap-vue'
