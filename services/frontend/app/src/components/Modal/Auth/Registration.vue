@@ -101,7 +101,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
 import { checkEmail } from '@/utils/fieldValidation'
 import { userMapper } from '@/store/modules/user'
@@ -147,10 +146,10 @@ export default class Registration extends Mappers {
       type: this.userInfoObj.type,
       password: this.userInfoObj.password
     }
-    if (!_.isNil(this.userInfoObj.surname)) {
+    if (this.userInfoObj.surname) {
       objReq.surname = this.userInfoObj.surname
     }
-    if (!_.isNil(this.userInfoObj.customer)) {
+    if (this.userInfoObj.customer) {
       objReq.customer = this.userInfoObj.customer
     }
     this.userInfo.email = this.userInfoObj.email
@@ -192,7 +191,7 @@ export default class Registration extends Mappers {
   }
 
   private async created() {
-    /*this.clearObj = _.clone(this.infoObj)*/
+    /**/
   }
 }
 </script>

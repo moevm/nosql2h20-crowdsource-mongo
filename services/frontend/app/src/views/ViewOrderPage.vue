@@ -17,7 +17,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { clientMapper } from '@/store/modules/client'
 import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
-import _ from 'lodash'
 import ClientAPI from '@/api/client'
 
 const Mappers = Vue.extend({
@@ -76,15 +75,15 @@ export default class CatalogProduct extends Mappers {
     for (let i = 0; i < inputArr.length; i += 2) {
       let first = null
       let second = null
-      if (!_.isNil(inputArr[i])) {
+      if (inputArr[i]) {
         first = inputArr[i]
       }
-      if (!_.isNil(inputArr[i + 1])) {
+      if (inputArr[i + 1]) {
         second = inputArr[i + 1]
       }
       pairsArray.push({
-        first: !_.isNil(first) ? { ...first /*,answer: ''*/ } : null,
-        second: !_.isNil(second) ? { ...second /*,answer: ''*/ } : null
+        first: first ? { ...first /*,answer: ''*/ } : null,
+        second: second ? { ...second /*,answer: ''*/ } : null
       })
     }
     this.viewOrderPage.pairs = pairsArray

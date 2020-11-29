@@ -1,6 +1,5 @@
 import { http } from '@/api/httpAxios'
-/*import createURLParams from '@/api/datasource/createURLParams.ts'
-import _ from 'lodash'*/
+/*import createURLParams from '@/api/datasource/createURLParams.ts'*/
 
 export interface UserRegister {
   email: string

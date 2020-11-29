@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 export type DefSort = { [k: string]: any }
 export type DefFilter = { [k: string]: any }
 
@@ -23,7 +21,11 @@ export default function createURLParams(
   if (filter) {
     if (extendFilter) {
       for (const [key, value] of Object.entries(filter)) {
-        params.append(key, _.isString(value) ? value : JSON.stringify(value))
+        const add: any =
+          typeof value === 'string' || value instanceof String
+            ? value
+            : JSON.stringify(value)
+        params.append(key, add)
       }
     } else {
       params.append('filter', JSON.stringify(filter))

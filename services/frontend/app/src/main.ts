@@ -21,12 +21,6 @@ import VueFormGenerator from 'vue-form-generator'
 import 'vue-form-generator/dist/vfg.css'
 Vue.use(VueFormGenerator)
 
-/* Custom Field */
-import BootstrapField from '@/components/fields/Bootstrap.vue'
-import AgGridField from '@/components/fields/AgGrid.vue'
-Vue.component('fieldBootstrap', BootstrapField)
-Vue.component('fieldAgGrid', AgGridField)
-
 /* Draggable */
 //import draggable from 'vuedraggable'
 /*Vue.use(draggable)*/

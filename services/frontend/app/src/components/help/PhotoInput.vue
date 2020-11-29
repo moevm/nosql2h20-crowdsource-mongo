@@ -6,7 +6,9 @@
       </div>
       <div class="buttonAdd">
         <div style="margin-left: 10px;">
-          <b-button variant="info" @click="addClick">Добавить</b-button>
+          <b-button variant="info" disabled @click="addClick"
+            >Добавить</b-button
+          >
         </div>
       </div>
     </div>
@@ -43,7 +45,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import _ from 'lodash'
 import { AgGridVue } from 'ag-grid-vue'
 import AgGridFactory from '@/factories/agGridFactory'
 import ActionRenderer from '@/components/table/ActionRenderer.vue'
@@ -129,9 +130,11 @@ export default class PhotoInput extends Mapper {
       ...this.addOrder.dataManualFile.filter(
         (i: any, index: any) => index <= params.rowIndex
       ),
-      _.cloneDeep(
-        this.addOrder.dataManualFile.find(
-          (i: any, index: any) => index === params.rowIndex
+      JSON.parse(
+        JSON.stringify(
+          this.addOrder.dataManualFile.find(
+            (i: any, index: any) => index === params.rowIndex
+          )
         )
       ),
       ...this.addOrder.dataManualFile.filter(

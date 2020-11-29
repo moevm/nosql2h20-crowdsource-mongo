@@ -52,7 +52,7 @@
           ></b-form-checkbox-group>
         </div>
       </div>
-      <div v-if="!isText" style="visibility: hidden;">
+      <div v-if="!isText">
         <div v-if="isManual">
           <PhotoInput />
         </div>
@@ -66,9 +66,9 @@
             <b-form-file
               v-model="fileValueNoManual"
               id="fileValueNoManualUpload"
-              hidden
+              :disabled="dis"
             />
-            <b-button class="mt-1 ml-2" @click="onDeleteFile">
+            <b-button class="mt-1 ml-2" :disabled="dis" @click="onDeleteFile">
               <font-awesome-icon :icon="['fas', 'times']" />
             </b-button>
           </div>
@@ -87,9 +87,9 @@
             <b-form-file
               v-model="fileValueNoManual"
               id="fileValueNoManualUpload"
-              hidden
+              :disabled="dis"
             />
-            <b-button class="mt-1 ml-2" @click="onDeleteFile">
+            <b-button class="mt-1 ml-2" :disabled="dis" @click="onDeleteFile">
               <font-awesome-icon :icon="['fas', 'times']" />
             </b-button>
           </div>
@@ -134,7 +134,6 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
 import StaticData from '@/config/config'
 import Confin from '@/config/configs'
@@ -163,6 +162,7 @@ const Mappers = Vue.extend({
 })
 export default class AddOrderModal extends Mappers {
   private allFill = false
+  private dis = true
   private isActive = false
   private fileValue = null
   private fileValueNoManual = null
@@ -177,7 +177,8 @@ export default class AddOrderModal extends Mappers {
   onFileValueChange() {
     if (
       this.addOrder.indexManual !== -1 &&
-      !_.isNil(this.addOrder.indexManual)
+      this.addOrder.indexManual !== null &&
+      this.addOrder.indexManual !== undefined
     ) {
       this.addOrder.dataManualFile[
         this.addOrder.indexManual
@@ -230,11 +231,20 @@ export default class AddOrderModal extends Mappers {
   }
 
   private changeCheckboxData(params: any) {
-    this.isManual = !_.isEmpty(params)
+    this.isManual = !!params.length
   }
 
   private openFuc() {
     /**/
+    console.log('openFuc')
+    this.setAddOrder({
+      title: '',
+      description: '',
+      dataManualFile: [],
+      dataManualText: [],
+      dataFile: {},
+      indexManual: -1
+    })
   }
 
   private onChangeField() {
@@ -242,7 +252,7 @@ export default class AddOrderModal extends Mappers {
   }
 
   private async created() {
-    /*this.clearObj = _.clone(this.infoObj)*/
+    /**/
   }
 }
 </script>
