@@ -6,6 +6,7 @@ from app.db.models import User
 from app.resourses.order import orders
 from app.resourses.user import users
 from app.resourses.admin import admin
+from app.resourses.statistics import statistics
 from flask_jwt_extended import JWTManager
 
 app = Flask (__name__)
@@ -28,6 +29,7 @@ db = initialize_db(app)
 app.register_blueprint(orders)
 app.register_blueprint(users)
 app.register_blueprint(admin)
+app.register_blueprint(statistics)
 
 @app.route('/')
 def check_flask():
