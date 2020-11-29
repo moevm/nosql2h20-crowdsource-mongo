@@ -9,7 +9,7 @@
     >
       <label for="edit-name-order-textarea">Название заказа</label>
       <div id="edit-name-order-textarea">
-        {{editOrder.title}}
+        {{ titleOrg }}
       </div>
       <label for="edit-desc-order-textarea">Описание</label>
       <b-form-textarea
@@ -87,11 +87,10 @@ const Mappers = Vue.extend({
   components: {
   }
 })
-export default class AddSpecialtiesModal extends Mappers {
+export default class EditOrderModal extends Mappers {
   private allFill = false
   private descriptionEdited = ''
-  private isEdit = false
-
+  private titleOrg = ''
 
   private async editOrderClick() {
     this.editOrder.description = this.descriptionEdited
@@ -114,6 +113,7 @@ export default class AddSpecialtiesModal extends Mappers {
 
   private openFuc() {
     this.descriptionEdited = this.editOrder.description
+    this.titleOrg = this.editOrder.title
   }
 
   private onChangeField() {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--:src="`http://localhost:3000${pair.photo}`"-->
-    <div class="d-flex" style="flex-wrap: wrap;">
+    <div class="d-flex ml-5" style="flex-wrap: wrap;">
       <div v-if="pair.first" class="m-1 cardView">
         <div class="mr-2">
           {{pair.first.mainObj}}

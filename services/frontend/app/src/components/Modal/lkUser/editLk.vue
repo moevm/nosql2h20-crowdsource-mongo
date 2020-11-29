@@ -85,7 +85,7 @@ const Mappers = Vue.extend({})
     mask: AwesomeMask
   }
 })
-export default class AddSpecialtiesModal extends Mappers {
+export default class EditLk extends Mappers {
   private allFill = false
   private isActive = false
   private isEdit = false

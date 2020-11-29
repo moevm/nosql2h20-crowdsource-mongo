@@ -111,7 +111,7 @@ const Mappers = Vue.extend({
     mask: AwesomeMask
   }
 })
-export default class AddSpecialtiesModal extends Mappers {
+export default class Registration extends Mappers {
   private allFill = false
   private isCustomer = false
   private isActive = false

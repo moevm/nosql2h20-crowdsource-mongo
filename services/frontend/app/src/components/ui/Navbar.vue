@@ -1,14 +1,6 @@
 <template>
   <div class="menu mt-3 mb-2">
     <b-navbar class="classMainLine" type="dark" variant="primary" sticky>
-      <!--<b-button
-          v-b-toggle.main-sidebar
-          class="mr-2"
-          variant="primary"
-          pill
-      >
-        <font-awesome-icon :icon="['fas', 'bars']" />
-      </b-button>-->
       <div v-if="!isAuthenticated" @click="$router.push('/main')" class="mr-2 fa-2x navbarClass">
         <b>CrowdSource</b>
       </div>
@@ -28,8 +20,9 @@
           @click="$router.push('/userlk')"
           class="mr-2 btn-primary-outline"
           v-if="isAuthenticated"
+          title="Личный кабинет"
         >
-          Иван
+          {{ name }}
           <font-awesome-icon :icon="['fa', 'user-circle']" />
         </b-button>
         <b-button
@@ -46,12 +39,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import {userMapper} from "@/store/modules/user";
 
 const Mapper = Vue.extend({
   computed: {
-    ...userMapper.mapState(['isAuthenticated'])
+    ...userMapper.mapState(['isAuthenticated', 'userInfo'])
   },
   methods:{
     ...userMapper.mapMutations(['logOut'])
@@ -60,9 +53,14 @@ const Mapper = Vue.extend({
 
 @Component({ components: {} })
 export default class Navbar extends Mapper {
+  private name = ''
   private exit() {
     this.logOut()
     this.$router.push('/main')
+  }
+  @Watch('userInfo.name')
+  onNameChange() {
+    this.name = this.userInfo.name
   }
 }
 </script>

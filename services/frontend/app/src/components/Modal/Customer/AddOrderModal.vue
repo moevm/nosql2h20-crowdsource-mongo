@@ -150,7 +150,7 @@ const Mappers = Vue.extend({
     TextInput
   }
 })
-export default class AddSpecialtiesModal extends Mappers {
+export default class AddOrderModal extends Mappers {
   private allFill = false
   private isActive = false
   private fileValue = null
@@ -217,9 +217,9 @@ export default class AddSpecialtiesModal extends Mappers {
     /**/
   }
 
- /* private onChangeField() {
+  private onChangeField() {
     console.log('onChangeField')
-  }*/
+  }
 
   private async created() {
     /*this.clearObj = _.clone(this.infoObj)*/

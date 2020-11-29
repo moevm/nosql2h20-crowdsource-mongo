@@ -53,6 +53,7 @@ export default class CatalogProduct extends Mappers {
     console.log('endProcessed end sendObj', sendObj)
     await ClientAPI.editWorkerOrder(sendObj, this.selectOrder._id.$oid)
     console.log('endProcessed end', this.fullInfoOrder.data)
+    this.$router.push('/main/work')
   }
 
   async created() {
