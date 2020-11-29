@@ -4,7 +4,7 @@
     <div class="d-flex ml-5" style="flex-wrap: wrap;">
       <div v-if="pair.first" class="m-1 cardView">
         <div class="mr-2">
-          {{pair.first.mainObj}}
+          {{ pair.first.mainObj }}
           <!--<img
             @load="onPreviewLoad"
             class="w-100"
@@ -24,7 +24,7 @@
               :state="!!pair.first.selected.length"
               :value="`${obj}`"
               @change="changeValFirst"
-            >{{ obj }}</b-form-radio
+              >{{ obj }}</b-form-radio
             >
           </div>
         </div>
@@ -32,7 +32,7 @@
       <div style="width: 17%;"></div>
       <div v-if="pair.second" class="m-1 cardView">
         <div class="mr-2">
-          {{pair.second.mainObj}}
+          {{ pair.second.mainObj }}
           <!--<img
             @load="onPreviewLoad"
             class="w-100"
@@ -52,21 +52,19 @@
               v-model="pair.second.selected"
               :value="`${obj}`"
               @change="changeValSecond"
-            >{{ obj }}</b-form-radio
+              >{{ obj }}</b-form-radio
             >
           </div>
         </div>
       </div>
     </div>
-    <hr/>
+    <hr />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import _ from 'lodash'
-import Confin from "@/config/configs"
-import {clientMapper} from "@/store/modules/client";
+import { clientMapper } from '@/store/modules/client'
 
 const Mappers = Vue.extend({
   computed: {
@@ -102,7 +100,7 @@ export default class ViewOrderCard extends Mappers {
     this.previewHeight = event.target.clientWidth * 0.5625 // 0.5625 = 9/16 => Соотношение сторон: 16:9
   }
 
-/*  private onChangeField() {
+  /*  private onChangeField() {
     console.log('onChangeField')
   }*/
 
@@ -112,16 +110,16 @@ export default class ViewOrderCard extends Mappers {
   }
 
   private onStatisticClick() {
-  // console.log('onStatisticClick')
+    // console.log('onStatisticClick')
   }
 }
 </script>
 
 <style scoped lang="scss">
-.cardView{
+.cardView {
   width: 60ch;
 }
-.rightSide{
+.rightSide {
   margin-left: 500px;
 }
 </style>

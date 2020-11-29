@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import Config from '@/config/config'
 
 import Auth from '@/views/Auth.vue'
 

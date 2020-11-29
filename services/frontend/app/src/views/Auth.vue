@@ -49,9 +49,8 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import Registration from '@/components/Modal/Auth/Registration.vue'
-import _ from "lodash";
 import { checkEmail } from '@/utils/fieldValidation'
-import {userMapper} from "@/store/modules/user";
+import { userMapper } from '@/store/modules/user'
 
 const Mapper = Vue.extend({
   computed: {
@@ -82,9 +81,7 @@ export default class Auth extends Mapper {
     this.onChangeField()
   }
   private onChangeField() {
-    this.allFill =
-      this.checkEmail() &&
-      this.authData.password !== ''
+    this.allFill = this.checkEmail() && this.authData.password !== ''
   }
   private registrationClick() {
     this.$bvModal.show('registrationModal')

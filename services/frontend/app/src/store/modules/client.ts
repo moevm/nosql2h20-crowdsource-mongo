@@ -22,13 +22,13 @@ class ClientGetters extends Getters<ClientState> {
 
 class ClientMutations extends Mutations<ClientState> {
   // TODO
-  setFullInfoOrder(fullInfoOrder: any){
+  setFullInfoOrder(fullInfoOrder: any) {
     this.state.fullInfoOrder = fullInfoOrder
   }
   setSelectOrder(selectOrder: any) {
     this.state.selectOrder = selectOrder
   }
-  checkFill(){
+  checkFill() {
     let success = true
     for (const item of this.state.viewOrderPage.pairs) {
       if (item.first) {

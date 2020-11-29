@@ -20,17 +20,12 @@
       />
       <div class="mt-1 text-o-ellipsis">Работа с данными</div>
       <div class="d-flex">
-      <b-button
-          class="mr-2"
-          variant="secondary"
-          @click="onDownloadDataOrder">
-        Выгрузить данные
-      </b-button>
-      <b-button
-          variant="secondary"
-          @click="onDeleteOrder">
-        Удалить заказ
-      </b-button>
+        <b-button class="mr-2" variant="secondary" @click="onDownloadDataOrder">
+          Выгрузить данные
+        </b-button>
+        <b-button variant="secondary" @click="onDeleteOrder">
+          Удалить заказ
+        </b-button>
       </div>
       <template v-slot:modal-footer="{ ok, cancel }">
         <b-button @click="ok()" :disabled="allFill" variant="info">
@@ -65,8 +60,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
-import _ from 'lodash'
+import { Component, Vue } from 'vue-property-decorator'
 import AwesomeMask from 'awesome-mask'
 import { customerMapper } from '@/store/modules/customer'
 import ClientAPI from '@/api/client'
@@ -84,8 +78,7 @@ const Mappers = Vue.extend({
   directives: {
     mask: AwesomeMask
   },
-  components: {
-  }
+  components: {}
 })
 export default class EditOrderModal extends Mappers {
   private allFill = false
@@ -117,7 +110,7 @@ export default class EditOrderModal extends Mappers {
   }
 
   private onChangeField() {
-   // console.log('onChangeField')
+    // console.log('onChangeField')
   }
 
   private async created() {

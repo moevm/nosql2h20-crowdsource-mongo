@@ -5,25 +5,30 @@
     </div>
     <div class="menuDiv">
       <div class="buttonAdd">
-        <b-button variant="info" @click="endProcessed" :disabled="!allFilled">Отправить данные</b-button>
+        <b-button variant="info" @click="endProcessed" :disabled="!allFilled"
+          >Отправить данные</b-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
-import Config from '@/config/config'
+import { Vue, Component } from 'vue-property-decorator'
 import MultiSelect from 'vue-multiselect'
 import { clientMapper } from '@/store/modules/client'
-import ruMultiselect from '@/i18n/ru_multiselect'
-import ViewOrderCard from "@/components/help/ViewOrderCard.vue";
+import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
 import _ from 'lodash'
-import ClientAPI from "@/api/client";
+import ClientAPI from '@/api/client'
 
 const Mappers = Vue.extend({
   computed: {
-    ...clientMapper.mapState(['viewOrderPage', 'selectOrder', 'fullInfoOrder', 'allFilled'])
+    ...clientMapper.mapState([
+      'viewOrderPage',
+      'selectOrder',
+      'fullInfoOrder',
+      'allFilled'
+    ])
   },
   methods: {}
 })
@@ -35,17 +40,17 @@ const Mappers = Vue.extend({
   }
 })
 export default class CatalogProduct extends Mappers {
-  private pairsArray: any[] = []
-  private ruMultiselect = ruMultiselect
-
   private async endProcessed() {
-    const newData: any = {}
     for (const item of this.viewOrderPage.pairs) {
       if (item.first) {
-        this.fullInfoOrder.data[`${item.first.mainObj}`][`${item.first.selected}`]++
+        this.fullInfoOrder.data[`${item.first.mainObj}`][
+          `${item.first.selected}`
+        ]++
       }
       if (item.second) {
-        this.fullInfoOrder.data[`${item.second.mainObj}`][`${item.second.selected}`]++
+        this.fullInfoOrder.data[`${item.second.mainObj}`][
+          `${item.second.selected}`
+        ]++
       }
     }
     const sendObj: any = { data: this.fullInfoOrder.data }
@@ -55,7 +60,7 @@ export default class CatalogProduct extends Mappers {
   }
 
   async created() {
-    const inputArr: any[] = []//Config.orderList
+    const inputArr: any[] = [] //Config.orderList
     for (const key in this.fullInfoOrder.data) {
       const keyAnswer: any[] = []
       for (const keySup in this.fullInfoOrder.data[`${key}`]) {
@@ -76,12 +81,12 @@ export default class CatalogProduct extends Mappers {
       if (!_.isNil(inputArr[i])) {
         first = inputArr[i]
       }
-      if (!_.isNil(inputArr[i+1])) {
-        second = inputArr[i+1]
+      if (!_.isNil(inputArr[i + 1])) {
+        second = inputArr[i + 1]
       }
       pairsArray.push({
-        first: !_.isNil(first) ? {...first/*,answer: ''*/} : null,
-        second: !_.isNil(second) ? {...second/*,answer: ''*/} : null
+        first: !_.isNil(first) ? { ...first /*,answer: ''*/ } : null,
+        second: !_.isNil(second) ? { ...second /*,answer: ''*/ } : null
       })
     }
     this.viewOrderPage.pairs = pairsArray

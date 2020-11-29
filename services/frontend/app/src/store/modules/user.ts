@@ -6,12 +6,11 @@ import {
   createMapper
 } from 'vuex-smart-module'
 import UserAPI, { UserRegister, UserLogin } from '@/api/user.ts'
-import Vue from "vue";
-import {http} from "@/api/httpAxios";
+import { http } from '@/api/httpAxios'
 import Config from '@/config/configs'
 
 class UserState {
-  userId = ''//'5fc35fb1f95de0304367d53d'
+  userId = '' //'5fc35fb1f95de0304367d53d'
   token: any = null
   isAuthenticated = false
   userInfo = {
@@ -61,7 +60,10 @@ class UserActions extends Actions<
     try {
       const response = await UserAPI.register(registerObj)
       this.mutations.setNewUserId(response.data.id)
-      await this.actions.fetchLoginUser({email: registerObj.email, password: registerObj.password})
+      await this.actions.fetchLoginUser({
+        email: registerObj.email,
+        password: registerObj.password
+      })
     } catch (err) {
       this.state.isAuthenticated = false
       console.error(err)
@@ -79,6 +81,7 @@ class UserActions extends Actions<
       await this.actions.fetchGetUser()
       this.state.isAuthenticated = true
     } catch (err) {
+      //console.log(err.response.data)
       localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
       this.state.isAuthenticated = false
       console.error(err)
@@ -86,7 +89,6 @@ class UserActions extends Actions<
   }
   async fetchGetUser() {
     try {
-      const token = localStorage.getItem('user-token')
       const response = await UserAPI.getUser(this.state.userId)
       this.mutations.setUserInfo(response.data)
     } catch (err) {

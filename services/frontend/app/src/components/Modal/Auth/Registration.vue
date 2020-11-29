@@ -61,15 +61,30 @@
         />
       </div>
       <label for="passwordRegistrInput">Пароль</label>
-      <b-form-input id="passwordRegistrInput" type="password" @input="onChangeField"
-        :state="!!userInfoObj.password.length"
-        v-model="userInfoObj.password" trim />
-      <label for="passwordRegistrInputComfirm">Подтверждение пароля</label>
-      <b-form-input id="passwordRegistrInputComfirm" type="password"
+      <b-form-input
+        id="passwordRegistrInput"
+        type="password"
         @input="onChangeField"
-        :state="!!userInfoObj.passwordAcc.length && userInfoObj.password === userInfoObj.passwordAcc"
-        v-model="userInfoObj.passwordAcc" trim />
-      <div style="color: red;" v-if="userInfoObj.password !== userInfoObj.passwordAcc">
+        :state="!!userInfoObj.password.length"
+        v-model="userInfoObj.password"
+        trim
+      />
+      <label for="passwordRegistrInputComfirm">Подтверждение пароля</label>
+      <b-form-input
+        id="passwordRegistrInputComfirm"
+        type="password"
+        @input="onChangeField"
+        :state="
+          !!userInfoObj.passwordAcc.length &&
+            userInfoObj.password === userInfoObj.passwordAcc
+        "
+        v-model="userInfoObj.passwordAcc"
+        trim
+      />
+      <div
+        style="color: red;"
+        v-if="userInfoObj.password !== userInfoObj.passwordAcc"
+      >
         Пароли не совпадают!
       </div>
       <template v-slot:modal-footer="{ ok, cancel }">
@@ -89,7 +104,6 @@ import { Component, Vue } from 'vue-property-decorator'
 import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
 import { checkEmail } from '@/utils/fieldValidation'
-import configs from '@/config/configs'
 import { userMapper } from '@/store/modules/user'
 
 export enum modalAction {
@@ -172,7 +186,7 @@ export default class Registration extends Mappers {
       this.userInfoObj.surname !== '' &&
       this.userInfoObj.type !== '' &&
       this.userInfoObj.password !== '' &&
-      this.userInfoObj.passwordAcc!== '' &&
+      this.userInfoObj.passwordAcc !== '' &&
       this.userInfoObj.password === this.userInfoObj.passwordAcc &&
       this.checkEmail()
   }

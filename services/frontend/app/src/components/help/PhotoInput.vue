@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import _ from 'lodash'
 import { AgGridVue } from 'ag-grid-vue'
 import AgGridFactory from '@/factories/agGridFactory'
@@ -130,9 +130,13 @@ export default class PhotoInput extends Mapper {
         (i: any, index: any) => index <= params.rowIndex
       ),
       _.cloneDeep(
-        this.addOrder.dataManualFile.find((i: any, index: any) => index === params.rowIndex)
+        this.addOrder.dataManualFile.find(
+          (i: any, index: any) => index === params.rowIndex
+        )
       ),
-      ...this.addOrder.dataManualFile.filter((i: any, index: any) => index > params.rowIndex)
+      ...this.addOrder.dataManualFile.filter(
+        (i: any, index: any) => index > params.rowIndex
+      )
     ]
   }
 }

@@ -36,7 +36,7 @@ import CKEditor5 from '@ckeditor/ckeditor5-vue'
 Vue.use(CKEditor5)
 
 /* Draggable */
-import draggable from 'vuedraggable'
+//import draggable from 'vuedraggable'
 /*Vue.use(draggable)*/
 
 import VueExpandableImage from 'vue-expandable-image'

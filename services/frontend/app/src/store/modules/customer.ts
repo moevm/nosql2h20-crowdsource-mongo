@@ -6,18 +6,17 @@ import {
   createMapper
 } from 'vuex-smart-module'
 import ClientAPI from '@/api/client'
-import _ from 'lodash'
 
 export interface FileManual {
   valueAnswer: string
   fileValue: any
 }
 export interface AddOrder {
-  title: string,
-  description: string,
-  dataManualFile: any[],
-  dataManualText: any[],
-  dataFile: any,
+  title: string
+  description: string
+  dataManualFile: any[]
+  dataManualText: any[]
+  dataFile: any
   indexManual: number
 }
 
@@ -28,7 +27,7 @@ class CustomerState {
     dataManualFile: [],
     dataManualText: [],
     dataFile: {},
-    indexManual : -1
+    indexManual: -1
   }
   orderList: any[] = []
   editOrder: any = null
@@ -54,7 +53,7 @@ class CustomerMutations extends Mutations<CustomerState> {
   }
   deleteOrderWithId(id: string) {
     this.state.orderList = this.state.orderList.filter(
-        (i: any, index: any) => i._id.$oid !== id
+      (i: any) => i._id.$oid !== id
     )
   }
 }
@@ -76,7 +75,10 @@ class CustomerActions extends Actions<
   async fetchAddOrders(objSend: any) {
     try {
       const response = await ClientAPI.addOrder(objSend)
-      this.mutations.addOrderInList({...objSend, _id: { $oid: response.data.id}})
+      this.mutations.addOrderInList({
+        ...objSend,
+        _id: { $oid: response.data.id }
+      })
     } catch (err) {
       console.error(err)
     }

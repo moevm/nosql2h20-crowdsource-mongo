@@ -1,6 +1,5 @@
 import Translation from '@/config/agGridTables'
 import { GridApi } from 'ag-grid-community'
-import store from '@/store'
 
 export default class AgGridFactory {
   public static getDefaultGridOptions() {

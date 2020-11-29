@@ -54,17 +54,21 @@
       </div>
       <div v-if="!isText" style="visibility: hidden;">
         <div v-if="isManual">
-        <PhotoInput />
+          <PhotoInput />
         </div>
         <div v-else>
-          <p>Загрузите  zip-архив с фотографиями и размеченным .csv файлом,
-            где первый столбец - название фотографии,
-            второй массив классов (вариантов разметки для данной фотографии)</p>
+          <p>
+            Загрузите zip-архив с фотографиями и размеченным .csv файлом, где
+            первый столбец - название фотографии, второй массив классов
+            (вариантов разметки для данной фотографии)
+          </p>
           <div class="d-flex w-30">
-            <b-form-file v-model="fileValueNoManual" id="fileValueNoManualUpload" hidden/>
-            <b-button
-              class="mt-1 ml-2"
-              @click="onDeleteFile">
+            <b-form-file
+              v-model="fileValueNoManual"
+              id="fileValueNoManualUpload"
+              hidden
+            />
+            <b-button class="mt-1 ml-2" @click="onDeleteFile">
               <font-awesome-icon :icon="['fas', 'times']" />
             </b-button>
           </div>
@@ -75,14 +79,17 @@
           <TextInput />
         </div>
         <div v-else>
-          <p>Загрузите  .csv файл,
-            где первый столбец - необходимый текст,
-            второй массив классов (вариантов разметки для данной фотографии)</p>
+          <p>
+            Загрузите .csv файл, где первый столбец - необходимый текст, второй
+            массив классов (вариантов разметки для данной фотографии)
+          </p>
           <div class="d-flex w-30">
-            <b-form-file v-model="fileValueNoManual" id="fileValueNoManualUpload" hidden/>
-            <b-button
-            class="mt-1 ml-2"
-            @click="onDeleteFile">
+            <b-form-file
+              v-model="fileValueNoManual"
+              id="fileValueNoManualUpload"
+              hidden
+            />
+            <b-button class="mt-1 ml-2" @click="onDeleteFile">
               <font-awesome-icon :icon="['fas', 'times']" />
             </b-button>
           </div>
@@ -97,7 +104,11 @@
         </b-button>
       </template>
     </b-modal>
-    <b-form-file v-model="fileValue" id="fileUpload" style="visibility: hidden;"/>
+    <b-form-file
+      v-model="fileValue"
+      id="fileUpload"
+      style="visibility: hidden;"
+    />
     <b-modal
       id="deleteFileOrderModal"
       title="Предупреждение"
@@ -128,7 +139,7 @@ import AwesomeMask from 'awesome-mask'
 import StaticData from '@/config/config'
 import Confin from '@/config/configs'
 import PhotoInput from '@/components/help/PhotoInput.vue'
-import TextInput from "@/components/help/TextInput.vue";
+import TextInput from '@/components/help/TextInput.vue'
 import { customerMapper } from '@/store/modules/customer'
 
 const Mappers = Vue.extend({
@@ -164,7 +175,10 @@ export default class AddOrderModal extends Mappers {
 
   @Watch('fileValue')
   onFileValueChange() {
-    if (this.addOrder.indexManual !== -1 && !_.isNil(this.addOrder.indexManual)) {
+    if (
+      this.addOrder.indexManual !== -1 &&
+      !_.isNil(this.addOrder.indexManual)
+    ) {
       this.addOrder.dataManualFile[
         this.addOrder.indexManual
       ].fileValue = this.fileValue
@@ -176,12 +190,19 @@ export default class AddOrderModal extends Mappers {
     this.addOrder.dataFile = this.fileValueNoManual
   }
 
-  private async addOrderClick() { this.addOrder
+  private async addOrderClick() {
+    this.addOrder
     const sendObj: any = {
       title: this.addOrder.title,
       description: this.addOrder.description
     }
-    const dataTmp = this.isText ? this.isManual ? this.addOrder.dataManualText : this.addOrder.dataFile : this.isManual ? this.addOrder.dataManualFile : this.addOrder.dataFile
+    const dataTmp = this.isText
+      ? this.isManual
+        ? this.addOrder.dataManualText
+        : this.addOrder.dataFile
+      : this.isManual
+      ? this.addOrder.dataManualFile
+      : this.addOrder.dataFile
     const newData: any = {}
     for (const item of dataTmp) {
       const splitVal = item.valueAnswer.split(',')
@@ -217,7 +238,7 @@ export default class AddOrderModal extends Mappers {
   }
 
   private onChangeField() {
-   // console.log('onChangeField')
+    // console.log('onChangeField')
   }
 
   private async created() {

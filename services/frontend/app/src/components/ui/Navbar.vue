@@ -1,10 +1,18 @@
 <template>
   <div class="menu mt-3 mb-2">
     <b-navbar class="classMainLine" type="dark" variant="primary" sticky>
-      <div v-if="!isAuthenticated" @click="$router.push('/main')" class="mr-2 fa-2x navbarClass">
+      <div
+        v-if="!isAuthenticated"
+        @click="$router.push('/main')"
+        class="mr-2 fa-2x navbarClass"
+      >
         <b>CrowdSource</b>
       </div>
-      <div v-if="isAuthenticated" @click="$router.push('/main/work')" class="mr-2 fa-2x navbarClass">
+      <div
+        v-if="isAuthenticated"
+        @click="$router.push('/main/work')"
+        class="mr-2 fa-2x navbarClass"
+      >
         <b>CrowdSource</b>
       </div>
       <b-navbar-brand href="#"> </b-navbar-brand>
@@ -40,13 +48,13 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import {userMapper} from "@/store/modules/user";
+import { userMapper } from '@/store/modules/user'
 
 const Mapper = Vue.extend({
   computed: {
     ...userMapper.mapState(['isAuthenticated', 'userInfo'])
   },
-  methods:{
+  methods: {
     ...userMapper.mapMutations(['logOut'])
   }
 })

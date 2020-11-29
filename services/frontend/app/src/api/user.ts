@@ -1,10 +1,10 @@
 import { http } from '@/api/httpAxios'
-import createURLParams from '@/api/datasource/createURLParams.ts'
-import _ from 'lodash'
+/*import createURLParams from '@/api/datasource/createURLParams.ts'
+import _ from 'lodash'*/
 
 export interface UserRegister {
-  email : string
-  name : string
+  email: string
+  name: string
   surname?: string
   password: string
   type: string
@@ -12,7 +12,7 @@ export interface UserRegister {
 }
 
 export interface UserLogin {
-  email : string
+  email: string
   password: string
 }
 

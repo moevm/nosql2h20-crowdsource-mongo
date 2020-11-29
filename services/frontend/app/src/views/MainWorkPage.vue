@@ -26,7 +26,7 @@
       </div>
     </div>
     <div v-if="!isWork" class="addOrderClass">
-      <b-button  class="mr-1" @click="addOrderClick()" variant="info">
+      <b-button class="mr-1" @click="addOrderClick()" variant="info">
         Добавить заказ
       </b-button>
     </div>
@@ -42,17 +42,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 import Config from '@/config/config'
 import OrderCard from '@/components/help/OrderCard.vue'
 import MultiSelect from 'vue-multiselect'
 import { clientMapper } from '@/store/modules/client'
-import ruMultiselect from '@/i18n/ru_multiselect'
 import AddOrderModal from '@/components/Modal/Customer/AddOrderModal.vue'
-import {userMapper} from "@/store/modules/user"
-import { customerMapper } from "@/store/modules/customer"
-import EditOrderModal from "@/components/Modal/Customer/EditOrderModal.vue"
-
+import { userMapper } from '@/store/modules/user'
+import { customerMapper } from '@/store/modules/customer'
+import EditOrderModal from '@/components/Modal/Customer/EditOrderModal.vue'
 
 const Mappers = Vue.extend({
   computed: {

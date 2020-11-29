@@ -1,6 +1,4 @@
 import axios, { AxiosInstance } from 'axios'
-import Config from '@/config/configs.ts'
-import Vue from "vue";
 
 export const baseURL =
   process.env.NODE_ENV === 'production'

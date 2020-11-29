@@ -1,5 +1,5 @@
 import { http } from '@/api/httpAxios'
-import createURLParams from '@/api/datasource/createURLParams.ts'
+//import createURLParams from '@/api/datasource/createURLParams.ts'
 import _ from 'lodash'
 
 export default class ClientAPI {
@@ -11,7 +11,7 @@ export default class ClientAPI {
   }
   public static editCustomerOrder(orderInfo: any) {
     const sendObj: any = _.cloneDeep(orderInfo)
-    delete sendObj._id;
+    delete sendObj._id
     return http.put(`/orders/${orderInfo._id.$oid}`, { ...sendObj })
   }
   public static editWorkerOrder(orderInfo: any, id: string) {

@@ -1,14 +1,16 @@
 <template>
-  <div
-    class="d-flex flex-column justify-content-between h-100 shadow"
-  >
+  <div class="d-flex flex-column justify-content-between h-100 shadow">
     <!--:src="`http://localhost:3000${product.photo}`"-->
     <div class="d-flex m-1">
       <div class="mr-2">
         <img
           @load="onPreviewLoad"
           class="w-100"
-          :src="require(`@/assets/icons/${product.data_type === 'text' ? 'text.jpeg' : product.image}`)"
+          :src="
+            require(`@/assets/icons/${
+              product.data_type === 'text' ? 'text.jpeg' : product.image
+            }`)
+          "
           :style="{ height: previewHeight + 'px' }"
           style=""
           alt="Preview"
@@ -31,16 +33,36 @@
           </div>
         </div>
         <div class="mt-2 d-flex">
-          <b-button v-if="isWork" class="mr-1" @click="onProceedClick()" variant="info">
+          <b-button
+            v-if="isWork"
+            class="mr-1"
+            @click="onProceedClick()"
+            variant="info"
+          >
             Приступить
           </b-button>
-          <b-button v-if="!isWork" class="mr-1" @click="onEditClick()" variant="info">
+          <b-button
+            v-if="!isWork"
+            class="mr-1"
+            @click="onEditClick()"
+            variant="info"
+          >
             Редактировать
           </b-button>
-          <b-button v-if="!isWork" class="mr-1" @click="onExportDataClick()" variant="info">
+          <b-button
+            v-if="!isWork"
+            class="mr-1"
+            @click="onExportDataClick()"
+            variant="info"
+          >
             Выгрузить данные
           </b-button>
-          <b-button v-if="!isWork" class="mr-1" @click="onStatisticClick()" variant="info">
+          <b-button
+            v-if="!isWork"
+            class="mr-1"
+            @click="onStatisticClick()"
+            variant="info"
+          >
             Статистика
           </b-button>
         </div>
@@ -51,11 +73,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import _ from 'lodash'
-import {userMapper} from "@/store/modules/user"
-import Config from '@/config/configs'
-import {customerMapper} from "@/store/modules/customer";
-import {clientMapper} from "@/store/modules/client";
+import { userMapper } from '@/store/modules/user'
+import { customerMapper } from '@/store/modules/customer'
+import { clientMapper } from '@/store/modules/client'
 
 const Mappers = Vue.extend({
   computed: {
@@ -70,8 +90,7 @@ const Mappers = Vue.extend({
 })
 
 @Component({
-  components: {
-  }
+  components: {}
 })
 export default class NewsPreview extends Mappers {
   @Prop(Object) product: any
@@ -103,7 +122,7 @@ export default class NewsPreview extends Mappers {
   }
 
   private onStatisticClick() {
-   // console.log('onStatisticClick')
+    // console.log('onStatisticClick')
   }
 }
 </script>

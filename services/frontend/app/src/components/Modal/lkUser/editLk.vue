@@ -34,11 +34,26 @@
         </b-tab>
         <b-tab title="Смена пароля">
           <label for="passwordOldUserLk">Старый пароль</label>
-          <b-form-input id="passwordOldUserLk" type="password"  :disabled="isActive" trim />
+          <b-form-input
+            id="passwordOldUserLk"
+            type="password"
+            :disabled="isActive"
+            trim
+          />
           <label for="passwordUserLk">Пароль</label>
-          <b-form-input id="passwordUserLk" type="password"  :disabled="isActive" trim />
+          <b-form-input
+            id="passwordUserLk"
+            type="password"
+            :disabled="isActive"
+            trim
+          />
           <label for="passwordUserLk">Подтверждение пароля</label>
-          <b-form-input id="passwordUserLk" type="password" :disabled="isActive"  trim />
+          <b-form-input
+            id="passwordUserLk"
+            type="password"
+            :disabled="isActive"
+            trim
+          />
         </b-tab>
       </b-tabs>
       <template v-slot:modal-footer="{ ok, cancel }">
@@ -73,11 +88,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
-import { checkEmail } from '@/utils/fieldValidation'
-import configs from '@/config/configs'
-import {userMapper} from "@/store/modules/user";
+import { userMapper } from '@/store/modules/user'
 
 const Mappers = Vue.extend({
   computed: {
