@@ -34,11 +34,11 @@
         </b-tab>
         <b-tab title="Смена пароля">
           <label for="passwordOldUserLk">Старый пароль</label>
-          <b-form-input id="passwordOldUserLk" type="password" trim />
+          <b-form-input id="passwordOldUserLk" type="password"  :disabled="isActive" trim />
           <label for="passwordUserLk">Пароль</label>
-          <b-form-input id="passwordUserLk" type="password" trim />
+          <b-form-input id="passwordUserLk" type="password"  :disabled="isActive" trim />
           <label for="passwordUserLk">Подтверждение пароля</label>
-          <b-form-input id="passwordUserLk" type="password" trim />
+          <b-form-input id="passwordUserLk" type="password" :disabled="isActive"  trim />
         </b-tab>
       </b-tabs>
       <template v-slot:modal-footer="{ ok, cancel }">
@@ -77,8 +77,13 @@ import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
 import { checkEmail } from '@/utils/fieldValidation'
 import configs from '@/config/configs'
+import {userMapper} from "@/store/modules/user";
 
-const Mappers = Vue.extend({})
+const Mappers = Vue.extend({
+  computed: {
+    ...userMapper.mapState(['isAuthenticated', 'userInfo'])
+  }
+})
 
 @Component({
   directives: {
@@ -87,15 +92,10 @@ const Mappers = Vue.extend({})
 })
 export default class EditLk extends Mappers {
   private allFill = false
-  private isActive = false
-  private isEdit = false
-  private userInfo = {
-    name: 'Иван',
-    surname: 'Иванов'
-  }
+  private isActive = true
 
   private async editLkClick() {
-    console.log('editLkClick')
+    //console.log('editLkClick')
   }
 
   private dropPasswordClick() {
@@ -105,11 +105,11 @@ export default class EditLk extends Mappers {
   }
 
   private openFuc() {
-    console.log('openFuc')
+    //console.log('openFuc')
   }
 
   private onChangeField() {
-    console.log('onChangeField')
+    //console.log('onChangeField')
   }
 
   private async created() {

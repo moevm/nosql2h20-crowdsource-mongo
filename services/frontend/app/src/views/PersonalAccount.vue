@@ -53,9 +53,12 @@ import { Vue, Component } from 'vue-property-decorator'
 import Config from '@/config/config'
 import Translation from '@/config/translateTable.ts'
 import editLk from '@/components/Modal/lkUser/editLk.vue'
+import {userMapper} from "@/store/modules/user";
 
 const Mapper = Vue.extend({
-  computed: {}
+  computed: {
+    ...userMapper.mapState(['isAuthenticated', 'userInfo'])
+  }
 })
 
 @Component({
@@ -64,11 +67,6 @@ const Mapper = Vue.extend({
 export default class ListOrders extends Mapper {
   private modelGrid: any = Config.ListOrders
   private deleteParams: any = {}
-  private userInfo = {
-    name: 'Иван',
-    surname: 'Иванов',
-    email: 'ivan@mail.ru'
-  }
   private isActive = true
 
   private gridOptions = {

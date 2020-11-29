@@ -5,20 +5,9 @@ import store from '../store'
 
 Vue.use(VueRouter)
 
-const ifNotAuthenticated = (to: any, from: any, next: any) => {
-  const token = localStorage.getItem('user-token')
-  console.log('ifNotAuthenticated', token)
-  if (!token) {
-    next()
-    return
-  }
-  next('/main/work')
-}
-
 const ifAuthenticated = (to: any, from: any, next: any) => {
   const token = localStorage.getItem('user-token')
-  console.log('ifAuthenticated', token)
-  if (token) {
+  if (token && store.state.user.isAuthenticated) {
     next()
     return
   }
@@ -58,7 +47,6 @@ const routes: Array<RouteConfig> = [
         name: 'MainPage',
         component: () =>
           import(/* webpackChunkName: "lorem" */ '@/views/MainPage.vue'),
-        beforeEnter: ifNotAuthenticated
       },
       {
         path: '/userlk',

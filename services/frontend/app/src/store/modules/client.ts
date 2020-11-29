@@ -56,9 +56,7 @@ class ClientActions extends Actions<
 > {
   async fetchFullInfoOrder(id: string) {
     try {
-      console.log('fetchFullInfoOrder start')
       const response = await ClientAPI.getFullInfoOrder(id)
-      console.log('fetchFullInfoOrder', response.data)
       this.mutations.setFullInfoOrder(response.data)
     } catch (err) {
       console.error(err)

@@ -50,9 +50,7 @@ export default class CatalogProduct extends Mappers {
     }
     const sendObj: any = { data: this.fullInfoOrder.data }
     sendObj['data_type'] = this.fullInfoOrder.data_type
-    console.log('endProcessed end sendObj', sendObj)
     await ClientAPI.editWorkerOrder(sendObj, this.selectOrder._id.$oid)
-    console.log('endProcessed end', this.fullInfoOrder.data)
     this.$router.push('/main/work')
   }
 

@@ -15,8 +15,6 @@ export default class ClientAPI {
     return http.put(`/orders/${orderInfo._id.$oid}`, { ...sendObj })
   }
   public static editWorkerOrder(orderInfo: any, id: string) {
-    console.log('_____ editWorkerOrder editWorkerOrder',id, orderInfo)
-    console.log('_____ editWorkerOrder editWorkerOrder after')
     return http.put(`/orders/${id}`, { ...orderInfo })
   }
   public static deleteCustomerOrder(id: string) {

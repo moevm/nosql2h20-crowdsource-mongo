@@ -76,10 +76,6 @@ const Mappers = Vue.extend({
 export default class NewsPreview extends Mappers {
   @Prop(Object) product: any
 
-  mounted() {
-    console.log('product mounted', this.product)
-  }
-
   $refs!: {
     previewImage: HTMLImageElement
   }

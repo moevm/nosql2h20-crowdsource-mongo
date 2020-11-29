@@ -193,7 +193,6 @@ export default class AddOrderModal extends Mappers {
     }
     sendObj['data_type'] = this.selectedChangeData
     sendObj['data'] = newData
-    console.log('addOrderClick sendObj ', sendObj)
     await this.fetchAddOrders(sendObj)
   }
 
@@ -218,7 +217,7 @@ export default class AddOrderModal extends Mappers {
   }
 
   private onChangeField() {
-    console.log('onChangeField')
+   // console.log('onChangeField')
   }
 
   private async created() {
