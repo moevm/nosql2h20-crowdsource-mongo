@@ -52,11 +52,7 @@
           ></b-form-checkbox-group>
         </div>
       </div>
-      <div v-if="!isText">
-        Фото
-        <b-button @click="checkTest" variant="info">
-          Проверить
-        </b-button>
+      <div v-if="!isText" style="visibility: hidden;">
         <div v-if="isManual">
         <PhotoInput />
         </div>
@@ -65,7 +61,7 @@
             где первый столбец - название фотографии,
             второй массив классов (вариантов разметки для данной фотографии)</p>
           <div class="d-flex w-30">
-            <b-form-file v-model="fileValueNoManual" id="fileValueNoManualUpload" />
+            <b-form-file v-model="fileValueNoManual" id="fileValueNoManualUpload" hidden/>
             <b-button
               class="mt-1 ml-2"
               @click="onDeleteFile">
@@ -75,10 +71,6 @@
         </div>
       </div>
       <div v-if="isText">
-        Текст
-        <b-button @click="checkTest" variant="info">
-          Проверить
-        </b-button>
         <div v-if="isManual">
           <TextInput />
         </div>
@@ -87,7 +79,7 @@
             где первый столбец - необходимый текст,
             второй массив классов (вариантов разметки для данной фотографии)</p>
           <div class="d-flex w-30">
-            <b-form-file v-model="fileValueNoManual" id="fileValueNoManualUpload" />
+            <b-form-file v-model="fileValueNoManual" id="fileValueNoManualUpload" hidden/>
             <b-button
             class="mt-1 ml-2"
             @click="onDeleteFile">
@@ -105,7 +97,7 @@
         </b-button>
       </template>
     </b-modal>
-    <b-form-file v-model="fileValue" id="fileUpload" hidden />
+    <b-form-file v-model="fileValue" id="fileUpload" style="visibility: hidden;"/>
     <b-modal
       id="deleteFileOrderModal"
       title="Предупреждение"
@@ -137,14 +129,16 @@ import StaticData from '@/config/config'
 import Confin from '@/config/configs'
 import PhotoInput from '@/components/help/PhotoInput.vue'
 import TextInput from "@/components/help/TextInput.vue";
-import Auth from '@/views/Auth.vue'
 import { customerMapper } from '@/store/modules/customer'
 
 const Mappers = Vue.extend({
   computed: {
     ...customerMapper.mapState(['addOrder'])
   },
-  methods: {}
+  methods: {
+    ...customerMapper.mapMutations(['setAddOrder']),
+    ...customerMapper.mapActions(['fetchAddOrders'])
+  }
 })
 
 @Component({
@@ -159,14 +153,13 @@ const Mappers = Vue.extend({
 export default class AddSpecialtiesModal extends Mappers {
   private allFill = false
   private isActive = false
-  private isEdit = false
   private fileValue = null
   private fileValueNoManual = null
-  private checkManualInput = []
-  private isText = false
-  private isManual = false
+  private checkManualInput = ['Ввести вручную']
+  private isText = true
+  private isManual = true
   private ConfinDataValues = Confin.customerInput
-  private selectedChangeData = Confin.customerInput[0].value
+  private selectedChangeData = Confin.customerInput[1].value
   private arrayManualCheckbox = StaticData.manualInput
 
   @Watch('fileValue')
@@ -183,8 +176,25 @@ export default class AddSpecialtiesModal extends Mappers {
     this.addOrder.dataFile = this.fileValueNoManual
   }
 
-  private async addOrderClick() {
-    console.log('addOrderClick')
+  private async addOrderClick() { this.addOrder
+    const sendObj: any = {
+      title: this.addOrder.title,
+      description: this.addOrder.description
+    }
+    const dataTmp = this.isText ? this.isManual ? this.addOrder.dataManualText : this.addOrder.dataFile : this.isManual ? this.addOrder.dataManualFile : this.addOrder.dataFile
+    const newData: any = {}
+    for (const item of dataTmp) {
+      const splitVal = item.valueAnswer.split(',')
+      const newObj: any = {}
+      for (const spl of splitVal) {
+        newObj[`${spl}`] = 0
+      }
+      newData[`${item.fileValue}`] = newObj
+    }
+    sendObj['data_type'] = this.selectedChangeData
+    sendObj['data'] = newData
+    console.log('addOrderClick sendObj ', sendObj)
+    await this.fetchAddOrders(sendObj)
   }
 
   private onDeleteFile() {
@@ -193,11 +203,6 @@ export default class AddSpecialtiesModal extends Mappers {
 
   private deleteClick() {
     this.fileValueNoManual = null
-  }
-
-  private checkTest() {
-    console.log('___ checkTest dataManualFile', this.addOrder)
-    //console.log('___ checkTest ', this.fileInput)
   }
 
   private changeSelectedData() {
@@ -209,12 +214,12 @@ export default class AddSpecialtiesModal extends Mappers {
   }
 
   private openFuc() {
-    console.log('openFuc')
+    /**/
   }
 
-  private onChangeField() {
+ /* private onChangeField() {
     console.log('onChangeField')
-  }
+  }*/
 
   private async created() {
     /*this.clearObj = _.clone(this.infoObj)*/

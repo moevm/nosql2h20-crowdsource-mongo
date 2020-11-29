@@ -1,5 +1,4 @@
 import { http } from '@/api/httpAxios'
-import { AxiosPromise } from 'axios'
 import createURLParams from '@/api/datasource/createURLParams.ts'
 import _ from 'lodash'
 
@@ -19,11 +18,12 @@ export interface UserLogin {
 
 export default class UserAPI {
   public static register(userInfo: UserRegister) {
-    console.log('register UserAPI ', { ...userInfo })
     return http.post(`/signup`, { ...userInfo })
   }
   public static login(userInfo: UserLogin) {
-    console.log('login UserAPI ', { ...userInfo })
     return http.post(`/login`, { ...userInfo })
+  }
+  public static getUser(idUser: string) {
+    return http.get(`/${idUser}`)
   }
 }

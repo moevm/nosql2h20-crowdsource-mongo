@@ -112,14 +112,10 @@ const Mappers = Vue.extend({
   }
 })
 export default class AddSpecialtiesModal extends Mappers {
-  private selectedType = ''
   private allFill = false
   private isCustomer = false
-  private phoneMask = '+9(999)999-99-99'
   private isActive = false
   private isEdit = false
-  private passwordCreate = ''
-  private passwordCreateAccept = ''
   private userInfoObj = {
     email: '',
     name: '',
@@ -137,24 +133,22 @@ export default class AddSpecialtiesModal extends Mappers {
       type: this.userInfoObj.type,
       password: this.userInfoObj.password
     }
-    if (!_.isNil(this.userInfo.surname)) {
-      objReq.surname = this.userInfo.surname
+    if (!_.isNil(this.userInfoObj.surname)) {
+      objReq.surname = this.userInfoObj.surname
     }
-    if (!_.isNil(this.userInfo.customer)) {
-      objReq.customer = this.userInfo.customer
+    if (!_.isNil(this.userInfoObj.customer)) {
+      objReq.customer = this.userInfoObj.customer
     }
     this.userInfo.email = this.userInfoObj.email
     this.userInfo.name = this.userInfoObj.name
-    this.userInfo.surname =  this.userInfoObj.surname
+    this.userInfo.surname = this.userInfoObj.surname
     this.userInfo.type = this.userInfoObj.type
     this.userInfo.customer = this.userInfoObj.customer
-    console.log('register end', objReq)
-    this.fetchRegisterUser(objReq)
-    //    fetchRegisterUser
+    await this.fetchRegisterUser(objReq)
+    this.$router.push('/main/work')
   }
 
   private changeType(event: any) {
-    console.log('changeType', event)
     this.isCustomer = event === 'customer'
   }
 
@@ -179,7 +173,7 @@ export default class AddSpecialtiesModal extends Mappers {
       this.userInfoObj.type !== '' &&
       this.userInfoObj.password !== '' &&
       this.userInfoObj.passwordAcc!== '' &&
-        this.userInfoObj.password === this.userInfoObj.passwordAcc &&
+      this.userInfoObj.password === this.userInfoObj.passwordAcc &&
       this.checkEmail()
   }
 

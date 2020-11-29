@@ -1,7 +1,6 @@
 <template>
   <div
     class="d-flex flex-column justify-content-between h-100 shadow"
-    @click="onPreviewClick"
   >
     <!--:src="`http://localhost:3000${product.photo}`"-->
     <div class="d-flex m-1">
@@ -9,7 +8,7 @@
         <img
           @load="onPreviewLoad"
           class="w-100"
-          :src="require(`@/assets/icons/${product.image}`)"
+          :src="require(`@/assets/icons/${product.data_type === 'text' ? 'text.jpeg' : product.image}`)"
           :style="{ height: previewHeight + 'px' }"
           style=""
           alt="Preview"
@@ -32,36 +31,49 @@
           </div>
         </div>
         <div class="mt-2 d-flex">
-          <b-button class="mr-1" @click="onProceedClick()" variant="info">
+          <b-button v-if="isWork" class="mr-1" @click="onProceedClick()" variant="info">
             Приступить
           </b-button>
-          <b-button class="mr-1" @click="onEditClick()" variant="info">
+          <b-button v-if="!isWork" class="mr-1" @click="onEditClick()" variant="info">
             Редактировать
           </b-button>
-          <b-button class="mr-1" @click="onExportDataClick()" variant="info">
+          <b-button v-if="!isWork" class="mr-1" @click="onExportDataClick()" variant="info">
             Выгрузить данные
           </b-button>
-          <b-button class="mr-1" @click="onStatisticClick()" variant="info">
+          <b-button v-if="!isWork" class="mr-1" @click="onStatisticClick()" variant="info">
             Статистика
           </b-button>
         </div>
       </div>
     </div>
-    <EditOrderModal />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import _ from 'lodash'
-import EditOrderModal from "@/components/Modal/Customer/EditOrderModal.vue";
+import {userMapper} from "@/store/modules/user"
+import Config from '@/config/configs'
+import {customerMapper} from "@/store/modules/customer";
+import {clientMapper} from "@/store/modules/client";
+
+const Mappers = Vue.extend({
+  computed: {
+    ...userMapper.mapState(['isWork']),
+    ...clientMapper.mapState(['selectOrder'])
+  },
+  methods: {
+    ...customerMapper.mapMutations(['setEditOrder']),
+    ...clientMapper.mapMutations(['setSelectOrder']),
+    ...clientMapper.mapActions(['fetchFullInfoOrder'])
+  }
+})
 
 @Component({
   components: {
-    EditOrderModal
   }
 })
-export default class NewsPreview extends Vue {
+export default class NewsPreview extends Mappers {
   @Prop(Object) product: any
 
   mounted() {
@@ -75,41 +87,27 @@ export default class NewsPreview extends Vue {
   private previewHeight = 0
 
   onPreviewLoad(event: any) {
-    console.log(
-      'onPreviewLoad',
-      _.cloneDeep(event),
-      event.target.clientWidth,
-      this.previewHeight
-    )
     this.previewHeight = event.target.clientWidth * 0.5625 // 0.5625 = 9/16 => Соотношение сторон: 16:9
-    console.log('onPreviewLoad', event.target.clientWidth, this.previewHeight)
   }
 
-  onPreviewClick() {
-    //this.$router.push(`/partner/${this.news.companyId}/news/${this.news.id}`)
-  }
-
-  private onChangeField() {
-    console.log('onChangeField')
-  }
-
-  private onProceedClick() {
+  private async onProceedClick() {
+    this.setSelectOrder(this.product)
+    await this.fetchFullInfoOrder(this.product._id.$oid)
     this.$router.push('/main/work/task')
-    console.log('onProceedClick')
   }
 
   private onEditClick() {
+    this.setEditOrder(this.product)
     this.$bvModal.show('editOrderModal')
-    console.log('onEditClick')
   }
 
   private onExportDataClick() {
     //TODO Отправка запроса на получение данных
-    console.log('onExportDataClick')
+    //console.log('onExportDataClick')
   }
 
   private onStatisticClick() {
-    console.log('onStatisticClick')
+   // console.log('onStatisticClick')
   }
 }
 </script>

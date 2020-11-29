@@ -1,5 +1,6 @@
 export default {
   urlsWithoutInterceptors: ['/logs/client'],
+  typeUser: ['work', 'customer'],
   recaptchaKey: '6Le9lrwZAAAAAA3o5C3vD8hoewxm02k8PYp5FNN-',
   systemTitle: {
     fullName: 'ИС "Индивидуальные образовательные траектории"',

@@ -6,11 +6,14 @@ import {
   createMapper
 } from 'vuex-smart-module'
 import UserAPI, { UserRegister, UserLogin } from '@/api/user.ts'
+import Vue from "vue";
+import {http} from "@/api/httpAxios";
+import Config from '@/config/configs'
 
 class UserState {
-  userId = -1
+  userId = ''//'5fc35fb1f95de0304367d53d'
   token: any = null
-  isAuthenticated = false
+  isAuthenticated = !!localStorage.getItem('user-token')
   userInfo = {
     name: '',
     surname: '',
@@ -18,6 +21,7 @@ class UserState {
     email: '',
     customer: ''
   }
+  isWork = this.userInfo.type === Config.typeUser[0]
 }
 
 class UserGetters extends Getters<UserState> {
@@ -26,13 +30,28 @@ class UserGetters extends Getters<UserState> {
 
 class UserMutations extends Mutations<UserState> {
   // TODO
-  setNewUserId(id: number) {
+  logOut() {
+    localStorage.removeItem('user-token')
+    this.state.isAuthenticated = !!localStorage.getItem('user-token')
+  }
+  setNewUserId(id: string) {
+    console.log('setNewUserId', id)
     this.state.userId = id
   }
   setToken(token: any) {
+    console.log('setToken', token)
     this.state.token = token
     localStorage.setItem('user-token', token)
-    this.state.isAuthenticated = true
+    this.state.isAuthenticated = !!localStorage.getItem('user-token')
+  }
+  setUserInfo(userInfo: any) {
+    console.log('setUserInfo', userInfo)
+    this.state.userInfo.name = userInfo.name
+    this.state.userInfo.email = userInfo.email
+    this.state.userInfo.customer = userInfo.customer
+    this.state.userInfo.type = userInfo.type
+    this.state.userInfo.surname = userInfo.surname
+    this.state.isWork = this.state.userInfo.type === Config.typeUser[0]
   }
 }
 
@@ -50,7 +69,7 @@ class UserActions extends Actions<
       this.mutations.setNewUserId(response.data.id)
       await this.actions.fetchLoginUser({email: registerObj.email, password: registerObj.password})
     } catch (err) {
-      this.state.isAuthenticated = false
+      this.state.isAuthenticated = !!localStorage.getItem('user-token')
       console.error(err)
     }
   }
@@ -60,9 +79,33 @@ class UserActions extends Actions<
       const response = await UserAPI.login(loginObj)
       console.log('fetchLoginUser', response.data)
       this.mutations.setToken(response.data.token)
+      this.mutations.setNewUserId(response.data.user_id)
+      const token = localStorage.getItem('user-token')
+      console.log('fetchLoginUser Authorization', token)
+      if (token) {
+        console.log(' fetchLoginUser Authorization', token)
+        http.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        console.log(' http watch', http.defaults)
+      }
+      await this.actions.fetchGetUser()
     } catch (err) {
-      this.state.isAuthenticated = false
+      //console.log(err.response.data)
       localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+      this.state.isAuthenticated = !!localStorage.getItem('user-token')
+      console.error(err)
+    }
+  }
+  async fetchGetUser() {
+    try {
+      const token = localStorage.getItem('user-token')
+      console.log('fetchGetUser Authorizationlocal Storage ', token)
+      console.log('fetchGetUser start', this.state.userId)
+      const response = await UserAPI.getUser(this.state.userId)
+      console.log('fetchGetUser', response.data)
+      this.mutations.setUserInfo(response.data)
+    } catch (err) {
+      localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+      this.state.isAuthenticated = !!localStorage.getItem('user-token')
       console.error(err)
     }
   }

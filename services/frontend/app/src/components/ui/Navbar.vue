@@ -9,23 +9,36 @@
       >
         <font-awesome-icon :icon="['fas', 'bars']" />
       </b-button>-->
-      <div @click="$router.push('/main')" class="mr-2 fa-2x navbarClass">
+      <div v-if="!isAuthenticated" @click="$router.push('/main')" class="mr-2 fa-2x navbarClass">
+        <b>CrowdSource</b>
+      </div>
+      <div v-if="isAuthenticated" @click="$router.push('/main/work')" class="mr-2 fa-2x navbarClass">
         <b>CrowdSource</b>
       </div>
       <b-navbar-brand href="#"> </b-navbar-brand>
-      <b-button
+      <!--<b-button
         @click="$router.push('/main/work')"
         class="mr-2 btn-primary-outline"
+        v-if="isAuthenticated"
       >
         Рабочая страница
-      </b-button>
+      </b-button>-->
       <div class="registrationButton">
         <b-button
           @click="$router.push('/userlk')"
           class="mr-2 btn-primary-outline"
+          v-if="isAuthenticated"
         >
           Иван
           <font-awesome-icon :icon="['fa', 'user-circle']" />
+        </b-button>
+        <b-button
+          @click="exit()"
+          class="mr-2 btn-primary-outline"
+          title="Выход"
+          v-if="isAuthenticated"
+        >
+          <font-awesome-icon :icon="['fa', 'times']" />
         </b-button>
       </div>
     </b-navbar>
@@ -34,14 +47,23 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import {userMapper} from "@/store/modules/user";
 
 const Mapper = Vue.extend({
-  computed: {}
+  computed: {
+    ...userMapper.mapState(['isAuthenticated'])
+  },
+  methods:{
+    ...userMapper.mapMutations(['logOut'])
+  }
 })
 
 @Component({ components: {} })
 export default class Navbar extends Mapper {
-  private isCourir = true
+  private exit() {
+    this.logOut()
+    this.$router.push('/main')
+  }
 }
 </script>
 

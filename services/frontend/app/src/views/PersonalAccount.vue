@@ -101,7 +101,6 @@ export default class ListOrders extends Mapper {
   }
 
   private editProfileClick() {
-    console.log('editProfileClick')
     this.$bvModal.show('editLkModal')
   }
 }

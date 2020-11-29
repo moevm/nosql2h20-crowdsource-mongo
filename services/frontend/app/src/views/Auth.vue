@@ -70,8 +70,8 @@ const Mapper = Vue.extend({
 export default class Auth extends Mapper {
   private allFill = false
   private authData = {
-    login: '',
-    password: ''
+    login: 'test1@mail.ru',
+    password: 'test'
   }
 
   private checkEmail() {
@@ -79,11 +79,7 @@ export default class Auth extends Mapper {
   }
 
   async created() {
-    console.log('created main')
-    /*this.swiperComponentOption.slidesPerView =
-        this.width < this.mobileWidth ? 1 : 3
-      this.swiperComponentOption.slidesPerGroup =
-        this.width < this.mobileWidth ? 1 : 3*/
+    this.onChangeField()
   }
   private onChangeField() {
     this.allFill =
@@ -91,17 +87,16 @@ export default class Auth extends Mapper {
       this.authData.password !== ''
   }
   private registrationClick() {
-    console.log('registrationClick')
     this.$bvModal.show('registrationModal')
   }
-  private loginClick() {
+  private async loginClick() {
     const objReq: any = {
       email: this.authData.login,
       password: this.authData.password
     }
     this.userInfo.email = this.authData.login
-    this.fetchLoginUser(objReq)
-    console.log('loginClick')
+    await this.fetchLoginUser(objReq)
+    this.$router.push('/main/work')
   }
 }
 </script>

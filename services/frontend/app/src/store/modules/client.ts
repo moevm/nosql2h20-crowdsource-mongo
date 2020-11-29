@@ -8,9 +8,12 @@ import {
 import ClientAPI from '@/api/client'
 
 class ClientState {
+  selectOrder: any = null
+  fullInfoOrder: any = null
   viewOrderPage: any = {
     pairs: []
   }
+  allFilled = false
 }
 
 class ClientGetters extends Getters<ClientState> {
@@ -19,6 +22,30 @@ class ClientGetters extends Getters<ClientState> {
 
 class ClientMutations extends Mutations<ClientState> {
   // TODO
+  setFullInfoOrder(fullInfoOrder: any){
+    this.state.fullInfoOrder = fullInfoOrder
+  }
+  setSelectOrder(selectOrder: any) {
+    this.state.selectOrder = selectOrder
+  }
+  checkFill(){
+    let success = true
+    for (const item of this.state.viewOrderPage.pairs) {
+      if (item.first) {
+        if (item.first.selected === '') {
+          success = false
+          break
+        }
+      }
+      if (item.second) {
+        if (item.second.selected === '') {
+          success = false
+          break
+        }
+      }
+    }
+    this.state.allFilled = success
+  }
 }
 
 class ClientActions extends Actions<
@@ -27,26 +54,16 @@ class ClientActions extends Actions<
   ClientMutations,
   ClientActions
 > {
-  /*async fetchCatalogClient() {
+  async fetchFullInfoOrder(id: string) {
     try {
-      console.log('fetchCatalogClient start')
-      const response = await ClientAPI.getAllCatalog()
-      console.log('fetchCatalogClient', response.data)
-      this.mutations.setCatalogClient(response.data)
+      console.log('fetchFullInfoOrder start')
+      const response = await ClientAPI.getFullInfoOrder(id)
+      console.log('fetchFullInfoOrder', response.data)
+      this.mutations.setFullInfoOrder(response.data)
     } catch (err) {
       console.error(err)
     }
   }
-  async fetchProductClient(categoryID: number) {
-    try {
-      console.log('getAllProduct start', categoryID)
-      const response = await ClientAPI.getAllProduct(categoryID)
-      console.log('getAllProduct', response.data)
-      this.mutations.setAllProduct(response.data)
-    } catch (err) {
-      console.error(err)
-    }
-  }*/
 }
 
 export const client = new Module({

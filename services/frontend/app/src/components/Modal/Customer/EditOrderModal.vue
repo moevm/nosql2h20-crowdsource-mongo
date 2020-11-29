@@ -7,9 +7,13 @@
       @ok="editOrderClick"
       @show="openFuc"
     >
+      <label for="edit-name-order-textarea">Название заказа</label>
+      <div id="edit-name-order-textarea">
+        {{editOrder.title}}
+      </div>
       <label for="edit-desc-order-textarea">Описание</label>
       <b-form-textarea
-        v-model="addOrder.description"
+        v-model="descriptionEdited"
         no-resize
         id="edit-desc-order-textarea"
         placeholder="Введите описание заказа"
@@ -64,18 +68,16 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import _ from 'lodash'
 import AwesomeMask from 'awesome-mask'
-import StaticData from '@/config/config'
-import Confin from '@/config/configs'
-import PhotoInput from '@/components/help/PhotoInput.vue'
-import TextInput from "@/components/help/TextInput.vue";
-import Auth from '@/views/Auth.vue'
 import { customerMapper } from '@/store/modules/customer'
+import ClientAPI from '@/api/client'
 
 const Mappers = Vue.extend({
   computed: {
-    ...customerMapper.mapState(['addOrder'])
+    ...customerMapper.mapState(['editOrder', 'orderList'])
   },
-  methods: {}
+  methods: {
+    ...customerMapper.mapMutations(['deleteOrderWithId'])
+  }
 })
 
 @Component({
@@ -83,8 +85,6 @@ const Mappers = Vue.extend({
     mask: AwesomeMask
   },
   components: {
-    PhotoInput,
-    TextInput
   }
 })
 export default class AddSpecialtiesModal extends Mappers {
@@ -94,16 +94,18 @@ export default class AddSpecialtiesModal extends Mappers {
 
 
   private async editOrderClick() {
-    console.log('editOrderClick')
+    this.editOrder.description = this.descriptionEdited
+    await ClientAPI.editCustomerOrder(this.editOrder)
   }
 
   private onDeleteOrder() {
     this.$bvModal.show('deleteOrderModal')
   }
 
-  private deleteClick() {
-    //TODO Отправка запроса на удаление заказа
-    /*this.fileValueNoManual = null*/
+  private async deleteClick() {
+    this.deleteOrderWithId(this.editOrder._id.$oid)
+    await ClientAPI.deleteCustomerOrder(this.editOrder._id.$oid)
+    this.$bvModal.hide('editOrderModal')
   }
 
   private onDownloadDataOrder() {
@@ -111,11 +113,11 @@ export default class AddSpecialtiesModal extends Mappers {
   }
 
   private openFuc() {
-    console.log('openFuc')
+    this.descriptionEdited = this.editOrder.description
   }
 
   private onChangeField() {
-    console.log('onChangeField')
+   // console.log('onChangeField')
   }
 
   private async created() {

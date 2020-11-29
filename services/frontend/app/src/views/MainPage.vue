@@ -19,15 +19,7 @@ const Mapper = Vue.extend({
     Auth
   }
 })
-export default class MainPage extends Mapper {
-  async created() {
-    console.log('created main')
-    /*this.swiperComponentOption.slidesPerView =
-        this.width < this.mobileWidth ? 1 : 3
-      this.swiperComponentOption.slidesPerGroup =
-        this.width < this.mobileWidth ? 1 : 3*/
-  }
-}
+export default class MainPage extends Mapper {}
 </script>
 
 <style lang="scss" scoped></style>

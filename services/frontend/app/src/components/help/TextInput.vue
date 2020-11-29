@@ -75,7 +75,7 @@ export default class PhotoInput extends Mapper {
     },
     {
       headerName: 'Описание',
-      field: 'description',
+      field: 'fileValue',
       colId: 'valueManualDescription'
     },
     {
@@ -108,18 +108,15 @@ export default class PhotoInput extends Mapper {
   }
 
   private addClick() {
-    console.log('addClick', this.addOrder.dataManualText)
     this.addOrder.dataManualText = this.addOrder.dataManualText.concat({
       valueAnswer: '',
-      description: ''
+      fileValue: ''
     })
-    console.log('this.gridApi', this.gridApi)
     this.gridApi?.setRowData(this.addOrder.dataManualText)
   }
   private onDelete(params: any) {
     this.deleteParams = params
     this.$bvModal.show('deletePhotoModal')
-    console.log('onDelete')
   }
   private deleteClick() {
     this.addOrder.dataManualText = this.addOrder.dataManualText.filter(
