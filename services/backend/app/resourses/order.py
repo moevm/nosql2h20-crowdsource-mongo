@@ -16,7 +16,7 @@ def update_res(dict_json,dict_bd):
 def check_passed(user,order_id):
     dict_us = json.loads(user)
     for status in dict_us["orders_status"]:
-        if status[order_id] == "deleted" or status[order_id] == "ended":
+        if status.get(order_id) == "deleted" or status.get(order_id) == "ended":
             return False
     return True
 
