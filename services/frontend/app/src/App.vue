@@ -10,5 +10,4 @@
 @import '../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css';
 @import './scss/vfg.scss';
 @import './scss/helpers.scss';
-@import '../node_modules/vue-form-generator/dist/vfg.css';
 </style>
