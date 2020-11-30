@@ -69,8 +69,8 @@ const Mapper = Vue.extend({
 export default class Auth extends Mapper {
   private allFill = false
   private authData = {
-    login: 'test1@mail.ru',
-    password: 'test'
+    login: '',//'test1@mail.ru',
+    password: ''//'test'
   }
 
   private checkEmail() {
