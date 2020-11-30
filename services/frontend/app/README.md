@@ -1,4 +1,4 @@
-# food-Delivery-service-frontend
+# App
 
 ## Project setup
 ```
