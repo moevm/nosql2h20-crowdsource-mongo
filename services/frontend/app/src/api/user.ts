@@ -1,6 +1,5 @@
 import { http } from '@/api/httpAxios'
 /*import createURLParams from '@/api/datasource/createURLParams.ts'*/
-import axios from 'axios'
 
 export interface UserRegister {
   email: string
