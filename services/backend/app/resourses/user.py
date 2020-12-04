@@ -16,16 +16,17 @@ def registration():
 
 @users.route('/login',methods=['POST'])
 def login():
-    body = request.get_json()
-    user = User.objects.get(email=body.get('email'))
-    authorized = user.check_password(body.get('password'))
-    if not authorized:
+    try:
+        body = request.get_json()
+        user = User.objects.get(email=body.get('email'))
+        authorized = user.check_password(body.get('password'))
+        if not authorized:
+            return {'error': 'Email or password invalid'}, 401
+        expires = datetime.timedelta(days=1)
+        access_token = create_access_token(identity=str(user.id), expires_delta=expires)   
+        return {'token': access_token, 'user_id': str(user.id)}, 200
+    except Exception as e:
         return {'error': 'Email or password invalid'}, 401
-
-    expires = datetime.timedelta(days=1)
-    access_token = create_access_token(identity=str(user.id), expires_delta=expires)
-    
-    return {'token': access_token, 'user_id': str(user.id)}, 200
 
 @users.route('/<id>',methods=['GET'])
 @jwt_required
