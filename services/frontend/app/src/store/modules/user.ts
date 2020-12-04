@@ -21,6 +21,7 @@ class UserState {
     customer: ''
   }
   isWork = this.userInfo.type === Config.typeUser[0]
+  isBadAuth = false
 }
 
 class UserGetters extends Getters<UserState> {
@@ -71,6 +72,7 @@ class UserActions extends Actions<
   }
   async fetchLoginUser(loginObj: UserLogin) {
     try {
+      this.state.isBadAuth = false
       const response = await UserAPI.login(loginObj)
       this.mutations.setToken(response.data.token)
       this.mutations.setNewUserId(response.data.user_id)
@@ -84,7 +86,11 @@ class UserActions extends Actions<
       //console.log(err.response.data)
       localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
       this.state.isAuthenticated = false
-      console.error(err)
+      if (err.response.status === 401) {
+        this.state.isBadAuth = true
+      } else {
+        console.error(err)
+      }
     }
   }
   async fetchGetUser() {

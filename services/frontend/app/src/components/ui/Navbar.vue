@@ -42,6 +42,7 @@
           <font-awesome-icon :icon="['fa', 'times']" />
         </b-button>
       </div>
+      <Toaster />
     </b-navbar>
   </div>
 </template>
@@ -49,6 +50,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { userMapper } from '@/store/modules/user'
+import Toaster from '@/components/ui/Toaster.vue'
 
 const Mapper = Vue.extend({
   computed: {
@@ -59,7 +61,7 @@ const Mapper = Vue.extend({
   }
 })
 
-@Component({ components: {} })
+@Component({ components: {Toaster} })
 export default class Navbar extends Mapper {
   private name = ''
   private exit() {

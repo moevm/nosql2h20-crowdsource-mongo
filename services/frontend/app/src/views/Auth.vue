@@ -41,23 +41,28 @@
       </b-button>
     </div>
     <b-link class="authLink" href="/main">Забыли пароль?</b-link>
+    <div v-if="isBadAuth" style="text-align: center; color: red;">
+      Неправильный адрес электронной почты или пароль!
+    </div>
     <Registration />
     <br />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import Registration from '@/components/Modal/Auth/Registration.vue'
 import { checkEmail } from '@/utils/fieldValidation'
 import { userMapper } from '@/store/modules/user'
+import {toastMapper} from "@/store/modules/toast";
 
 const Mapper = Vue.extend({
   computed: {
-    ...userMapper.mapState(['userInfo'])
+    ...userMapper.mapState(['userInfo', 'isBadAuth'])
   },
   methods: {
-    ...userMapper.mapActions(['fetchLoginUser'])
+    ...userMapper.mapActions(['fetchLoginUser']),
+    ...toastMapper.mapActions(['pushToast'])
   }
 })
 
