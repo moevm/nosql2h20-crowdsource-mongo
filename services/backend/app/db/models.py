@@ -21,6 +21,7 @@ class Order(db.Document):
     title = db.StringField()
     description = db.StringField()
     dateCreate = db.StringField()
-    counter = db.IntField()
+    counter_of_ended = db.IntField(default = 0)
+    counter_of_started = db.IntField(default = 0)
     data_type = db.StringField()
     data = db.DictField(db.DictField(), default={})

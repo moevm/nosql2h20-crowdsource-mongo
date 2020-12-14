@@ -36,3 +36,23 @@ def get_user(id):
         user = User.objects.get(id=id).to_json()
         return Response(user, mimetype="application/json", status=200)
     return {"msg":"it isnt your acc"},401
+
+@users.route('/<id>/orders',methods=['GET'])
+@jwt_required
+def get_orders(id):
+    user_id = get_jwt_identity()
+    if user_id == id:
+        user = User.objects.get(id = id).to_json()
+        dict_user = json.loads(user)
+        dict_of_orders = {}
+        counter = 0
+        for status in dict_user["orders_status"]:
+            for key in status:
+                st = status.get(key)
+                if st == "started" or st == "posted" or st == "ended":
+                    dict_of_orders[counter] = json.loads(Order.objects.get(id= key).to_json())
+                    counter += 1
+        json_of_orders = json.dumps(dict_of_orders)
+        return Response(json_of_orders, mimetype="application/json", status=200)
+    else:
+        return '', 401

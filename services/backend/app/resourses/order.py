@@ -51,7 +51,7 @@ def update_order(id):
     else:
         if check_passed(user.to_json(),str(order.id)):
             body = update_res(body,order.to_json())
-            order.update(data=body["data"])
+            order.update(data=body["data"],counter_of_ended = order.counter_of_ended+1)
             user.update(pull__orders_status= {str(order.id):"started"})
             user.update(push__orders_status= {str(order.id):"ended"})
     return '', 200
@@ -78,9 +78,11 @@ def get_order(id):
     user_id = get_jwt_identity()
     order = Order.objects.get(id=id)
     if order.author == user_id:
+        #TODO check started
         order= order.to_json()
         return Response(order, mimetype="application/json", status=200)
     else:
+        order.update(counter_of_started = order.counter_of_started+1)
         User.objects.get(id=user_id).update(push__orders_status={str(order.id):"started"})
         #TODO give data without res
         order=order.to_json()

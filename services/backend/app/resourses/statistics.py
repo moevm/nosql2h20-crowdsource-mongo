@@ -22,3 +22,16 @@ def get_data_statistics(id):
 		res = json.dumps(res)
 		return Response(res, mimetype="application/json", status=200)
 	return {"msg":"it isnt your order"}
+
+@statistics.route('/orders/<id>/user_statistics',methods=['GET'])
+@jwt_required
+def get_user_statistics(id):
+	user_id = get_jwt_identity()
+	order = Order.objects.get(id=id)
+	if order.author == user_id:
+		res = {}
+		res["ended"] = order.counter_of_ended
+		res["startes"] = order.counter_of_started
+		res = json.dumps(res)
+		return Response(res, mimetype="application/json", status=200)
+	return {"msg":"it isnt your order"}
