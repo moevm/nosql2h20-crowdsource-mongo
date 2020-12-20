@@ -22,4 +22,7 @@ export default class ClientAPI {
   public static getFullInfoOrder(id: string) {
     return http.get(`/orders/${id}`)
   }
+  public static getOrderWithId(id: string) {
+    return http.get(`/${id}/orders`)
+  }
 }

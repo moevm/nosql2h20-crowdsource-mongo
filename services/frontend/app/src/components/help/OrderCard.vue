@@ -112,6 +112,7 @@ export default class NewsPreview extends Mappers {
   }
 
   private onEditClick() {
+    console.log('onEditClick', this.product)
     this.setEditOrder(this.product)
     this.$bvModal.show('editOrderModal')
   }
@@ -122,6 +123,8 @@ export default class NewsPreview extends Mappers {
   }
 
   private onStatisticClick() {
+    this.setEditOrder(this.product)
+    this.$router.push('/main/work/statistic')
     // console.log('onStatisticClick')
   }
 }

@@ -1,8 +1,18 @@
 <template>
   <div class="ml-5">
-    <div v-if="isWork">
+    <div>
       <h5>Фильтры</h5>
       <div class="d-flex mb-4 filterDivCatalog">
+        <div class="ml-1 w-25">
+          <label for="filterTaskText">Поиск по заданиям</label>
+          <b-form-input
+            id="filterTaskText"
+            v-model="filtersTaskText"
+            @input="findWithText"
+            placeholder="Текст или название задачи"
+            trim
+          />
+        </div>
         <div v-if="isWork" class="ml-1 w-15">
           <label for="filterTypeTask">Тип задания</label>
           <b-form-checkbox-group
@@ -54,11 +64,12 @@ import EditOrderModal from '@/components/Modal/Customer/EditOrderModal.vue'
 const Mappers = Vue.extend({
   computed: {
     ...clientMapper.mapState([]),
-    ...userMapper.mapState(['isAuthenticated', 'isWork']),
+    ...userMapper.mapState(['isAuthenticated', 'isWork', 'userId']),
     ...customerMapper.mapState(['orderList'])
   },
   methods: {
-    ...customerMapper.mapActions(['fetchAllOrders'])
+    ...customerMapper.mapMutations(['filterWithTextOrder']),
+    ...customerMapper.mapActions(['fetchAllOrders', 'fetchOrdersForUser'])
   }
 })
 
@@ -70,6 +81,7 @@ const Mappers = Vue.extend({
   }
 })
 export default class MainWorkPage extends Mappers {
+  private filtersTaskText = ''
   private filtersTypeTask = Config.typeTask
   private filtersCustomer = Config.customers
   private checkFiltersTypeTask = []
@@ -79,8 +91,13 @@ export default class MainWorkPage extends Mappers {
     this.$bvModal.show('addOrderModal')
   }
 
+  private findWithText(value: any) {
+    this.filterWithTextOrder(value)
+  }
+
   async created() {
-    await this.fetchAllOrders()
+    !this.isWork ? await this.fetchOrdersForUser(this.userId) : await this.fetchAllOrders()
+    //await this.fetchAllOrders()
   }
 }
 </script>
@@ -94,7 +111,7 @@ export default class MainWorkPage extends Mappers {
   font-size: 18px;
 }
 .catalogList {
-  height: 60vh;
+  height: 70vh;
   overflow: scroll;
   overflow-x: hidden;
 }

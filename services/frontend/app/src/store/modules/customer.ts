@@ -30,6 +30,8 @@ class CustomerState {
     indexManual: -1
   }
   orderList: any[] = []
+  orderListStart: any[] = []
+  orderListAllUSer: any[] = []
   editOrder: any = null
 }
 
@@ -43,7 +45,21 @@ class CustomerMutations extends Mutations<CustomerState> {
     this.state.editOrder = editOrder
   }
   setOrderList(orderList: any[]) {
-    this.state.orderList = orderList
+    const newArr: any[] = []
+    for (const item in orderList) {
+      newArr.push(orderList[item])
+    }
+    this.state.orderListStart = newArr
+    this.state.orderList = newArr
+  }
+  filterWithTextOrder(test: string) {
+    this.state.orderList = this.state.orderListStart
+    if (test !== '') {
+      this.state.orderList = this.state.orderList.filter((val: any) => val.title.includes(test) || val.description.includes(test))
+    }
+  }
+  setOrderListAllUSer(orderList: any[]) {
+    this.state.orderListAllUSer = JSON.parse(JSON.stringify(orderList))
   }
   addOrderInList(orderList: any) {
     this.state.orderList = this.state.orderList.concat(orderList)
@@ -68,6 +84,14 @@ class CustomerActions extends Actions<
   async fetchAllOrders() {
     try {
       const response = await ClientAPI.getAllOrders()
+      this.mutations.setOrderListAllUSer(response.data) //TODO поменять setOrderListAllUSer setOrderList
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  async fetchOrdersForUser(id: string) {
+    try {
+      const response = await ClientAPI.getOrderWithId(id)
       this.mutations.setOrderList(response.data)
     } catch (err) {
       console.error(err)
