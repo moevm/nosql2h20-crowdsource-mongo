@@ -15,7 +15,7 @@
           />-->
         </div>
         <div class="mr-2">
-          <div class="d-flex">
+          <div v-if="isWork" class="d-flex">
             <b-form-radio
               class="mr-3"
               v-for="(obj, index) of pair.first.answers"
@@ -26,6 +26,15 @@
               @change="changeValFirst"
               >{{ obj }}</b-form-radio
             >
+          </div>
+          <div v-if="!isWork" class="d-flex">
+            <div
+              class="mr-3"
+              v-for="(obj, index) of pair.first.answers"
+              :key="index"
+            >
+              {{ obj }}
+            </div>
           </div>
         </div>
       </div>
@@ -43,7 +52,7 @@
           />-->
         </div>
         <div class="mr-2">
-          <div class="d-flex">
+          <div v-if="isWork" class="d-flex">
             <b-form-radio
               class="mr-3"
               v-for="(obj, index) of pair.second.answers"
@@ -55,6 +64,15 @@
               >{{ obj }}</b-form-radio
             >
           </div>
+          <div v-if="!isWork" class="d-flex">
+            <div
+              class="mr-3"
+              v-for="(obj, index) of pair.first.answers"
+              :key="index"
+            >
+              {{ obj }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -65,10 +83,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { clientMapper } from '@/store/modules/client'
+import { userMapper } from '@/store/modules/user'
 
 const Mappers = Vue.extend({
   computed: {
-    ...clientMapper.mapState(['viewOrderPage'])
+    ...clientMapper.mapState(['viewOrderPage']),
+    ...userMapper.mapState(['isWork'])
   },
   methods: {
     ...clientMapper.mapMutations(['checkFill'])
@@ -98,19 +118,6 @@ export default class ViewOrderCard extends Mappers {
 
   onPreviewLoad(event: any) {
     this.previewHeight = event.target.clientWidth * 0.5625 // 0.5625 = 9/16 => Соотношение сторон: 16:9
-  }
-
-  /*  private onChangeField() {
-    console.log('onChangeField')
-  }*/
-
-  private onExportDataClick() {
-    //TODO Отправка запроса на получение данных
-    //console.log('onExportDataClick')
-  }
-
-  private onStatisticClick() {
-    // console.log('onStatisticClick')
   }
 }
 </script>

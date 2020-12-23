@@ -55,7 +55,9 @@ class CustomerMutations extends Mutations<CustomerState> {
   filterWithTextOrder(test: string) {
     this.state.orderList = this.state.orderListStart
     if (test !== '') {
-      this.state.orderList = this.state.orderList.filter((val: any) => val.title.includes(test) || val.description.includes(test))
+      this.state.orderList = this.state.orderList.filter(
+        (val: any) => val.title.includes(test) || val.description.includes(test)
+      )
     }
   }
   setOrderListAllUSer(orderList: any[]) {
@@ -84,7 +86,7 @@ class CustomerActions extends Actions<
   async fetchAllOrders() {
     try {
       const response = await ClientAPI.getAllOrders()
-      this.mutations.setOrderListAllUSer(response.data) //TODO поменять setOrderListAllUSer setOrderList
+      this.mutations.setOrderList(response.data) //TODO поменять setOrderListAllUSer setOrderList
     } catch (err) {
       console.error(err)
     }

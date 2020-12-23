@@ -6,13 +6,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import Config from '@/config/config'
-import { clientMapper } from '@/store/modules/client'
 import { userMapper } from '@/store/modules/user'
 import { customerMapper } from '@/store/modules/customer'
 import StatisticAPI from '@/api/statistic'
-import VueCharts from 'vue-chartjs'
-import { Bar, mixins } from 'vue-chartjs';
+import { Bar, mixins } from 'vue-chartjs'
 
 const Mappers = Vue.extend({
   extends: Bar,
@@ -23,13 +20,13 @@ const Mappers = Vue.extend({
   }
 })
 
-@Component({
-})
-export default class StatisticAnswers extends Mappers{
+@Component({})
+export default class StatisticAnswers extends Mappers {
   public renderChart!: (chartData: any, options?: any) => void
-  async mounted () {
+  async mounted() {
     // Overwriting base render method with actual data.
-    const data = (await StatisticAPI.geAnswerStatistic(this.editOrder._id.$oid)).data
+    const data = (await StatisticAPI.geAnswerStatistic(this.editOrder._id.$oid))
+      .data
     const keyAnswer: any[] = []
     const valAnswer: any[] = []
     for (const keySup in data) {
