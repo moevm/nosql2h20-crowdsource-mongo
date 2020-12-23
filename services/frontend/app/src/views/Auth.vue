@@ -54,7 +54,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import Registration from '@/components/Modal/Auth/Registration.vue'
 import { checkEmail } from '@/utils/fieldValidation'
 import { userMapper } from '@/store/modules/user'
-import {toastMapper} from "@/store/modules/toast";
+import { toastMapper } from '@/store/modules/toast'
 
 const Mapper = Vue.extend({
   computed: {
@@ -74,8 +74,8 @@ const Mapper = Vue.extend({
 export default class Auth extends Mapper {
   private allFill = false
   private authData = {
-    login: '',//'test1@mail.ru',
-    password: ''//'test'
+    login: '', //'test1@mail.ru',
+    password: '' //'test'
   }
 
   private checkEmail() {

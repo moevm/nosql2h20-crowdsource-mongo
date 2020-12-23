@@ -66,7 +66,7 @@ const routes: Array<RouteConfig> = [
         path: '/main/work/statistic',
         name: 'Statistic',
         component: () =>
-            import(/* webpackChunkName: "lorem" */ '@/views/Statistic.vue'),
+          import(/* webpackChunkName: "lorem" */ '@/views/Statistic.vue'),
         beforeEnter: ifAuthenticated
       }
     ]

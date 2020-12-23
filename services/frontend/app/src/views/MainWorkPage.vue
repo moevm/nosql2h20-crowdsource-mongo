@@ -96,7 +96,10 @@ export default class MainWorkPage extends Mappers {
   }
 
   async created() {
-    !this.isWork ? await this.fetchOrdersForUser(this.userId) : await this.fetchAllOrders()
+    console.log()
+    !this.isWork
+      ? await this.fetchOrdersForUser(this.userId)
+      : await this.fetchAllOrders()
     //await this.fetchAllOrders()
   }
 }

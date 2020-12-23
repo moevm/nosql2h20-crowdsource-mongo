@@ -10,7 +10,7 @@ import Config from '@/config/config'
 import { customerMapper } from '@/store/modules/customer'
 import StatisticAPI from '@/api/statistic'
 import VueCharts from 'vue-chartjs'
-import { Pie, mixins } from 'vue-chartjs';
+import { Pie, mixins } from 'vue-chartjs'
 
 const Mappers = Vue.extend({
   extends: Pie,
@@ -20,19 +20,18 @@ const Mappers = Vue.extend({
   }
 })
 
-@Component({
-})
-export default class StatisticUsers extends Mappers{
+@Component({})
+export default class StatisticUsers extends Mappers {
   private isChart = false
   public renderChart!: (chartData: any, options?: any) => void
-  async mounted () {
+  async mounted() {
     // Overwriting base render method with actual data.
-    const data = (await StatisticAPI.getUserStatistic(this.editOrder._id.$oid)).data
+    const data = (await StatisticAPI.getUserStatistic(this.editOrder._id.$oid))
+      .data
     const keyAnswer: any[] = []
     const valAnswer: any[] = []
     for (const keySup in data) {
-      keyAnswer.push(keySup === 'started' ? 'Начали' : 'Закончили')
-      //valAnswer.push(5)
+      keyAnswer.push(keySup === 'startes' ? 'Начали' : 'Закончили')
       valAnswer.push(data[keySup])
     }
     for (const item of valAnswer) {
@@ -51,11 +50,7 @@ export default class StatisticUsers extends Mappers{
       labels: keyAnswer,
       datasets: [
         {
-          backgroundColor: [
-            '#f87979',
-            '#aef879',
-            '#79a8f8'
-          ],
+          backgroundColor: ['#f87979', '#aef879', '#79a8f8'],
           data: valAnswer
         }
       ]

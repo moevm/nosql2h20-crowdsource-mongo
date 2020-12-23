@@ -61,7 +61,7 @@ const Mapper = Vue.extend({
   }
 })
 
-@Component({ components: {Toaster} })
+@Component({ components: { Toaster } })
 export default class Navbar extends Mapper {
   private name = ''
   private exit() {

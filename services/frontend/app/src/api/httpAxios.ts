@@ -6,7 +6,9 @@ export const baseURL =
     : 'http://localhost:5000/'
 
 export const clientBase =
-  process.env.NODE_ENV === 'production' ? 'http://localhost:8080' : 'http://localhost:8080'
+  process.env.NODE_ENV === 'production'
+    ? 'http://localhost:8080'
+    : 'http://localhost:8080'
 
 export const socketPath = '/api/socket.io'
 

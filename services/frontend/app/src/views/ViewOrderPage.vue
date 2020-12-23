@@ -18,6 +18,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { clientMapper } from '@/store/modules/client'
 import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
 import ClientAPI from '@/api/client'
+import {userMapper} from "@/store/modules/user";
 
 const Mappers = Vue.extend({
   computed: {
@@ -26,7 +27,8 @@ const Mappers = Vue.extend({
       'selectOrder',
       'fullInfoOrder',
       'allFilled'
-    ])
+    ]),
+    ...userMapper.mapState(['isAuthenticated', 'isWork', 'userId']),
   },
   methods: {}
 })
@@ -58,6 +60,7 @@ export default class CatalogProduct extends Mappers {
 
   async created() {
     const inputArr: any[] = [] //Config.orderList
+    //console.log('this.fullInfoOrder.data', this.fullInfoOrder.data)
     for (const key in this.fullInfoOrder.data) {
       const keyAnswer: any[] = []
       for (const keySup in this.fullInfoOrder.data[`${key}`]) {
