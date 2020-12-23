@@ -40,7 +40,7 @@
         Регистрация
       </b-button>
     </div>
-    <b-link class="authLink" href="/main">Забыли пароль?</b-link>
+    <!--<b-link class="authLink" href="/main">Забыли пароль?</b-link>-->
     <div v-if="isBadAuth" style="text-align: center; color: red;">
       Неправильный адрес электронной почты или пароль!
     </div>

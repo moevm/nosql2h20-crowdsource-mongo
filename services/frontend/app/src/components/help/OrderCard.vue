@@ -52,10 +52,10 @@
           <b-button
             v-if="!isWork"
             class="mr-1"
-            @click="onExportDataClick()"
+            @click="onProceedClick()"
             variant="info"
           >
-            Выгрузить данные
+            Статистика по каждома элементу
           </b-button>
           <b-button
             v-if="!isWork"
@@ -63,7 +63,7 @@
             @click="onStatisticClick()"
             variant="info"
           >
-            Статистика
+            Общая статистика
           </b-button>
         </div>
       </div>
@@ -112,20 +112,13 @@ export default class NewsPreview extends Mappers {
   }
 
   private onEditClick() {
-    console.log('onEditClick', this.product)
     this.setEditOrder(this.product)
     this.$bvModal.show('editOrderModal')
-  }
-
-  private onExportDataClick() {
-    //TODO Отправка запроса на получение данных
-    //console.log('onExportDataClick')
   }
 
   private onStatisticClick() {
     this.setEditOrder(this.product)
     this.$router.push('/main/work/statistic')
-    // console.log('onStatisticClick')
   }
 }
 </script>

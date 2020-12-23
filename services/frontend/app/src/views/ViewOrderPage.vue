@@ -5,7 +5,11 @@
     </div>
     <div class="menuDiv">
       <div class="buttonAdd">
-        <b-button variant="info" @click="endProcessed" :disabled="!allFilled"
+        <b-button
+          variant="info"
+          @click="endProcessed"
+          :hidden="!isWork"
+          :disabled="!allFilled"
           >Отправить данные</b-button
         >
       </div>
@@ -18,7 +22,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { clientMapper } from '@/store/modules/client'
 import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
 import ClientAPI from '@/api/client'
-import {userMapper} from "@/store/modules/user";
+import { userMapper } from '@/store/modules/user'
 
 const Mappers = Vue.extend({
   computed: {
@@ -28,7 +32,7 @@ const Mappers = Vue.extend({
       'fullInfoOrder',
       'allFilled'
     ]),
-    ...userMapper.mapState(['isAuthenticated', 'isWork', 'userId']),
+    ...userMapper.mapState(['isWork'])
   },
   methods: {}
 })
@@ -54,17 +58,29 @@ export default class CatalogProduct extends Mappers {
     }
     const sendObj: any = { data: this.fullInfoOrder.data }
     sendObj['data_type'] = this.fullInfoOrder.data_type
+    console.log('endProcessed', sendObj, this.selectOrder._id.$oid)
     await ClientAPI.editWorkerOrder(sendObj, this.selectOrder._id.$oid)
     this.$router.push('/main/work')
   }
 
   async created() {
-    const inputArr: any[] = [] //Config.orderList
-    //console.log('this.fullInfoOrder.data', this.fullInfoOrder.data)
+    const inputArr: any[] = []
     for (const key in this.fullInfoOrder.data) {
       const keyAnswer: any[] = []
+      let sumValKay = 0
       for (const keySup in this.fullInfoOrder.data[`${key}`]) {
-        keyAnswer.push(keySup)
+        this.isWork
+          ? keyAnswer.push(keySup)
+          : (sumValKay += this.fullInfoOrder.data[`${key}`][`${keySup}`])
+      }
+      if (!this.isWork) {
+        for (const keySup in this.fullInfoOrder.data[`${key}`]) {
+          keyAnswer.push(
+            `${keySup} - ${(this.fullInfoOrder.data[`${key}`][`${keySup}`] /
+              sumValKay) *
+              100}%`
+          )
+        }
       }
       const tmpObj: any = {
         mainObj: key,
