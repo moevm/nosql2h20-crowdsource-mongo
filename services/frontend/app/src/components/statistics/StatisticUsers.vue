@@ -6,10 +6,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import Config from '@/config/config'
 import { customerMapper } from '@/store/modules/customer'
 import StatisticAPI from '@/api/statistic'
-import VueCharts from 'vue-chartjs'
 import { Pie, mixins } from 'vue-chartjs'
 
 const Mappers = Vue.extend({
