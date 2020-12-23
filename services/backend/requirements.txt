@@ -27,5 +27,5 @@ six==1.11.0
 Werkzeug==1.0.1
 WTForms==2.3.3
 flask_bcrypt==0.7.1
-flask_jwt_extended==3.24.1
+flask_jwt_extended==3.25.0
 datetime==4.1.1

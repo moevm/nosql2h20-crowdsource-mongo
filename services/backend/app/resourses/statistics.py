@@ -31,7 +31,7 @@ def get_user_statistics(id):
 	if order.author == user_id:
 		res = {}
 		res["ended"] = order.counter_of_ended
-		res["startes"] = order.counter_of_started
+		res["started"] = order.counter_of_started
 		res = json.dumps(res)
 		return Response(res, mimetype="application/json", status=200)
 	return {"msg":"it isnt your order"}

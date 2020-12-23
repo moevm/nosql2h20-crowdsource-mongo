@@ -1,7 +1,8 @@
 from flask import Flask, request, Response, Blueprint
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import datetime
-from app.db.models import User
+from app.db.models import User,Order
+import json
 
 users = Blueprint('users', __name__)
 
@@ -16,17 +17,14 @@ def registration():
 
 @users.route('/login',methods=['POST'])
 def login():
-    try:
-        body = request.get_json()
-        user = User.objects.get(email=body.get('email'))
-        authorized = user.check_password(body.get('password'))
-        if not authorized:
-            return {'error': 'Email or password invalid'}, 401
-        expires = datetime.timedelta(days=1)
-        access_token = create_access_token(identity=str(user.id), expires_delta=expires)   
-        return {'token': access_token, 'user_id': str(user.id)}, 200
-    except Exception as e:
+    body = request.get_json()
+    user = User.objects.get(email=body.get('email'))
+    authorized = user.check_password(body.get('password'))
+    if not authorized:
         return {'error': 'Email or password invalid'}, 401
+    expires = datetime.timedelta(days=1)
+    access_token = create_access_token(identity=str(user.id), expires_delta=expires)   
+    return {'token': access_token, 'user_id': str(user.id)}, 200
 
 @users.route('/<id>',methods=['GET'])
 @jwt_required
