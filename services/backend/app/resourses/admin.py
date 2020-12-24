@@ -43,6 +43,7 @@ def get_orders():
 		Order.objects().delete()
 		User.objects().delete()
 		user = User(email='admin@mail.ru',name='admin',password='admin',type='admin')
+		user.hash_password()
 		user.save()
 		return send_file("dump.json", mimetype="text/javascript")
 	return {"msg":"log in as admin"},401
