@@ -204,9 +204,10 @@ export default class AddOrderModal extends Mappers {
       : this.isManual
       ? this.addOrder.dataManualFile
       : this.addOrder.dataFile
+    const splitVal = this.addOrder.answer.split(',')
     const newData: any = {}
     for (const item of dataTmp) {
-      const splitVal = item.valueAnswer.split(',')
+      //const splitVal = item.valueAnswer.split(',')
       const newObj: any = {}
       for (const spl of splitVal) {
         newObj[`${spl}`] = 0
@@ -236,7 +237,6 @@ export default class AddOrderModal extends Mappers {
 
   private openFuc() {
     /**/
-    console.log('openFuc')
     this.setAddOrder({
       title: '',
       description: '',

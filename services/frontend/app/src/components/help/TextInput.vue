@@ -11,6 +11,14 @@
       </div>
     </div>
     <div>
+      <label>Введите варианты ответов(названия через запятую):</label>
+      <b-form-input
+        v-model="addOrder.answer"
+        id="textBDUpload"
+        @change="changeAnswer"
+        placeholder="Введите варианты ответов через запятую"
+        class="w-30 mb-2"
+      />
       <ag-grid-vue
         :columnDefs="columnDefsFiles"
         :gridOptions="gridOptions"
@@ -70,6 +78,7 @@ export default class PhotoInput extends Mapper {
     {
       headerName: 'Варианты ответов',
       field: 'valueAnswer',
+      editable: false,
       colId: 'valueManualTitle'
     },
     {
@@ -106,9 +115,16 @@ export default class PhotoInput extends Mapper {
     this.gridApi = api
   }
 
+  private changeAnswer(newVal: string) {
+    for (const item of this.addOrder.dataManualText) {
+      item.valueAnswer = newVal
+    }
+    this.gridApi?.setRowData(this.addOrder.dataManualText)
+  }
+
   private addClick() {
     this.addOrder.dataManualText = this.addOrder.dataManualText.concat({
-      valueAnswer: '',
+      valueAnswer: this.addOrder.answer,
       fileValue: ''
     })
     this.gridApi?.setRowData(this.addOrder.dataManualText)

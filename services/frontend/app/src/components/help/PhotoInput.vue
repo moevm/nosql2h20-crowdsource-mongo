@@ -6,13 +6,21 @@
       </div>
       <div class="buttonAdd">
         <div style="margin-left: 10px;">
-          <b-button variant="info" disabled @click="addClick"
+          <b-button variant="info" @click="addClick"
             >Добавить</b-button
           >
         </div>
       </div>
     </div>
     <div>
+      <label>Введите варианты ответов(названия через запятую):</label>
+      <b-form-input
+        v-model="addOrder.answer"
+        id="textBDUpload"
+        @change="changeAnswer"
+        placeholder="Введите варианты ответов через запятую"
+        class="w-30 mb-2"
+      />
       <ag-grid-vue
         :columnDefs="columnDefsFiles"
         :gridOptions="gridOptions"
@@ -97,12 +105,19 @@ export default class PhotoInput extends Mapper {
     defaultColDef: {
       autoHeight: true,
       cellStyle: { 'white-space': 'normal' },
-      editable: true
+      editable: false
     },
     onGridReady: this.onGridReady
   }
   private onGridReady({ api }: { api: any }) {
     this.gridApi = api
+  }
+
+  private changeAnswer(newVal: string) {
+    for (const item of this.addOrder.dataManualFile) {
+      item.valueAnswer = newVal
+    }
+    this.gridApi?.setRowData(this.addOrder.dataManualFile)
   }
 
   private onLoad(params: any) {
@@ -111,7 +126,7 @@ export default class PhotoInput extends Mapper {
   }
   private addClick() {
     this.addOrder.dataManualFile = this.addOrder.dataManualFile.concat({
-      valueAnswer: '',
+      valueAnswer: this.addOrder.answer,
       fileValue: null
     })
     this.gridApi?.setRowData(this.addOrder.dataManualFile)

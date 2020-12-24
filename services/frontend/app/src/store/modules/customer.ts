@@ -27,7 +27,8 @@ class CustomerState {
     dataManualFile: [],
     dataManualText: [],
     dataFile: {},
-    indexManual: -1
+    indexManual: -1,
+    answer: ''
   }
   orderList: any[] = []
   orderListStart: any[] = []
@@ -67,7 +68,6 @@ class CustomerMutations extends Mutations<CustomerState> {
     this.state.orderList = this.state.orderList.concat(orderList)
   }
   setAddOrder(obj: AddOrder) {
-    console.log('setAddOrder')
     this.state.addOrder = obj
   }
   deleteOrderWithId(id: string) {
