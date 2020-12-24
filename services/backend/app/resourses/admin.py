@@ -12,7 +12,7 @@ def post_users():
 	user_id = get_jwt_identity()
 	user = User.objects().get(id=user_id)
 	if user.email == "admin":
-		file = request.get_json(force= True)
+		file = request.form.get('file')
 		if file:
 			data = file
 			for order in data["orders"]:

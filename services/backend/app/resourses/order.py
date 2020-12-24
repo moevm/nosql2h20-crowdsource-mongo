@@ -16,7 +16,16 @@ def update_res(dict_json,dict_bd):
 def check_passed(user,order_id):
     dict_us = json.loads(user)
     for status in dict_us["orders_status"]:
-        if status.get(order_id) == "deleted" or status.get(order_id) == "ended":
+        st = status.get(order_id)
+        if st == "deleted" or st == "ended":
+            return False
+    return True
+
+def check_started(user,order_id):
+    dict_us = json.loads(user)
+    for status in dict_us["orders_status"]:
+        st = status.get(order_id)
+        if st == "deleted" or st == "ended" or st == "started":
             return False
     return True
 
@@ -77,13 +86,14 @@ def delete_order(id):
 def get_order(id):
     user_id = get_jwt_identity()
     order = Order.objects.get(id=id)
+    user = User.objects.get(id = user_id)
     if order.author == user_id:
-        #TODO check started
         order= order.to_json()
         return Response(order, mimetype="application/json", status=200)
     else:
-        order.update(counter_of_started = order.counter_of_started+1)
-        User.objects.get(id=user_id).update(push__orders_status={str(order.id):"started"})
+        if check_started(user.to_json(),str(order.id)):
+            order.update(counter_of_started = order.counter_of_started+1)
+            user.update(push__orders_status={str(order.id):"started"})
         #TODO give data without res
         order=order.to_json()
         return Response(order, mimetype="application/json", status=200)
