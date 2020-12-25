@@ -12,7 +12,10 @@ def post_users():
 	user_id = get_jwt_identity()
 	user = User.objects().get(id=user_id)
 	if user.email == "admin":
-		file = request.form.get('file')
+		file = request.files['file']
+		file.save('import.json')
+		with open("import.json", "r") as read_file:
+			file = json.load(read_file)
 		if file:
 			data = file
 			for order in data["orders"]:
