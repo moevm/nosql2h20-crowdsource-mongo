@@ -10,8 +10,7 @@ admin = Blueprint('admin', __name__)
 @jwt_required
 def post_users():
 	user_id = get_jwt_identity()
-	user = User.objects().get(id=user_id)
-	if user.email == "admin":
+	if user_id == "admin":
 		file = request.files['file']
 		file.save('import.json')
 		with open("import.json", "r") as read_file:
@@ -35,8 +34,7 @@ def post_users():
 @jwt_required
 def get_orders():
 	user_id = get_jwt_identity()
-	user = User.objects().get(id=user_id)
-	if user.email == "admin":
+	if user.id == "admin":
 		orders = Order.objects().to_json()
 		users = User.objects().to_json()
 
@@ -45,8 +43,5 @@ def get_orders():
 			json.dump(dump_db, write_file)
 		Order.objects().delete()
 		User.objects().delete()
-		user = User(email='admin@mail.ru',name='admin',password='admin',type='admin')
-		user.hash_password()
-		user.save()
 		return send_file("dump.json", mimetype="text/javascript")
 	return {"msg":"log in as admin"},401

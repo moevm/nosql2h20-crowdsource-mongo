@@ -1,7 +1,8 @@
-from flask import Flask, request, Response, Blueprint
+from flask import Flask, request, Response, Blueprint, send_from_directory
 from app.db.models import Order, User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
+import os
 
 orders = Blueprint('orders', __name__)
 
@@ -47,6 +48,26 @@ def add_order():
     user.update(push__orders_status={str(order.id):"posted"})
     id = order.id
     return {'id': str(id)}, 200
+
+@orders.route('/orders/<id>/upload_images', methods=['POST'])
+@jwt_required
+def upload_images(id):
+    user_id = get_jwt_identity()
+    if user_id != order.author:
+        return {"msg":"it isnt your acc"},401
+    images = request.files
+    path = "../uploads/"+str(id)
+    os.mkdir(path)
+    for image in images:
+        file_name = images[image].filename
+        images[image].save(path+"/"+file_name)
+    return '', 200
+
+
+@orders.route('/download/<id>/<filename>')
+@jwt_required
+def uploaded_file(id, filename):
+    return send_from_directory("../uploads/"+str(id),filename)
 
 @orders.route('/orders/<id>', methods=['PUT'])
 @jwt_required
