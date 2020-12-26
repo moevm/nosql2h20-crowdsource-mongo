@@ -81,8 +81,9 @@ class UserActions extends Actions<
       if (token) {
         http.defaults.headers.common['Authorization'] = 'Bearer ' + token
       }
+      this.state.isAdmin = false
       if (response.data.user_id === 'admin') {
-        this.state.isAdmin = true;
+        this.state.isAdmin = true
       } else {
         await this.actions.fetchGetUser()
       }

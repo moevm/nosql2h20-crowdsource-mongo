@@ -9,14 +9,13 @@
         Редактировать профиль
       </b-button>
     </div>
-    <div>
+    <div class="p-3">
       <div class="w-60">
         <label for="mailUserPersonal">Почта</label>
         <b-form-input
           id="mailUserPersonal"
           :disabled="isActive"
           v-model="userInfo.email"
-          @input="onChangeField"
           placeholder="Почта"
           trim
         />
@@ -25,7 +24,6 @@
         <label for="nameUserPersonal">Имя</label>
         <b-form-input
           id="nameUserPersonal"
-          @input="onChangeField"
           v-model="userInfo.name"
           :disabled="isActive"
           placeholder="Имя"
@@ -36,19 +34,21 @@
         <label for="surnameUserPersonal">Фамилия</label>
         <b-form-input
           id="surnameUserPersonal"
-          @input="onChangeField"
           v-model="userInfo.surname"
           :disabled="isActive"
           placeholder="Фамилия"
           trim
         />
       </div>
-      <ag-grid-vue
-        :columnDefs="columnDefsOrder"
-        :gridOptions="gridOptions"
-        v-model="orderList"
-        class="ag-theme-alpine h-100"
-      />
+      <div class="w-60">
+        <label>Заказы:</label>
+        <ag-grid-vue
+          :columnDefs="columnDefsOrder"
+          :gridOptions="gridOptions"
+          v-model="orderList"
+          class="ag-theme-alpine h-100"
+        />
+      </div>
     </div>
     <editLk />
   </div>
@@ -82,8 +82,6 @@ const Mapper = Vue.extend({
     ActionRenderer}
 })
 export default class ListOrders extends Mapper {
-  private modelGrid: any = Config.ListOrders
-  private deleteParams: any = {}
   private gridApi: GridApi | null = null
   private isActive = true
 
@@ -129,24 +127,15 @@ export default class ListOrders extends Mapper {
   ]
 
   private onDelete() {
-    console.log('onDelete lpk')
+    //console.log('onDelete lpk')
   }
 
   private onLink() {
-    console.log('onLink lpk')
+    //console.log('onLink lpk')
   }
 
   async created() {
     await this.fetchOrdersForUser(this.userId)
-  }
-
-  private onChangeField() {
-    /*this.allFill =
-        this.infoObj.surname !== '' &&
-        this.infoObj.name !== '' &&
-        this.organization !== '' &&
-        this.infoObj.email !== '' &&
-        this.checkEmail()*/
   }
 
   private editProfileClick() {

@@ -8,7 +8,7 @@
           class="w-100"
           :src="
             require(`@/assets/icons/${
-              product.data_type === 'text' ? 'text.jpeg' : product.image
+              product.data_type === 'text' ? 'text.jpeg' : 'photo.jpg'
             }`)
           "
           :style="{ height: previewHeight + 'px' }"

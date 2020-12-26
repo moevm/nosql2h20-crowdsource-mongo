@@ -129,6 +129,7 @@ export default class MainWorkPage extends Mappers {
       !this.isWork
         ? await this.fetchOrdersForUser(this.userId)
         : await this.fetchAllOrders()
+      console.log('check', this.orderList)
     }
   }
 

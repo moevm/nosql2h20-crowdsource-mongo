@@ -16,7 +16,6 @@ export interface AddOrder {
   description: string
   dataManualFile: any[]
   dataManualText: any[]
-  dataFile: any
   indexManual: number
 }
 
@@ -26,7 +25,6 @@ class CustomerState {
     description: '',
     dataManualFile: [],
     dataManualText: [],
-    dataFile: {},
     indexManual: -1,
     answer: ''
   }
@@ -106,6 +104,18 @@ class CustomerActions extends Actions<
         ...objSend,
         _id: { $oid: response.data.id }
       })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  async fetchAddOrdersPhoto(objSend: any) {
+    try {
+      let response = await ClientAPI.addOrder(objSend.sendObj)
+      this.mutations.addOrderInList({
+        ...objSend.objSend,
+        _id: { $oid: response.data.id }
+      })
+      response = await ClientAPI.addOrderPhoto(response.data.id, objSend.dataTmp)
     } catch (err) {
       console.error(err)
     }
