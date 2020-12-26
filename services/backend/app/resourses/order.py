@@ -1,6 +1,7 @@
 from flask import Flask, request, Response, Blueprint, send_from_directory
 from app.db.models import Order, User
 from flask_jwt_extended import jwt_required, get_jwt_identity
+import datetime
 import json
 import os
 
@@ -43,7 +44,7 @@ def add_order():
     user_id = get_jwt_identity()
     body = request.get_json()
     user = User.objects.get(id=user_id)
-    order = Order(**body,author = user_id)
+    order = Order(**body,author = user_id,dateCreate=datetime.date.today().strftime("%m-%d-%Y"))
     order.save()
     user.update(push__orders_status={str(order.id):"posted"})
     id = order.id
@@ -53,6 +54,7 @@ def add_order():
 @jwt_required
 def upload_images(id):
     user_id = get_jwt_identity()
+    order= Order.objects().get(id=id)
     if user_id != order.author:
         return {"msg":"it isnt your acc"},401
     images = request.files

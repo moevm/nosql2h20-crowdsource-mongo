@@ -50,7 +50,6 @@ def update_user(id):
     if user_id == id:
         user = User.objects.get(id=id)
         user.update(**body)
-        user.save()
         return '', 200
     return {"msg":"it isnt your acc"},401
 

@@ -34,7 +34,7 @@ def post_users():
 @jwt_required
 def get_orders():
 	user_id = get_jwt_identity()
-	if user.id == "admin":
+	if user_id == "admin":
 		orders = Order.objects().to_json()
 		users = User.objects().to_json()
 
