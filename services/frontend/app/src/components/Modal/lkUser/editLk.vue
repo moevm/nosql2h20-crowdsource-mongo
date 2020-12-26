@@ -7,79 +7,34 @@
       @ok="editLkClick"
       @show="openFuc"
     >
-      <b-tabs variant="info">
-        <b-tab title="Редактирование профиля" active>
-          <div class="w-60">
-            <label for="nameUserPersonal">Имя</label>
-            <b-form-input
-              id="nameUserPersonal"
-              @input="onChangeField"
-              v-model="userInfo.name"
-              :disabled="isActive"
-              placeholder="Имя"
-              trim
-            />
-          </div>
-          <div class="w-60">
-            <label for="surnameUserPersonal">Фамилия</label>
-            <b-form-input
-              id="surnameUserPersonal"
-              @input="onChangeField"
-              v-model="userInfo.surname"
-              :disabled="isActive"
-              placeholder="Фамилия"
-              trim
-            />
-          </div>
-        </b-tab>
-        <b-tab title="Смена пароля">
-          <label for="passwordOldUserLk">Старый пароль</label>
-          <b-form-input
-            id="passwordOldUserLk"
-            type="password"
-            :disabled="isActive"
-            trim
-          />
-          <label for="passwordUserLk">Пароль</label>
-          <b-form-input
-            id="passwordUserLk"
-            type="password"
-            :disabled="isActive"
-            trim
-          />
-          <label for="passwordUserLk">Подтверждение пароля</label>
-          <b-form-input
-            id="passwordUserLk"
-            type="password"
-            :disabled="isActive"
-            trim
-          />
-        </b-tab>
-      </b-tabs>
+      <div class="w-60">
+        <label for="nameUserPersonal">Имя</label>
+        <b-form-input
+          id="nameUserPersonal"
+          @input="onChangeField"
+          v-model="userInfo.name"
+          :disabled="isActive"
+          placeholder="Имя"
+          trim
+        />
+      </div>
+      <div class="w-60">
+        <label for="surnameUserPersonal">Фамилия</label>
+        <b-form-input
+          id="surnameUserPersonal"
+          @input="onChangeField"
+          v-model="userInfo.surname"
+          :disabled="isActive"
+          placeholder="Фамилия"
+          trim
+        />
+      </div>
       <template v-slot:modal-footer="{ ok, cancel }">
         <b-button @click="ok()" :disabled="allFill" variant="info">
           Изменить
         </b-button>
         <b-button @click="cancel()">
           Закрыть
-        </b-button>
-      </template>
-    </b-modal>
-    <b-modal
-      id="dropPasswordModal"
-      title="Сброс пароля"
-      size="lg"
-      @ok="dropPasswordClick"
-    >
-      <div>
-        На вашу почту будет отправлен сгенерированный пароль!
-      </div>
-      <template v-slot:modal-footer="{ ok, cancel }">
-        <b-button @click="ok()" variant="primary">
-          Сбросить пароль
-        </b-button>
-        <b-button @click="cancel()">
-          Отмена
         </b-button>
       </template>
     </b-modal>
@@ -104,16 +59,10 @@ const Mappers = Vue.extend({
 })
 export default class EditLk extends Mappers {
   private allFill = false
-  private isActive = true
+  private isActive = false
 
   private async editLkClick() {
     //console.log('editLkClick')
-  }
-
-  private dropPasswordClick() {
-    /*const sendObj: any = this.createSendObj()
-    sendObj.userId = this.optionsEmployees.id
-    PrManagerAPI.changeStaffPartner(this.organization, sendObj)*/
   }
 
   private openFuc() {

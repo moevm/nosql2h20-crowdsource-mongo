@@ -44,6 +44,11 @@ const Mappers = Vue.extend({
 })
 export default class CatalogProduct extends Mappers {
   private async endProcessed() {
+    for (const item in this.fullInfoOrder.data) {
+      for (const key in this.fullInfoOrder.data[item]) {
+        this.fullInfoOrder.data[item][key] = 0;
+      }
+    }
     for (const item of this.viewOrderPage.pairs) {
       if (item.first) {
         this.fullInfoOrder.data[`${item.first.mainObj}`][
@@ -58,7 +63,6 @@ export default class CatalogProduct extends Mappers {
     }
     const sendObj: any = { data: this.fullInfoOrder.data }
     sendObj['data_type'] = this.fullInfoOrder.data_type
-    console.log('endProcessed', sendObj, this.selectOrder._id.$oid)
     await ClientAPI.editWorkerOrder(sendObj, this.selectOrder._id.$oid)
     this.$router.push('/main/work')
   }
