@@ -43,6 +43,12 @@
           trim
         />
       </div>
+      <ag-grid-vue
+        :columnDefs="columnDefsOrder"
+        :gridOptions="gridOptions"
+        v-model="orderList"
+        class="ag-theme-alpine h-100"
+      />
     </div>
     <editLk />
   </div>
@@ -54,39 +60,84 @@ import Config from '@/config/config'
 import Translation from '@/config/translateTable.ts'
 import editLk from '@/components/Modal/lkUser/editLk.vue'
 import { userMapper } from '@/store/modules/user'
+import {AgGridVue} from "ag-grid-vue";
+import ActionRenderer from "@/components/table/ActionRenderer.vue";
+import AgGridFactory from "@/factories/agGridFactory";
+import {GridApi} from "ag-grid-community";
+import {customerMapper} from "@/store/modules/customer";
 
 const Mapper = Vue.extend({
   computed: {
-    ...userMapper.mapState(['isAuthenticated', 'userInfo'])
+    ...userMapper.mapState(['isAuthenticated', 'userInfo', 'userId']),
+    ...customerMapper.mapState(['orderList'])
+  },
+  methods: {
+    ...customerMapper.mapActions(['fetchAllOrders', 'fetchOrdersForUser'])
   }
 })
 
 @Component({
-  components: { editLk }
+  components: { editLk,
+    AgGridVue,
+    ActionRenderer}
 })
 export default class ListOrders extends Mapper {
   private modelGrid: any = Config.ListOrders
   private deleteParams: any = {}
+  private gridApi: GridApi | null = null
   private isActive = true
 
   private gridOptions = {
-    localeText: Translation.localeTableText,
-    suppressDragLeaveHidesColumns: true,
+    ...AgGridFactory.getDefaultGridOptions(),
     domLayout: 'autoHeight',
     defaultColDef: {
-      editable: false,
-      filter: true,
-      sortable: true
-    }
+      autoHeight: true,
+      cellStyle: { 'white-space': 'normal' },
+      editable: false
+    },
+    onGridReady: this.onGridReady
   }
 
-  private addClick() {
-    this.$bvModal.show('addPartnerDisciplineModal')
+  private onGridReady({ api }: { api: any }) {
+    this.gridApi = api
+  }
+
+  private columnDefsOrder = [
+    {
+      headerName: 'Название',
+      field: 'title',
+      editable: false
+    },
+    {
+      headerName: 'Описание',
+      field: 'description'
+    },
+    {
+      ...AgGridFactory.getActionColumn({
+        cellRendererParams: {
+          getActionByType: () => {
+            return ['onDelete', 'onLink'] //this.editable ? ['onDownload', 'onDelete'] : ['onDownload']
+          },
+          onDelete: this.onDelete,
+          onClone: this.onLink
+        },
+        minWidth: 140,
+        editable: false,
+        maxWidth: 140
+      })
+    }
+  ]
+
+  private onDelete() {
+    console.log('onDelete lpk')
+  }
+
+  private onLink() {
+    console.log('onLink lpk')
   }
 
   async created() {
-    /*this.filterCatalogSchema.fields![0].options = this.filterProduct
-    console.log('Create catalog', this.productList)*/
+    await this.fetchOrdersForUser(this.userId)
   }
 
   private onChangeField() {

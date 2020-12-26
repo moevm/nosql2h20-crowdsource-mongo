@@ -20,6 +20,12 @@
         <font-awesome-icon :icon="['fas', 'copy']" />
       </b-button>
       <b-button
+          @click="onClone"
+          v-if="this.params.onClone && checkType('onClone')"
+      >
+        <font-awesome-icon :icon="['fas', 'copy']" />
+      </b-button>
+      <b-button
         @click="onLoad"
         v-if="this.params.onLoad && checkType('onLoad')"
       >
