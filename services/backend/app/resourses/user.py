@@ -48,9 +48,8 @@ def update_user(id):
     user_id = get_jwt_identity()
     body = request.get_json()
     if user_id == id:
-        user = User.objects.get(id=id).to_json()
+        user = User.objects.get(id=id)
         user.update(**body)
-        user.hash_password()
         user.save()
         return '', 200
     return {"msg":"it isnt your acc"},401
