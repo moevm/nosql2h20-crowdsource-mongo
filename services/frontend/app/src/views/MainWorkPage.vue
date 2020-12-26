@@ -92,7 +92,7 @@ import AdminAPI from '@/api/admin'
 const Mappers = Vue.extend({
   computed: {
     ...clientMapper.mapState([]),
-    ...userMapper.mapState(['isAuthenticated', 'isWork', 'userId']),
+    ...userMapper.mapState(['isAuthenticated', 'isWork', 'userId', 'isAdmin']),
     ...customerMapper.mapState(['orderList'])
   },
   methods: {
@@ -111,7 +111,6 @@ const Mappers = Vue.extend({
 export default class MainWorkPage extends Mappers {
   private filtersTaskText = ''
   private importBDFile: any = null
-  private isAdmin = false
   private filtersTypeTask = Config.typeTask
   private filtersCustomer = Config.customers
   private checkFiltersTypeTask = []
@@ -126,9 +125,11 @@ export default class MainWorkPage extends Mappers {
   }
 
   async created() {
-    !this.isWork
-      ? await this.fetchOrdersForUser(this.userId)
-      : await this.fetchAllOrders()
+    if (!this.isAdmin) {
+      !this.isWork
+        ? await this.fetchOrdersForUser(this.userId)
+        : await this.fetchAllOrders()
+    }
   }
 
   private async exportBD() {

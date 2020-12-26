@@ -12,7 +12,7 @@
         <b-form-input
           id="nameUserPersonal"
           @input="onChangeField"
-          v-model="userInfo.name"
+          v-model="userEdit.name"
           :disabled="isActive"
           placeholder="Имя"
           trim
@@ -23,7 +23,7 @@
         <b-form-input
           id="surnameUserPersonal"
           @input="onChangeField"
-          v-model="userInfo.surname"
+          v-model="userEdit.surname"
           :disabled="isActive"
           placeholder="Фамилия"
           trim
@@ -45,10 +45,11 @@
 import { Component, Vue } from 'vue-property-decorator'
 import AwesomeMask from 'awesome-mask'
 import { userMapper } from '@/store/modules/user'
+import UserAPI from "@/api/user";
 
 const Mappers = Vue.extend({
   computed: {
-    ...userMapper.mapState(['isAuthenticated', 'userInfo'])
+    ...userMapper.mapState(['isAuthenticated', 'userInfo', 'userId'])
   }
 })
 
@@ -60,20 +61,29 @@ const Mappers = Vue.extend({
 export default class EditLk extends Mappers {
   private allFill = false
   private isActive = false
-
+  private userEdit = {
+    surname: '',
+    name: ''
+  }
   private async editLkClick() {
+    await UserAPI.editUser(this.userId, {surname: this.userEdit.surname, name: this.userEdit.name})
+    this.userInfo.surname = this.userEdit.surname
+    this.userInfo.name = this.userEdit.name
     //console.log('editLkClick')
   }
 
   private openFuc() {
-    //console.log('openFuc')
+    this.userEdit.surname = this.userInfo.surname
+    this.userEdit.name = this.userInfo.name
   }
 
   private onChangeField() {
-    //console.log('onChangeField')
+    this.allFill = this.userInfo.surname === '' && this.userInfo.name === ''
   }
 
   private async created() {
+    this.userEdit.surname = this.userInfo.surname
+    this.userEdit.name = this.userInfo.name
     /*this.clearObj = _.clone(this.infoObj)*/
   }
 }

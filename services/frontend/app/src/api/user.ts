@@ -25,4 +25,7 @@ export default class UserAPI {
   public static getUser(idUser: string) {
     return http.get(`/${idUser}`)
   }
+  public static editUser(userId: string, userInfo: any) {
+    return http.put(`/${userId}`, { ...userInfo })
+  }
 }
