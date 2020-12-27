@@ -25,4 +25,21 @@ export default class ClientAPI {
   public static getOrderWithId(id: string) {
     return http.get(`/${id}/orders`)
   }
+  public static addOrderPhoto(orderId: string, orderInfo: any[]) {
+    const data = new FormData()
+    for (let i = 0; i < orderInfo.length; i++) {
+      const item = orderInfo[i]
+      data.append(`image${i + 1}`, item.fileValue)
+    }
+    return http.post(`/orders/${orderId}/upload_images`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  }
+  public static addUploadPhoto(orderId: string, filename: string) {
+    return http.get(`/download/${orderId}/${filename}`, {
+      responseType: 'arraybuffer'
+    })
+  }
 }

@@ -16,6 +16,7 @@
         v-model="addOrder.answer"
         id="textBDUpload"
         @change="changeAnswer"
+        :state="!!addOrder.answer"
         placeholder="Введите варианты ответов через запятую"
         class="w-30 mb-2"
       />
@@ -25,6 +26,10 @@
         v-model="addOrder.dataManualText"
         class="ag-theme-alpine h-100"
       />
+      <h5 v-if="!addOrder.dataManualText.length" style="color: red;">
+        Введите данные!
+      </h5>
+      <h5 v-if="cellEmpty" style="color: red;">Введите данные в ячейки!</h5>
     </div>
     <b-modal
       id="deletePhotoModal"
@@ -74,6 +79,7 @@ const Mapper = Vue.extend({
 export default class PhotoInput extends Mapper {
   private deleteParams: any = null
   private gridApi: GridApi | null = null
+  private cellEmpty = true
   private columnDefsFiles = [
     {
       headerName: 'Варианты ответов',
@@ -109,8 +115,14 @@ export default class PhotoInput extends Mapper {
       cellStyle: { 'white-space': 'normal' },
       editable: true
     },
-    onGridReady: this.onGridReady
+    onGridReady: this.onGridReady,
+    onCellValueChanged: this.onCellValueChanged
   }
+
+  private onCellValueChanged(value: any) {
+    this.cellEmpty = !value.data.fileValue || value.data.fileValue === ''
+  }
+
   private onGridReady({ api }: { api: any }) {
     this.gridApi = api
   }
@@ -128,6 +140,7 @@ export default class PhotoInput extends Mapper {
       fileValue: ''
     })
     this.gridApi?.setRowData(this.addOrder.dataManualText)
+    this.cellEmpty = true
   }
   private onDelete(params: any) {
     this.deleteParams = params

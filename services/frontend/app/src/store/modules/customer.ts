@@ -16,7 +16,6 @@ export interface AddOrder {
   description: string
   dataManualFile: any[]
   dataManualText: any[]
-  dataFile: any
   indexManual: number
 }
 
@@ -26,7 +25,6 @@ class CustomerState {
     description: '',
     dataManualFile: [],
     dataManualText: [],
-    dataFile: {},
     indexManual: -1,
     answer: ''
   }
@@ -34,6 +32,9 @@ class CustomerState {
   orderListStart: any[] = []
   orderListAllUSer: any[] = []
   editOrder: any = null
+  flags: any = {
+    filechange: null
+  }
 }
 
 class CustomerGetters extends Getters<CustomerState> {
@@ -53,11 +54,27 @@ class CustomerMutations extends Mutations<CustomerState> {
     this.state.orderListStart = newArr
     this.state.orderList = newArr
   }
+  filterWithTypeOrder(test: string[]) {
+    this.state.orderList = this.state.orderListStart
+    if (test.length) {
+      this.state.orderList = this.state.orderList.filter((val: any) =>
+        test.includes(val.data_type)
+      )
+    }
+  }
   filterWithTextOrder(test: string) {
     this.state.orderList = this.state.orderListStart
     if (test !== '') {
       this.state.orderList = this.state.orderList.filter(
         (val: any) => val.title.includes(test) || val.description.includes(test)
+      )
+    }
+  }
+  filterWithDateOrder(test: string) {
+    this.state.orderList = this.state.orderListStart
+    if (test !== '') {
+      this.state.orderList = this.state.orderList.filter((val: any) =>
+        val.dateCreate.includes(test)
       )
     }
   }
@@ -106,6 +123,21 @@ class CustomerActions extends Actions<
         ...objSend,
         _id: { $oid: response.data.id }
       })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  async fetchAddOrdersPhoto(objSend: any) {
+    try {
+      let response = await ClientAPI.addOrder(objSend.sendObj)
+      this.mutations.addOrderInList({
+        ...objSend.sendObj,
+        _id: { $oid: response.data.id }
+      })
+      response = await ClientAPI.addOrderPhoto(
+        response.data.id,
+        objSend.dataTmp
+      )
     } catch (err) {
       console.error(err)
     }

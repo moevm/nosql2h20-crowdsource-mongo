@@ -1,18 +1,21 @@
 <template>
   <div>
-    <!--:src="`http://localhost:3000${pair.photo}`"-->
     <div class="d-flex ml-5" style="flex-wrap: wrap;">
       <div v-if="pair.first" class="m-1 cardView">
         <div class="mr-2">
-          {{ pair.first.mainObj }}
-          <!--<img
-            @load="onPreviewLoad"
-            class="w-100"
-            :src="require(`@/assets/icons/${pair.first.image}`)"
-            :style="{ height: previewHeight + 'px' }"
-            style=""
-            alt="Preview"
-          />-->
+          <div v-if="pair.first.type === 'text'">
+            {{ pair.first.mainObj }}
+          </div>
+          <div v-if="pair.first.type === 'photo'">
+            <img
+              @load="onPreviewLoad"
+              class="w-100"
+              :src="pair.first.image"
+              :style="{ height: previewHeight + 'px' }"
+              style=""
+              alt="Preview"
+            />
+          </div>
         </div>
         <div class="mr-2">
           <div v-if="isWork" class="d-flex">
@@ -41,15 +44,19 @@
       <div style="width: 17%;"></div>
       <div v-if="pair.second" class="m-1 cardView">
         <div class="mr-2">
-          {{ pair.second.mainObj }}
-          <!--<img
-            @load="onPreviewLoad"
-            class="w-100"
-            :src="require(`@/assets/icons/${pair.second.image}`)"
-            :style="{ height: previewHeight + 'px' }"
-            style=""
-            alt="Preview"
-          />-->
+          <div v-if="pair.second.type === 'text'">
+            {{ pair.second.mainObj }}
+          </div>
+          <div v-if="pair.second.type === 'photo'">
+            <img
+              @load="onPreviewLoad"
+              class="w-100"
+              :src="pair.second.image"
+              :style="{ height: previewHeight + 'px' }"
+              style=""
+              alt="Preview"
+            />
+          </div>
         </div>
         <div class="mr-2">
           <div v-if="isWork" class="d-flex">

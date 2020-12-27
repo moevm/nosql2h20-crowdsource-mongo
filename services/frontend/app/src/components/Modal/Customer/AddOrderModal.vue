@@ -11,9 +11,10 @@
         <label for="nameOrder">Название заказа</label>
         <b-form-input
           id="nameOrder"
-          @input="onChangeField"
+          @change="onChangeField"
           v-model="addOrder.title"
           :disabled="isActive"
+          :state="!!addOrder.title"
           placeholder="Название заказа"
           trim
         />
@@ -22,6 +23,8 @@
       <b-form-textarea
         v-model="addOrder.description"
         no-resize
+        @change="onChangeField"
+        :state="!!addOrder.description"
         id="desc-order-textarea"
         placeholder="Введите описание заказа"
       />
@@ -42,61 +45,15 @@
             >
           </b-form-radio-group>
         </div>
-        <div class="ml-1 w-15">
-          <b-form-checkbox-group
-            v-model="checkManualInput"
-            :options="arrayManualCheckbox"
-            name="flavour-2a"
-            stacked
-            @change="changeCheckboxData"
-          ></b-form-checkbox-group>
-        </div>
       </div>
       <div v-if="!isText">
-        <div v-if="isManual">
-          <PhotoInput />
-        </div>
-        <div v-else>
-          <p>
-            Загрузите zip-архив с фотографиями и размеченным .csv файлом, где
-            первый столбец - название фотографии, второй массив классов
-            (вариантов разметки для данной фотографии)
-          </p>
-          <div class="d-flex w-30">
-            <b-form-file
-              v-model="fileValueNoManual"
-              id="fileValueNoManualUpload"
-              :disabled="dis"
-            />
-            <b-button class="mt-1 ml-2" :disabled="dis" @click="onDeleteFile">
-              <font-awesome-icon :icon="['fas', 'times']" />
-            </b-button>
-          </div>
-        </div>
+        <PhotoInput />
       </div>
       <div v-if="isText">
-        <div v-if="isManual">
-          <TextInput />
-        </div>
-        <div v-else>
-          <p>
-            Загрузите .csv файл, где первый столбец - необходимый текст, второй
-            массив классов (вариантов разметки для данной фотографии)
-          </p>
-          <div class="d-flex w-30">
-            <b-form-file
-              v-model="fileValueNoManual"
-              id="fileValueNoManualUpload"
-              :disabled="dis"
-            />
-            <b-button class="mt-1 ml-2" :disabled="dis" @click="onDeleteFile">
-              <font-awesome-icon :icon="['fas', 'times']" />
-            </b-button>
-          </div>
-        </div>
+        <TextInput />
       </div>
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-button @click="ok()" :disabled="allFill" variant="info">
+        <b-button @click="ok()" :disabled="!allFill" variant="info">
           Создать
         </b-button>
         <b-button @click="cancel()">
@@ -109,33 +66,12 @@
       id="fileUpload"
       style="visibility: hidden;"
     />
-    <b-modal
-      id="deleteFileOrderModal"
-      title="Предупреждение"
-      ok-title="Применить"
-      cancel-title="Отмена"
-      size="lg"
-      @ok="deleteClick"
-    >
-      <div>
-        Вы действительно хотите удалить данные?
-      </div>
-      <template v-slot:modal-footer="{ ok, cancel }">
-        <b-button @click="ok()" variant="info">
-          Удалить
-        </b-button>
-        <b-button @click="cancel()">
-          Отмена
-        </b-button>
-      </template>
-    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import AwesomeMask from 'awesome-mask'
-import StaticData from '@/config/config'
 import Confin from '@/config/configs'
 import PhotoInput from '@/components/help/PhotoInput.vue'
 import TextInput from '@/components/help/TextInput.vue'
@@ -143,11 +79,11 @@ import { customerMapper } from '@/store/modules/customer'
 
 const Mappers = Vue.extend({
   computed: {
-    ...customerMapper.mapState(['addOrder'])
+    ...customerMapper.mapState(['addOrder', 'flags'])
   },
   methods: {
     ...customerMapper.mapMutations(['setAddOrder']),
-    ...customerMapper.mapActions(['fetchAddOrders'])
+    ...customerMapper.mapActions(['fetchAddOrders', 'fetchAddOrdersPhoto'])
   }
 })
 
@@ -164,14 +100,10 @@ export default class AddOrderModal extends Mappers {
   private allFill = false
   private dis = true
   private isActive = false
-  private fileValue = null
-  private fileValueNoManual = null
-  private checkManualInput = ['Ввести вручную']
+  private fileValue: any = null
   private isText = true
-  private isManual = true
   private ConfinDataValues = Confin.customerInput
   private selectedChangeData = Confin.customerInput[1].value
-  private arrayManualCheckbox = StaticData.manualInput
 
   @Watch('fileValue')
   onFileValueChange() {
@@ -183,56 +115,58 @@ export default class AddOrderModal extends Mappers {
       this.addOrder.dataManualFile[
         this.addOrder.indexManual
       ].fileValue = this.fileValue
+      this.flags.filechange = this.fileValue
+      this.onChangeField()
     }
   }
 
-  @Watch('fileValueNoManual')
-  onFileValueNoManuaChange() {
-    this.addOrder.dataFile = this.fileValueNoManual
+  @Watch('addOrder.dataManualText')
+  onChangeDataManualText() {
+    this.onChangeField()
+  }
+
+  @Watch('addOrder.dataManualFile')
+  onChangeDataManualFile() {
+    this.onChangeField()
   }
 
   private async addOrderClick() {
-    this.addOrder
     const sendObj: any = {
       title: this.addOrder.title,
       description: this.addOrder.description
     }
     const dataTmp = this.isText
-      ? this.isManual
-        ? this.addOrder.dataManualText
-        : this.addOrder.dataFile
-      : this.isManual
-      ? this.addOrder.dataManualFile
-      : this.addOrder.dataFile
+      ? this.addOrder.dataManualText
+      : this.addOrder.dataManualFile
     const splitVal = this.addOrder.answer.split(',')
     const newData: any = {}
     for (const item of dataTmp) {
-      //const splitVal = item.valueAnswer.split(',')
       const newObj: any = {}
       for (const spl of splitVal) {
         newObj[`${spl}`] = 0
       }
-      newData[`${item.fileValue}`] = newObj
+      newData[
+        `${
+          this.isText
+            ? item.fileValue
+            : `${item.fileValue.name.replace('.', '$')}`
+        }`
+      ] = newObj
     }
     sendObj['data_type'] = this.selectedChangeData
     sendObj['data'] = newData
-    await this.fetchAddOrders(sendObj)
+    this.isText
+      ? await this.fetchAddOrders(sendObj)
+      : this.fetchAddOrdersPhoto({ sendObj: sendObj, dataTmp: dataTmp })
   }
 
   private onDeleteFile() {
     this.$bvModal.show('deleteFileOrderModal')
   }
 
-  private deleteClick() {
-    this.fileValueNoManual = null
-  }
-
   private changeSelectedData() {
     this.isText = this.selectedChangeData === 'photo'
-  }
-
-  private changeCheckboxData(params: any) {
-    this.isManual = !!params.length
+    this.onChangeField()
   }
 
   private openFuc() {
@@ -242,17 +176,28 @@ export default class AddOrderModal extends Mappers {
       description: '',
       dataManualFile: [],
       dataManualText: [],
-      dataFile: {},
       indexManual: -1
     })
   }
 
   private onChangeField() {
-    // console.log('onChangeField')
-  }
-
-  private async created() {
-    /**/
+    const dataTmp = this.isText
+      ? this.addOrder.dataManualText
+      : this.addOrder.dataManualFile
+    let arrEmpty = dataTmp.length ? true : false
+    for (const item of dataTmp) {
+      if (
+        !item.fileValue ||
+        item.fileValue === '' ||
+        !item.valueAnswer ||
+        item.valueAnswer === ''
+      ) {
+        arrEmpty = false
+        break
+      }
+    }
+    this.allFill =
+      this.addOrder.title !== '' && this.addOrder.description !== '' && arrEmpty
   }
 }
 </script>

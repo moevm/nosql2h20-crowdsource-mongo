@@ -108,14 +108,6 @@ export default class EditOrderModal extends Mappers {
     this.descriptionEdited = this.editOrder.description
     this.titleOrg = this.editOrder.title
   }
-
-  private onChangeField() {
-    // console.log('onChangeField')
-  }
-
-  private async created() {
-    /*this.clearObj = _.clone(this.infoObj)*/
-  }
 }
 </script>
 

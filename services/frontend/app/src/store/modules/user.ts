@@ -21,6 +21,7 @@ class UserState {
     customer: ''
   }
   isWork = this.userInfo.type === Config.typeUser[0]
+  isAdmin = false
   isBadAuth = false
 }
 
@@ -80,10 +81,14 @@ class UserActions extends Actions<
       if (token) {
         http.defaults.headers.common['Authorization'] = 'Bearer ' + token
       }
-      await this.actions.fetchGetUser()
+      this.state.isAdmin = false
+      if (response.data.user_id === 'admin') {
+        this.state.isAdmin = true
+      } else {
+        await this.actions.fetchGetUser()
+      }
       this.state.isAuthenticated = true
     } catch (err) {
-      //console.log(err.response.data)
       localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
       this.state.isAuthenticated = false
       if (err.response.status === 401) {

@@ -8,7 +8,7 @@
           class="w-100"
           :src="
             require(`@/assets/icons/${
-              product.data_type === 'text' ? 'text.jpeg' : product.image
+              product.data_type === 'text' ? 'text.jpeg' : 'photo.jpg'
             }`)
           "
           :style="{ height: previewHeight + 'px' }"
@@ -28,8 +28,8 @@
         <div class="mt-1 text-o-ellipsis">{{ product.customer }}</div>
         <div class="d-flex">
           <h4 class="mt-1 text-o-ellipsis">Дата добавления</h4>
-          <div class="mt-2 text-o-ellipsis">
-            <!--{{ product.customer }}-->14.11.2020
+          <div class="mt-2 ml-2 text-o-ellipsis">
+            {{ product.dateCreate }}
           </div>
         </div>
         <div class="mt-2 d-flex">
