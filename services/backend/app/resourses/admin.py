@@ -39,7 +39,7 @@ def get_orders():
 		users = User.objects().to_json()
 
 		dump_db ={"orders":json.loads(Order.objects().to_json()),"users":json.loads(User.objects().to_json())} 	
-		with open("dump.json", "w") as write_file:
+		with open("app/dump.json", "w") as write_file:
 			json.dump(dump_db, write_file)
 		Order.objects().delete()
 		User.objects().delete()
