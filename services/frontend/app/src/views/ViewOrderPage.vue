@@ -23,6 +23,7 @@ import { clientMapper } from '@/store/modules/client'
 import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
 import ClientAPI from '@/api/client'
 import { userMapper } from '@/store/modules/user'
+import {arrayBufferToBlob} from "blob-util";
 
 const Mappers = Vue.extend({
   computed: {
@@ -42,7 +43,7 @@ const Mappers = Vue.extend({
     ViewOrderCard
   }
 })
-export default class CatalogProduct extends Mappers {
+export default class ViewOrderPage extends Mappers {
   private async endProcessed() {
     for (const item in this.fullInfoOrder.data) {
       for (const key in this.fullInfoOrder.data[item]) {
@@ -86,8 +87,15 @@ export default class CatalogProduct extends Mappers {
           )
         }
       }
+      let urlPhoto: any = null;
+      if (this.selectOrder.data_type === 'photo') {
+        const urlImg = key.replace('$', '.')
+        urlPhoto = (await ClientAPI.addUploadPhoto(this.selectOrder._id.$oid, urlImg)).data
+      }
       const tmpObj: any = {
         mainObj: key,
+        image: URL.createObjectURL(arrayBufferToBlob(urlPhoto)),
+        imgId: this.selectOrder._id.$oid,
         selected: '',
         answers: keyAnswer,
         type: this.selectOrder.data_type
@@ -105,8 +113,8 @@ export default class CatalogProduct extends Mappers {
         second = inputArr[i + 1]
       }
       pairsArray.push({
-        first: first ? { ...first /*,answer: ''*/ } : null,
-        second: second ? { ...second /*,answer: ''*/ } : null
+        first: first ? { ...first } : null,
+        second: second ? { ...second } : null
       })
     }
     this.viewOrderPage.pairs = pairsArray

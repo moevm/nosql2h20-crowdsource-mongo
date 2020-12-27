@@ -132,7 +132,7 @@ export default class AddOrderModal extends Mappers {
       for (const spl of splitVal) {
         newObj[`${spl}`] = 0
       }
-      newData[`${this.isText ? item.fileValue : `"${item.fileValue.name.replace('.', '$')}"`}`] = newObj
+      newData[`${this.isText ? item.fileValue : `${item.fileValue.name.replace('.', '$')}`}`] = newObj
     }
     sendObj['data_type'] = this.selectedChangeData
     sendObj['data'] = newData

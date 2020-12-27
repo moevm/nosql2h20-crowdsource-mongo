@@ -38,6 +38,8 @@ export default class ClientAPI {
     })
   }
   public static addUploadPhoto(orderId: string, filename: string) {
-    return http.get(`/download/${orderId}/${filename}`)
+    return http.get(`/download/${orderId}/${filename}`, {
+      responseType: 'arraybuffer'
+    })
   }
 }
