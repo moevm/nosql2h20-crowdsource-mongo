@@ -38,10 +38,17 @@
         <font-awesome-icon :icon="['fas', 'times']" />
       </b-button>
       <b-button
+        @click="onRedirect"
+        v-if="this.params.onRedirect && checkType('onRedirect')"
+        title="Перейти к заказу"
+      >
+        <font-awesome-icon :icon="['fas', 'arrow-up']" />
+      </b-button>
+      <b-button
         @click="onInfo"
         v-if="this.params.onInfo && checkType('onInfo')"
       >
-        <font-awesome-icon :icon="['fas', 'info']" />
+        <font-awesome-icon :icon="['fas', 'arrow-up']" />
       </b-button>
       <b-button
         @click="onLink"
@@ -86,7 +93,9 @@ export default class AgGridField extends Vue {
   onDelete() {
     this.params.onDelete(this.params)
   }
-
+  onRedirect() {
+    this.params.onRedirect(this.params)
+  }
   onEdit() {
     this.params.onEdit(this.params)
   }

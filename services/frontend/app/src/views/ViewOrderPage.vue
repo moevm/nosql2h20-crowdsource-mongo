@@ -23,7 +23,7 @@ import { clientMapper } from '@/store/modules/client'
 import ViewOrderCard from '@/components/help/ViewOrderCard.vue'
 import ClientAPI from '@/api/client'
 import { userMapper } from '@/store/modules/user'
-import {arrayBufferToBlob} from "blob-util";
+import { arrayBufferToBlob } from 'blob-util'
 
 const Mappers = Vue.extend({
   computed: {
@@ -47,7 +47,7 @@ export default class ViewOrderPage extends Mappers {
   private async endProcessed() {
     for (const item in this.fullInfoOrder.data) {
       for (const key in this.fullInfoOrder.data[item]) {
-        this.fullInfoOrder.data[item][key] = 0;
+        this.fullInfoOrder.data[item][key] = 0
       }
     }
     for (const item of this.viewOrderPage.pairs) {
@@ -81,16 +81,20 @@ export default class ViewOrderPage extends Mappers {
       if (!this.isWork) {
         for (const keySup in this.fullInfoOrder.data[`${key}`]) {
           keyAnswer.push(
-            `${keySup} - ${(this.fullInfoOrder.data[`${key}`][`${keySup}`] /
-              sumValKay) *
-              100}%`
+            sumValKay
+              ? `${keySup} - ${(this.fullInfoOrder.data[`${key}`][`${keySup}`] /
+                  sumValKay) *
+                  100}%`
+              : '0%'
           )
         }
       }
-      let urlPhoto: any = null;
+      let urlPhoto: any = null
       if (this.selectOrder.data_type === 'photo') {
         const urlImg = key.replace('$', '.')
-        urlPhoto = (await ClientAPI.addUploadPhoto(this.selectOrder._id.$oid, urlImg)).data
+        urlPhoto = (
+          await ClientAPI.addUploadPhoto(this.selectOrder._id.$oid, urlImg)
+        ).data
       }
       const tmpObj: any = {
         mainObj: key,

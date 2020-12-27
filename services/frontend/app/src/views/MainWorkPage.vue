@@ -39,17 +39,29 @@
               trim
             />
           </div>
+          <div v-if="!isWork" class="ml-1 w-25">
+            <label for="filterTaskText">Поиск по дате</label>
+            <b-form-input
+              id="filterTaskText"
+              v-model="filtersTaskText"
+              @input="findWithDate"
+              placeholder="Дата создания"
+              type="date"
+              trim
+            />
+          </div>
           <div v-if="isWork" class="ml-1 w-15">
             <label for="filterTypeTask">Тип задания</label>
             <b-form-checkbox-group
               id="filterTypeTask"
               v-model="checkFiltersTypeTask"
               :options="filtersTypeTask"
+              @change="findwWithType"
               name="flavour-2a"
               stacked
             ></b-form-checkbox-group>
           </div>
-          <div v-if="isWork" class="ml-1 w-15">
+          <!--<div v-if="isWork" class="ml-1 w-15">
             <label for="filterCustomer">Заказчики</label>
             <b-form-checkbox-group
               id="filterCustomer"
@@ -58,7 +70,7 @@
               name="flavour-2a"
               stacked
             ></b-form-checkbox-group>
-          </div>
+          </div>-->
         </div>
       </div>
       <div v-if="!isWork" class="addOrderClass">
@@ -88,6 +100,7 @@ import { userMapper } from '@/store/modules/user'
 import { customerMapper } from '@/store/modules/customer'
 import EditOrderModal from '@/components/Modal/Customer/EditOrderModal.vue'
 import AdminAPI from '@/api/admin'
+import moment from 'moment'
 
 const Mappers = Vue.extend({
   computed: {
@@ -96,7 +109,11 @@ const Mappers = Vue.extend({
     ...customerMapper.mapState(['orderList'])
   },
   methods: {
-    ...customerMapper.mapMutations(['filterWithTextOrder']),
+    ...customerMapper.mapMutations([
+      'filterWithTextOrder',
+      'filterWithTypeOrder',
+      'filterWithDateOrder'
+    ]),
     ...customerMapper.mapActions(['fetchAllOrders', 'fetchOrdersForUser'])
   }
 })
@@ -110,6 +127,7 @@ const Mappers = Vue.extend({
 })
 export default class MainWorkPage extends Mappers {
   private filtersTaskText = ''
+  private filtersTaskDate = ''
   private importBDFile: any = null
   private filtersTypeTask = Config.typeTask
   private filtersCustomer = Config.customers
@@ -124,12 +142,36 @@ export default class MainWorkPage extends Mappers {
     this.filterWithTextOrder(value)
   }
 
+  private findWithDate(value: any) {
+    this.filterWithDateOrder(moment(value).format('DD.MM.YYYY'))
+  }
+
+  private findwWithType(value: any) {
+    const arrFilter: string[] = []
+    if (value.includes(this.filtersTypeTask[3])) {
+      arrFilter.push('text')
+      arrFilter.push('photo')
+    } else {
+      if (value.includes(this.filtersTypeTask[1])) {
+        arrFilter.push('text')
+      }
+      if (value.includes(this.filtersTypeTask[0])) {
+        arrFilter.push('photo')
+      }
+    }
+    this.filterWithTypeOrder(arrFilter)
+  }
+
   async created() {
     if (!this.isAdmin) {
       !this.isWork
         ? await this.fetchOrdersForUser(this.userId)
         : await this.fetchAllOrders()
-      console.log('check', this.orderList)
+      for (const item of this.orderList) {
+        item.dateCreate = moment(item.dateCreate, 'MM.DD.YYYY').format(
+          'DD.MM.YYYY'
+        )
+      }
     }
   }
 

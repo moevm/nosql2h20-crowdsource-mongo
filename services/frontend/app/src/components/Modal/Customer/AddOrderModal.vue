@@ -11,9 +11,10 @@
         <label for="nameOrder">Название заказа</label>
         <b-form-input
           id="nameOrder"
-          @input="onChangeField"
+          @change="onChangeField"
           v-model="addOrder.title"
           :disabled="isActive"
+          :state="!!addOrder.title"
           placeholder="Название заказа"
           trim
         />
@@ -22,6 +23,8 @@
       <b-form-textarea
         v-model="addOrder.description"
         no-resize
+        @change="onChangeField"
+        :state="!!addOrder.description"
         id="desc-order-textarea"
         placeholder="Введите описание заказа"
       />
@@ -50,7 +53,7 @@
         <TextInput />
       </div>
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-button @click="ok()" :disabled="allFill" variant="info">
+        <b-button @click="ok()" :disabled="!allFill" variant="info">
           Создать
         </b-button>
         <b-button @click="cancel()">
@@ -69,7 +72,6 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import AwesomeMask from 'awesome-mask'
-import StaticData from '@/config/config'
 import Confin from '@/config/configs'
 import PhotoInput from '@/components/help/PhotoInput.vue'
 import TextInput from '@/components/help/TextInput.vue'
@@ -77,7 +79,7 @@ import { customerMapper } from '@/store/modules/customer'
 
 const Mappers = Vue.extend({
   computed: {
-    ...customerMapper.mapState(['addOrder'])
+    ...customerMapper.mapState(['addOrder', 'flags'])
   },
   methods: {
     ...customerMapper.mapMutations(['setAddOrder']),
@@ -113,11 +115,22 @@ export default class AddOrderModal extends Mappers {
       this.addOrder.dataManualFile[
         this.addOrder.indexManual
       ].fileValue = this.fileValue
+      this.flags.filechange = this.fileValue
+      this.onChangeField()
     }
   }
 
+  @Watch('addOrder.dataManualText')
+  onChangeDataManualText() {
+    this.onChangeField()
+  }
+
+  @Watch('addOrder.dataManualFile')
+  onChangeDataManualFile() {
+    this.onChangeField()
+  }
+
   private async addOrderClick() {
-    this.addOrder
     const sendObj: any = {
       title: this.addOrder.title,
       description: this.addOrder.description
@@ -132,12 +145,19 @@ export default class AddOrderModal extends Mappers {
       for (const spl of splitVal) {
         newObj[`${spl}`] = 0
       }
-      newData[`${this.isText ? item.fileValue : `${item.fileValue.name.replace('.', '$')}`}`] = newObj
+      newData[
+        `${
+          this.isText
+            ? item.fileValue
+            : `${item.fileValue.name.replace('.', '$')}`
+        }`
+      ] = newObj
     }
     sendObj['data_type'] = this.selectedChangeData
     sendObj['data'] = newData
-//    console.log('phote',this.isText, {sendObj: sendObj, dataTmp: dataTmp})
-    this.isText ?  await this.fetchAddOrders(sendObj) : this.fetchAddOrdersPhoto({sendObj: sendObj, dataTmp: dataTmp})
+    this.isText
+      ? await this.fetchAddOrders(sendObj)
+      : this.fetchAddOrdersPhoto({ sendObj: sendObj, dataTmp: dataTmp })
   }
 
   private onDeleteFile() {
@@ -146,6 +166,7 @@ export default class AddOrderModal extends Mappers {
 
   private changeSelectedData() {
     this.isText = this.selectedChangeData === 'photo'
+    this.onChangeField()
   }
 
   private openFuc() {
@@ -160,11 +181,23 @@ export default class AddOrderModal extends Mappers {
   }
 
   private onChangeField() {
-    // console.log('onChangeField')
-  }
-
-  private async created() {
-    /**/
+    const dataTmp = this.isText
+      ? this.addOrder.dataManualText
+      : this.addOrder.dataManualFile
+    let arrEmpty = dataTmp.length ? true : false
+    for (const item of dataTmp) {
+      if (
+        !item.fileValue ||
+        item.fileValue === '' ||
+        !item.valueAnswer ||
+        item.valueAnswer === ''
+      ) {
+        arrEmpty = false
+        break
+      }
+    }
+    this.allFill =
+      this.addOrder.title !== '' && this.addOrder.description !== '' && arrEmpty
   }
 }
 </script>

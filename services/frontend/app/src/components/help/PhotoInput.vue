@@ -6,9 +6,7 @@
       </div>
       <div class="buttonAdd">
         <div style="margin-left: 10px;">
-          <b-button variant="info" @click="addClick"
-            >Добавить</b-button
-          >
+          <b-button variant="info" @click="addClick">Добавить</b-button>
         </div>
       </div>
     </div>
@@ -18,6 +16,7 @@
         v-model="addOrder.answer"
         id="textBDUpload"
         @change="changeAnswer"
+        :state="!!addOrder.answer"
         placeholder="Введите варианты ответов через запятую"
         class="w-30 mb-2"
       />
@@ -28,6 +27,10 @@
         class="ag-theme-alpine h-100"
       />
     </div>
+    <h5 v-if="!addOrder.dataManualFile.length" style="color: red;">
+      Ведите данные!
+    </h5>
+    <h5 v-if="cellEmpty" style="color: red;">Введите данные в ячейки!</h5>
     <b-modal
       id="deletePhotoModal"
       title="Предупреждение"
@@ -52,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { AgGridVue } from 'ag-grid-vue'
 import AgGridFactory from '@/factories/agGridFactory'
 import ActionRenderer from '@/components/table/ActionRenderer.vue'
@@ -61,7 +64,7 @@ import { GridApi } from 'ag-grid-community'
 
 const Mapper = Vue.extend({
   computed: {
-    ...customerMapper.mapState(['addOrder'])
+    ...customerMapper.mapState(['addOrder', 'flags'])
   },
   methods: {
     ...customerMapper.mapMutations([])
@@ -76,6 +79,7 @@ const Mapper = Vue.extend({
 export default class PhotoInput extends Mapper {
   private deleteParams: any = null
   private gridApi: GridApi | null = null
+  private cellEmpty = true
   private columnDefsFiles = [
     {
       headerName: 'Варианты ответов',
@@ -107,8 +111,14 @@ export default class PhotoInput extends Mapper {
       cellStyle: { 'white-space': 'normal' },
       editable: false
     },
-    onGridReady: this.onGridReady
+    onGridReady: this.onGridReady,
+    onCellValueChanged: this.onCellValueChanged
   }
+
+  private onCellValueChanged(value: any) {
+    this.cellEmpty = !value.data.fileValue || value.data.fileValue === ''
+  }
+
   private onGridReady({ api }: { api: any }) {
     this.gridApi = api
   }
@@ -120,16 +130,29 @@ export default class PhotoInput extends Mapper {
     this.gridApi?.setRowData(this.addOrder.dataManualFile)
   }
 
-  private onLoad(params: any) {
+  private async onLoad(params: any) {
     this.addOrder.indexManual = params.rowIndex
-    document.getElementById('fileUpload')!.click()
+    await document.getElementById('fileUpload')!.click()
   }
+
+  @Watch('flags.filechange')
+  onFileValueChange() {
+    if (
+      this.addOrder.indexManual !== -1 &&
+      this.addOrder.indexManual !== null &&
+      this.addOrder.indexManual !== undefined
+    ) {
+      this.cellEmpty = false
+    }
+  }
+
   private addClick() {
     this.addOrder.dataManualFile = this.addOrder.dataManualFile.concat({
       valueAnswer: this.addOrder.answer,
       fileValue: null
     })
     this.gridApi?.setRowData(this.addOrder.dataManualFile)
+    this.cellEmpty = true
   }
   private onDelete(params: any) {
     this.deleteParams = params

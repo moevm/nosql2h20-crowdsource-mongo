@@ -91,7 +91,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { clientMapper } from '@/store/modules/client'
 import { userMapper } from '@/store/modules/user'
-import { baseURL } from '@/api/httpAxios'
 
 const Mappers = Vue.extend({
   computed: {
@@ -100,7 +99,7 @@ const Mappers = Vue.extend({
   },
   methods: {
     ...clientMapper.mapMutations(['checkFill'])
-  },
+  }
 })
 
 @Component({

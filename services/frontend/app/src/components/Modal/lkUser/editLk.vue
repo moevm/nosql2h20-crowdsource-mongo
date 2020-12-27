@@ -45,7 +45,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import AwesomeMask from 'awesome-mask'
 import { userMapper } from '@/store/modules/user'
-import UserAPI from "@/api/user";
+import UserAPI from '@/api/user'
 
 const Mappers = Vue.extend({
   computed: {
@@ -66,10 +66,12 @@ export default class EditLk extends Mappers {
     name: ''
   }
   private async editLkClick() {
-    await UserAPI.editUser(this.userId, {surname: this.userEdit.surname, name: this.userEdit.name})
+    await UserAPI.editUser(this.userId, {
+      surname: this.userEdit.surname,
+      name: this.userEdit.name
+    })
     this.userInfo.surname = this.userEdit.surname
     this.userInfo.name = this.userEdit.name
-    //console.log('editLkClick')
   }
 
   private openFuc() {

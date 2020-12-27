@@ -33,7 +33,6 @@ export default class StatisticUsers extends Mappers {
       valAnswer.push(data[keySup])
     }
     for (const item of valAnswer) {
-      console.log('item user', item, item > 0)
       if (item > 0) {
         this.isChart = true
         break
@@ -43,7 +42,6 @@ export default class StatisticUsers extends Mappers {
       keyAnswer.push('Не приступили')
       valAnswer.push(100)
     }
-    console.log('data user', data, keyAnswer, valAnswer)
     this.renderChart({
       labels: keyAnswer,
       datasets: [
@@ -53,10 +51,6 @@ export default class StatisticUsers extends Mappers {
         }
       ]
     })
-  }
-  async created() {
-    //console.log('selectOrder', this.editOrder)
-    //console.log('created stats', (await StatisticAPI.geAnswerStatistic(this.editOrder._id.$oid)).data, (await StatisticAPI.getUserStatistic(this.editOrder._id.$oid)).data)
   }
 }
 </script>

@@ -89,7 +89,6 @@ class UserActions extends Actions<
       }
       this.state.isAuthenticated = true
     } catch (err) {
-      //console.log(err.response.data)
       localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
       this.state.isAuthenticated = false
       if (err.response.status === 401) {

@@ -51,39 +51,61 @@
       </div>
     </div>
     <editLk />
+    <b-modal
+      id="deleteOrderLkModal"
+      title="Предупреждение"
+      ok-title="Применить"
+      cancel-title="Отмена"
+      size="lg"
+      @ok="deleteClick"
+    >
+      <div>
+        Вы действительно хотите удалить заказ?
+      </div>
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-button @click="ok()" variant="info">
+          Удалить
+        </b-button>
+        <b-button @click="cancel()">
+          Отмена
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import Config from '@/config/config'
-import Translation from '@/config/translateTable.ts'
 import editLk from '@/components/Modal/lkUser/editLk.vue'
 import { userMapper } from '@/store/modules/user'
-import {AgGridVue} from "ag-grid-vue";
-import ActionRenderer from "@/components/table/ActionRenderer.vue";
-import AgGridFactory from "@/factories/agGridFactory";
-import {GridApi} from "ag-grid-community";
-import {customerMapper} from "@/store/modules/customer";
+import { AgGridVue } from 'ag-grid-vue'
+import ActionRenderer from '@/components/table/ActionRenderer.vue'
+import AgGridFactory from '@/factories/agGridFactory'
+import { GridApi } from 'ag-grid-community'
+import { customerMapper } from '@/store/modules/customer'
+import { clientMapper } from '@/store/modules/client'
+import ClientAPI from '@/api/client'
 
 const Mapper = Vue.extend({
   computed: {
-    ...userMapper.mapState(['isAuthenticated', 'userInfo', 'userId']),
+    ...userMapper.mapState(['isAuthenticated', 'userInfo', 'userId', 'isWork']),
     ...customerMapper.mapState(['orderList'])
   },
   methods: {
-    ...customerMapper.mapActions(['fetchAllOrders', 'fetchOrdersForUser'])
+    ...clientMapper.mapMutations(['setSelectOrder']),
+    ...customerMapper.mapActions(['fetchAllOrders', 'fetchOrdersForUser']),
+    ...clientMapper.mapActions(['fetchFullInfoOrder']),
+    ...customerMapper.mapMutations(['deleteOrderWithId'])
   }
 })
 
 @Component({
-  components: { editLk,
-    AgGridVue,
-    ActionRenderer}
+  components: { editLk, AgGridVue, ActionRenderer }
 })
 export default class ListOrders extends Mapper {
   private gridApi: GridApi | null = null
   private isActive = true
+  private onDeleteObj: any = null
 
   private gridOptions = {
     ...AgGridFactory.getDefaultGridOptions(),
@@ -100,42 +122,54 @@ export default class ListOrders extends Mapper {
     this.gridApi = api
   }
 
-  private columnDefsOrder = [
-    {
-      headerName: 'Название',
-      field: 'title',
-      editable: false
-    },
-    {
-      headerName: 'Описание',
-      field: 'description'
-    },
-    {
-      ...AgGridFactory.getActionColumn({
-        cellRendererParams: {
-          getActionByType: () => {
-            return ['onDelete', 'onLink'] //this.editable ? ['onDownload', 'onDelete'] : ['onDownload']
-          },
-          onDelete: this.onDelete,
-          onClone: this.onLink
-        },
-        minWidth: 140,
-        editable: false,
-        maxWidth: 140
-      })
-    }
-  ]
-
-  private onDelete() {
-    //console.log('onDelete lpk')
+  private async deleteClick() {
+    this.deleteOrderWithId(this.onDeleteObj._id.$oid)
+    await ClientAPI.deleteCustomerOrder(this.onDeleteObj._id.$oid)
+    await this.fetchOrdersForUser(this.userId)
   }
 
-  private onLink() {
-    //console.log('onLink lpk')
+  private columnDefsOrder: any[] = []
+
+  private onDelete(value: any) {
+    this.$bvModal.show('deleteOrderLkModal')
+    this.onDeleteObj = value.data
+  }
+
+  private async onRedirect(value: any) {
+    this.setSelectOrder(value.data)
+    await this.fetchFullInfoOrder(value.data._id.$oid)
+    this.$router.push('/main/work/task')
   }
 
   async created() {
     await this.fetchOrdersForUser(this.userId)
+    this.columnDefsOrder = [
+      {
+        headerName: 'Название',
+        field: 'title',
+        editable: false,
+        width: 150
+      },
+      {
+        headerName: 'Описание',
+        field: 'description',
+        width: 250
+      },
+      {
+        ...AgGridFactory.getActionColumn({
+          cellRendererParams: {
+            getActionByType: () => {
+              return this.isWork ? ['onRedirect'] : ['onDelete'] //this.editable ? ['onDownload', 'onDelete'] : ['onDownload']
+            },
+            onDelete: this.onDelete,
+            onRedirect: this.onRedirect
+          },
+          minWidth: 140,
+          editable: false,
+          maxWidth: 140
+        })
+      }
+    ]
   }
 
   private editProfileClick() {

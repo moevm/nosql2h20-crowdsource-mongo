@@ -28,8 +28,8 @@ export default class ClientAPI {
   public static addOrderPhoto(orderId: string, orderInfo: any[]) {
     const data = new FormData()
     for (let i = 0; i < orderInfo.length; i++) {
-      const item  = orderInfo[i];
-      data.append(`image${i+1}`, item.fileValue)
+      const item = orderInfo[i]
+      data.append(`image${i + 1}`, item.fileValue)
     }
     return http.post(`/orders/${orderId}/upload_images`, data, {
       headers: {
