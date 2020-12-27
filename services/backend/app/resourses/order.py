@@ -44,7 +44,7 @@ def add_order():
     user_id = get_jwt_identity()
     body = request.get_json()
     user = User.objects.get(id=user_id)
-    order = Order(**body,author = user_id,dateCreate=datetime.date.today().strftime("%m-%d-%Y"))
+    order = Order(**body,author = user_id,dateCreate=datetime.date.today().strftime("%m-%d-%Y"),customer=user.customer)
     order.save()
     user.update(push__orders_status={str(order.id):"posted"})
     id = order.id
