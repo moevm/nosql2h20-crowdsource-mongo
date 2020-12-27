@@ -164,8 +164,8 @@ export default class AddOrderModal extends Mappers {
     this.$bvModal.show('deleteFileOrderModal')
   }
 
-  private changeSelectedData() {
-    this.isText = this.selectedChangeData === 'photo'
+  private changeSelectedData(event: any) {
+    this.isText = event === 'text'
     this.onChangeField()
   }
 
