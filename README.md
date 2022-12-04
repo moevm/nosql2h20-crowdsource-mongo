@@ -8,4 +8,4 @@
 sudo docker-compose build 
 sudo docker-compose up
 ```
-Открыть можно по ссылке: http://localhost:8000
+Открыть можно по ссылке: http://localhost:8080
